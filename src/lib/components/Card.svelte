@@ -1,6 +1,6 @@
 <script>
-    export let title;
-    export let type;
+    export let title = '';
+    export let type = '';
     
 </script>
 <style scoped lang="less">

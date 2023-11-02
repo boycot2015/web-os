@@ -1,0 +1,119 @@
+@import url(./var.less);
+:global {
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    i {
+        font-style: normal;
+    }
+    html,body {
+        padding: 0;
+        margin: 0;
+        font-size: 12px;
+        background-color: var(--bg-color);
+    }
+    .wrap {
+        max-width: 1200px;
+        min-width: 375px;
+        margin: auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .flex-row {
+        display: flex;
+        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        flex-direction: row;
+    }
+    .flex-column {
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+    }
+    .align-c {
+        align-items: center;
+    }
+    .align-e {
+        align-items: flex-end;
+    }
+    .align-s {
+        align-items: flex-start;
+    }
+    .just-c {
+        justify-content: center;
+    }
+    .just-a {
+        justify-content: space-around;
+    }
+    .just-b {
+        justify-content: space-between;
+    }
+    .flex-1 {
+        flex: 1;
+    }
+    .flex-2 {
+        flex: 2;
+    }
+    .flex-3 {
+        flex: 3;
+    }
+    .flex-4 {
+        flex: 4;
+    }
+    .clearfix:before,
+    .clearfix:after {
+      content: '';
+      display: table;
+    }
+    .clearfix:after {
+      clear: both;
+    }
+    .fl {float: left;}
+    .fr {float: right;}
+    // 手势样式
+    .pointer{
+      cursor:pointer
+    }
+    /*文字超出隐藏*/
+    /*文字超出隐藏*/
+    .ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .ellipsisTwo {
+      overflow: hidden;
+      -webkit-line-clamp: 2;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      word-wrap: break-word;
+      word-break: break-all;
+      -webkit-box-orient: vertical;
+    }
+    .line-clamp1,
+    .line-clamp2,
+    .line-clamp3,
+    .line-clamp4 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+    }
+    .line-clamp1 {
+      -webkit-line-clamp: 1;
+    }
+    .line-clamp2 {
+      -webkit-line-clamp: 2;
+    }
+    .line-clamp3 {
+      -webkit-line-clamp: 3;
+    }
+    .line-clamp4 {
+      -webkit-line-clamp: 4;
+    }
+    .tc {text-align: center;}
+    .tr {text-align: right;}
+}

@@ -98,8 +98,8 @@
                     {#if model.type == 1001}
                     <div class="title">{model.name}</div>
                     {/if}
-                    <div class="slider flex-1" style="padding: {model.type == 1001?'0px var(--padding-gap) 0':'0'};width: {model.type == 1001?'70%':'50%'};margin:{model.type == 1001?'0 auto':'auto var(--padding-gap) auto 0'}">
-                        <BeCarousel height='{model.type == 1001?'170px': '150px'}' autoplay={model.type == 1001} direction='horizontal' trigger='click' type='card'>
+                    <div class="slider flex-1" style="padding: {model.type == 1001?'0px var(--padding-gap) 0':'0'};width: {model.type == 1001?'100%':'50%'};margin:{model.type == 1001?'0 auto':'auto var(--padding-gap) auto 0'}">
+                        <BeCarousel height='{model.type == 1001?'220px': '120px'}' autoplay={model.type == 1001} direction='horizontal' trigger='click' type='card'>
                             {#each model.list as item, i}
                             <BeCarouselItem>
                                 <div class='w-full h-full carousel-item' style='background: url({item.logo}) center center / cover no-repeat;'></div>
@@ -126,7 +126,7 @@
                     {#if model.type == 1001}
                     <div class="flex-row just-b align-c" style="padding: 6px 0;">
                         {#each model.list as item, i}
-                        <img src="{item.logo}" loading="lazy" style="z-index: {model.list.length - i};margin-right: -10px;" alt="{item.name}">
+                        <img src="{item.logo}" loading="lazy" style="z-index: {model.list.length - i};" alt="{item.name}">
                         {/each}
                     </div>
                     <i class="more">立即查看 ></i>
@@ -141,15 +141,17 @@
 <style scoped lang="less">
     .main {
         background-color: var(--bg-color);
+        padding-bottom: var(--gap-5);
     }
     .nav-bar {
-        font-size: 18px;
+        font-size: var(--font-size-18);
         font-weight: bold;
         padding: var(--padding-gap);
         .more {
-            font-size: 14px;
+            font-size: var(--font-size-14);
             font-weight: normal;
             color: var(--color-999);
+            cursor: pointer;
         }
     }
     .scroll-h-container {
@@ -170,18 +172,20 @@
             padding: var(--padding-gap) var(--padding-gap) 0;
             margin-bottom: var(--padding-gap);
             .more {
-                font-size: 14px;
+                font-size: var(--font-size-14);
                 margin-left: var(--padding-gap);
+                cursor: pointer;
             }
         }
         .nav-bar,.more {
             color: var(--color-fff);
+            cursor: pointer;
         }
         .like-section {
             color: var(--color-fff);
             .like-list-item {
                 padding-bottom: var(--padding-gap);
-                margin-right: var(--padding-gap);
+                margin-right: 25px;
                 &:last-child {
                     padding-right: var(--padding-gap);
                     margin-right: 0;
@@ -190,14 +194,19 @@
                     width: 60px;
                     height: 60px;
                     border-radius: 60px;
-                    margin-bottom: 5px;
+                    margin-bottom: var(--gap-5);
                 }
                 .name {
-                    font-size: 12px;
+                    margin-top:var(--gap-5);
+                    font-size: var(--font-size-12);
                 }
                 a {
-                    font-size: 12px;
-                    margin-top:5px;
+                    font-size: var(--font-size-12);
+                    margin-top:var(--gap-10);
+                    padding: var(--gap-2) var(--gap-5);
+                    border-radius: var(--border-radius);
+                    background-color: var(--primary-color);
+                    color: var(--color-fff);
                 }
             }
         }
@@ -212,11 +221,11 @@
     }
     .top-list-card {
         padding-right: var(--padding-gap);
-        // padding-bottom: var(--padding-gap);
+        padding-bottom: var(--padding-gap);
         .title {
             color:var(--color-fff);
-            line-height: 48px;
-            font-size: 18px;
+            line-height: var(--font-size-48);
+            font-size: var(--font-size-18);
             font-weight: bold;
             padding: 0 var(--padding-gap);
         }
@@ -224,22 +233,25 @@
             width: 200px;
             margin-bottom: var(--padding-gap);
             color: var(--color-333);
+            &:last-child {
+                margin-bottom: 0;
+            }
             .order {
                 font-weight: bold;
-                font-size: 24px;
+                font-size: var(--font-size-24);
                 color: var(--color-333);
-                margin-right: 10px;
+                margin-right: var(--gap-10);
             }
             img {
-                width: 45px;
-                height: 45px;
-                border-radius: 45px;
+                width: 40px;
+                height: 40px;
+                border-radius: 40px;
                 margin-right: var(--padding-gap);
             }
         }
     }
     .models {
-        padding-bottom: 4px;
+        margin-top: -16px;
         background-color: var(--bg-color);
         &-item {
             .pic-card {
@@ -249,6 +261,7 @@
                     vertical-align: bottom;
                 }
                 .title {
+                    font-size: var(--font-size-20);
                     padding: 8px var(--padding-gap);
                     border-top: 1px solid var(--border-color);
                     img {
@@ -261,25 +274,26 @@
             }
             margin: 0 var(--padding-gap) var(--padding-gap);
             .more {
-                font-size: 14px;
+                font-size: var(--font-size-14);
                 color: var(--color-999);
+                cursor: pointer;
             }
             .title {
-                font-size: 18px;
+                font-size: var(--font-size-24);
                 font-weight: bold;
             }
             .sub-title {
-                font-size: 20px;
+                font-size: var(--font-size-20);
                 margin-bottom: var(--padding-gap);
                 color: var(--color-333);
                 .dot {
-                    font-size: 56px;
+                    font-size: var(--font-size-56);
                     color: var(--color-999);
-                    margin-right: 10px;
+                    margin-right: var(--gap-10);
                     &:last-child {
-                        font-size: 36px;
+                        font-size: var(--font-size-36);
                         margin-right: 0;
-                        margin-left: 10px;
+                        margin-left: var(--gap-10);
                     }
                 }
             }
@@ -298,49 +312,55 @@
                         padding: 0;
                     }
                     img {
-                        margin-right: 10px;
+                        margin-right: var(--gap-10);
                     }
                     .sub-title {
                         color: var(--color-666);
-                        font-size: 14px;
+                        font-size: var(--font-size-14);
                         margin-bottom: 0;
                     }
                     .title {
-                        line-height: 24px;
+                        line-height: var(--font-size-28);
                         border-top: 0;
-                        padding: 10px 0 0;
+                        padding: var(--gap-10) 0 0;
                         margin: 0;
                         font-weight: bold;
                     }
                     .more {
                         color: var(--color-fff);
                         width: 80px;
-                        padding: 5px 0;
+                        padding: var(--gap-5) 0;
                         text-align: center;
                         align-self: flex-end;
+                        cursor: pointer;
                         border-radius: var(--border-radius);
                         background-color: var(--primary-color);
                     }
                     .dot {
-                        font-size: 56px;
+                        font-size: var(--font-size-56);
                         color: var(--color-999);
                     }
                 }
             }
             .nav-bar {
-                padding: 5px var(--padding-gap);
+                padding: var(--gap-5) var(--padding-gap);
                 border-top: 1px solid var(--border-color);
                 img {
                     position: relative;
                     width: 40px;
                     height: 40px;
+                    margin-right: -10px;
                     border-radius: 40px;
                 }
             }
             .card-list {
+                .title {
+                    margin-bottom: var(--gap-5);
+                }
                 &-item {
                     &:last-child {
                         .text {
+                            padding-bottom: 0;
                             border-bottom: 0;
                         }
                     }
@@ -355,15 +375,16 @@
                         border-radius: var(--border-radius);
                     }
                     .title {
-                        padding-bottom: 10px;
+                        font-size: var(--font-size-18);
+                        padding-bottom: var(--gap-10);
                     }
                     .desc {
-                        font-size: 14px;
+                        font-size: var(--font-size-14);
                         color: var(--color-999);
                     }
                 }
                 .sub-title {
-                    font-size: 16px;
+                    font-size: var(--font-size-16);
                     color: var(--color-999);
                 }
             }
@@ -374,7 +395,7 @@
     }
     :global(.be-carousel--card .be-carousel__item) {
         border-radius: var(--border-radius);
-        box-shadow: 0 0 10px var(--bg-color);
+        box-shadow: 0 0 var(--gap-10) var(--bg-color);
     }
     :global(.be-carousel--card .be-carousel__item.is-active.is-in-stage) {
         left: -15%;

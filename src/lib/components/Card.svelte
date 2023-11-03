@@ -11,14 +11,14 @@
         overflow: hidden;
         .title {
             line-height: 58px;
-            font-size: 18px;
+            font-size: var(--font-size-18);
             color: var(--color-fff);
             padding: 0 var(--padding-gap);
             background: linear-gradient(190deg, skyblue, purple);
             border-bottom: 1px solid var(--border-color);
         }
         .body {
-            font-size: 16px;
+            font-size: var(--font-size-16);
             padding: var(--padding-gap);
         }
         &.pic-card {

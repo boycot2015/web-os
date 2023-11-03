@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>my_notice</title>
+    <title>小程序入口</title>
 </svelte:head>
 <style lang="less" scoped>
 // .container {

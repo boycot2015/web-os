@@ -1,9 +1,9 @@
 <style lang="less" scoped>
     .nav {
-        // position: fixed;
-        // top: 0;
-        // left: 0;
-        // width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
         height: 48px;
         line-height: 48px;
         // padding: 0 var(--padding-gap);

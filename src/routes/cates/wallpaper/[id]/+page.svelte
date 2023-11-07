@@ -2,8 +2,10 @@
     .nav {
         padding: var(--padding-gap);
         padding-bottom: 0;
+        flex-wrap: wrap;
         &-item {
             cursor: pointer;
+            font-size: var(--font-size-16);
             margin-bottom: calc(var(--padding-gap) / 2);
             margin-right: var(--padding-gap);
             &.active {
@@ -38,7 +40,7 @@
     $:current = { id: data.id }
     const onNavClick = (/** @type {{ name: string;url: string; id: number; }} */ item) => {
         current = item
-        location.href = '/wallpaper/' + item.id
+        location.href = '/cates/wallpaper/' + item.id
         // goto('/wallpaper/' + item.id)
     };
     const promise = new Promise((call) => {

@@ -10,6 +10,7 @@ function likeBrandsCates () {
       name: Random.ctitle(5, 8),
       subName: Random.ctitle(3, 8),
       color: Random.color(),
+      cover: Random.image('750x450', Random.color(), Random.ctitle(1,2)),
       logo: Random.image('100x100', Random.color(), Random.ctitle(1,2)),
       // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd
       createdTime: Random.date()
@@ -61,7 +62,7 @@ function decorationModels () {
         code: 1005,
         count: 1
     }] // 1001 轮播图，1002 静态轮播图，1003 滚动轮播图，1004 列表，1005 图片
-    let data = likeBrandsCates().map(el => {
+    let data = likeBrandsCates().slice(0, 6).map(el => {
         let current = types[Math.floor(Math.random() * types.length)]
         el.type = current.code
         el.list = likeBrandsList().slice(0, current.count)

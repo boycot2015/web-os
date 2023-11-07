@@ -1,7 +1,8 @@
 <style lang="less" scoped>
     .loading {
         width: 100%;
-        margin: 20px 0;
+        margin: var(--padding-gap) 0;
+        padding: 0 var(--padding-gap);
         &-icon {
             width: 20px;
             height: 20px;
@@ -26,11 +27,20 @@
             font-size: 16px;
         }
     }
+    :global(.no-more) {
+        font-size: var(--font-size-16);
+    }
 </style>
 <script>
+    import { Divider } from 'stdf';
     export let text = '加载中...';
+    export let loading = true;
 </script>
-<div class="loading flex-row just-c align-c tc">
+<div class="loading {loading?'flex-row':''} just-c align-c tc">
+    {#if loading}
     <div class="loading-icon"></div>
     <div class="text">{text}</div>
+    {:else}
+    <Divider line="dashed" injClass="no-more" text="我是有底线的"></Divider>
+    {/if}
 </div>

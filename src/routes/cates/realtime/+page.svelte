@@ -1,6 +1,7 @@
 <style lang="less" scoped>
     .list {
         padding: var(--padding-gap);
+        flex-wrap: wrap;
         &-item {
             flex-wrap: nowrap;
             width: 100%;

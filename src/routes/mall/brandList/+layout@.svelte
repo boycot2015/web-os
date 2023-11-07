@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>my_notice</title>
+    <title>品牌分类</title>
 </svelte:head>
 <style lang="less" scoped>
 // .container {
@@ -9,5 +9,7 @@
 <script>
     // /** @type {import('./$types').LayoutData} */
 	// export let data;
+    import Action from '$lib/components/Action.svelte';
 </script>
 <slot></slot>
+<Action icon={'ri-arrow-go-back-line'} path="/mall" />

@@ -3,8 +3,13 @@
 </svelte:head>
 <style lang="less" scoped>
 .container {
-    margin-top: 48px;
+    margin-top: calc(1.2 * var(--gap-40));
     background-color: var(--color-fff);
+    :global(>.list) {
+        padding-top: calc(2 * var(--gap-40)) !important;
+        padding: var(--padding-gap);
+        flex-wrap: wrap;
+    }
 }
 </style>
 <script>
@@ -19,5 +24,5 @@
     <!-- <a href="/">首页</a>
     <a href="/about">关于</a> -->
     <slot></slot>
-    <Action icon={'ri-arrow-go-back-line'} />
+    <Action title="新闻动态" />
 </div>

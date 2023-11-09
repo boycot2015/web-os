@@ -7,17 +7,18 @@
             width: 100%;
             margin-bottom: var(--padding-gap);
             .title {
-                font-size: 16px;
+                font-size: var(--font-size-18);
+                line-height: var(--font-size-28);
                 margin-bottom: var(--padding-gap);
             }
             .desc {
-                font-size: 14px;
-                line-height: 20px;
+                font-size: var(--font-size-16);
+                line-height: var(--font-size-22);
                 color: var(--color-666);
             }
             img {
                 width: auto;
-                height: 100px;
+                height: 8rem;
                 background-color: rgba(0, 0, 0, 0.4);
                 margin-right: var(--padding-gap);
             }

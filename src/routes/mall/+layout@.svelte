@@ -3,6 +3,7 @@
 </svelte:head>
 <style lang="less" scoped>
     .layout {
+        padding-top: calc(2.8 * var(--gap-20));
         padding-bottom: var(--gap-60);
     }
 :global(.bottom-tab-bar) {
@@ -40,5 +41,5 @@
 <div class="layout">
     <slot></slot>
     <TabBar injClass="bottom-tab-bar" love {labels} />
-    <Action icon={'ri-arrow-go-back-line'} path="/" position="middle" />
+    <Action  path="/" title="品牌推荐" />
 </div>

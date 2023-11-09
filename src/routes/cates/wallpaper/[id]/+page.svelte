@@ -1,6 +1,6 @@
 <style lang="less" scoped>
     .nav {
-        padding: var(--padding-gap);
+        padding:0 0 var(--padding-gap);
         padding-bottom: 0;
         flex-wrap: wrap;
         &-item {
@@ -14,7 +14,7 @@
         }
     }
     .list {
-        padding: var(--padding-gap);
+        padding: var(--padding-gap) 0;
         flex-wrap: wrap;
         &-item {
             width: calc(50% - var(--padding-gap)/2);
@@ -53,7 +53,7 @@
         // 调用方法 监听图片的改变
     }
 </script>
-<div class="wallpaper">
+<div class="wallpaper list">
     <div class="nav flex-row">
         {#each data.cates as cate}
             <div class="nav-item {cate.id == current.id ? 'active': ''}" role={'button'} on:click={() => onNavClick(cate)}>{cate.name}</div>

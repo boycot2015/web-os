@@ -332,5 +332,5 @@
         {/each}
     </div>
     {/if}
-    <Loading text={'加载中...'} loading />
+    <Loading text={'加载中...'} {loading} />
 </div>

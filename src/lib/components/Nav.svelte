@@ -1,15 +1,13 @@
 <style lang="less" scoped>
     .nav {
         position: fixed;
-        top: 0;
+        top: auto;
         left: 0;
         width: 100%;
-        height: 48px;
-        line-height: 48px;
-        // padding: 0 var(--padding-gap);
+        line-height: var(--gap-60);
         background-color: var(--bg-color);;
         &-item {
-            font-size: 20px;
+            font-size: var(--font-size-20);
             padding: 0 var(--padding-gap);
             color: var(--color-333);
             cursor: pointer;

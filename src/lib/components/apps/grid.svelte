@@ -10,9 +10,9 @@
     }
 </script>
 <div class="pb-0 pt-0" style="height: 100%;" role="none" on:click={(e) => onClick(e)}>
-    <div class={` px-8 py-4 transition ${injClass} duration-300`}>
+    <div class={` px-8 py-4 pt-5 transition ${injClass} duration-300`}>
         <Grids cols={4} mx="0" my="0" gap="8">
-            {#each apps as app, i}
+            {#each apps.slice(0, 14) as app, i}
                 {#if app.type === 'app' || !app.type}
                 <Grid row={app.row || 3} col={app.col || 1}>
                     <a class="flex flex-col justify-center text-center" href="{app.url}" target="{app.url?.includes('http')?'_blank':''}">

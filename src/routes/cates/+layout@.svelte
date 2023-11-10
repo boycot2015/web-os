@@ -19,10 +19,10 @@
 	export let data;
     const { tabs } = data;
 </script>
-<Nav navs={tabs} route={data.route}></Nav>
+<Nav navs={tabs} route={data.route||[]}></Nav>
 <div class="wrap flex-column just-b container">
     <!-- <a href="/">首页</a>
     <a href="/about">关于</a> -->
     <slot></slot>
-    <Action title="新闻动态" />
+    <Action title="新闻动态" path="/" />
 </div>

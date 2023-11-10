@@ -1,8 +1,10 @@
 <script>
     import { Grids, Grid, Switch, Icon, Button, TabBar } from 'stdf';
-    let color = false;
+    // import { createEventDispatcher } from 'svelte';
+    import { theme } from '@/store';
+    // const dispatch = createEventDispatcher();
     const changeColorFun = e => {
-        color = e.detail;
+        theme.set({bgColor: e.detail ? 'bg-gradient-to-t from-[#f8f8f8] to-[#ccc]': 'bg-gray dark:bg-gray-700'})
     };
     let devices = ['iOS', 'Android', 'Windows', 'macOS', 'Ubuntu'];
     let curentIndex = 0;
@@ -11,14 +13,13 @@
         curentIndex === devices.length - 1 ? (curentIndex = 0) : curentIndex++;
     };
 </script>
-
 <Grids cols={5} mx="0" my="0" gap="2">
     <Grid row={2}>
         <div
             class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10"
         >
             <div class="flex justify-center">
-                <Switch inside="slot" radius="full" on:change={changeColorFun}>
+                <Switch inside="slot" radius="full" check={true} on:change={changeColorFun}>
                     <div slot="false">
                         <Icon name="ri-paint-brush-line" size={12} />
                     </div>

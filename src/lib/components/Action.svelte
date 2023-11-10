@@ -1,8 +1,5 @@
 <script>
-    import { Divider } from 'stdf';
     import Icon from './Icon.svelte';
-    import { goto } from '$app/navigation'
-    // ri-arrow-go-back-line
     export let icon = 'ri-close-circle-line';
     export let path = '/';
     export let title = '超级app'
@@ -43,8 +40,11 @@
         {title}
     </div>
     <div class="sups flex items-center justify-around border rounded-2xl border-black/10 border-gray-300 px-2 py-1">
-        <Icon injClass="more text-gray-800" on:click={() => goto(path)} name="{'ri-more-fill'}" size={26} />
+        <Icon injClass="more text-gray-800" name="{'ri-more-fill'}" size={26} />
         <i class="line text-gray-300">|</i>
-        <Icon injClass="back text-gray-800" on:click={() => goto(path)} name="{icon}" size={26} />
+        <!-- <Icon injClass="back text-gray-800" on:click={() => goto(path)} name="{icon}" size={26} /> -->
+            <a href="{path}">
+                <Icon injClass="back text-gray-800" name="{icon}" size={26} />
+            </a>
     </div>
 </div>

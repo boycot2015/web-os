@@ -1,9 +1,9 @@
 <script>
     import { onMount, onDestroy } from 'svelte';
     import { Grids, Grid, Switch, Icon, Button, TabBar } from 'stdf';
-    import appList from './coms/grid.svelte'
+    import appList from './grid.svelte'
     import Swiper from '$lib/components/Swiper.svelte'
-    import Day from './coms/day.svelte'
+    import Day from './day.svelte'
     
     let devices = ['iOS', 'Android', 'Windows', 'macOS', 'Ubuntu'];
     let curentIndex = 0;

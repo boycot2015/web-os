@@ -73,11 +73,13 @@
 	let swiperDom = null; //Swiper容器
 	$: movePercent = moveX / width; //滑动距离占总宽度的百分比 touch width percent
 
+    let first = {...data[data.length - 1], props: loop?data[data.length - 1].props:{}}
+    let last = {...data[0], props: loop?data[0].props:{}}
 	const dataNew =
 		data.length > 1
-			? [data[data.length - 1], ...data, data[0], data[1]]
+			? [first, ...data, first, last]
 			: data.length === 1
-			? [data[data.length - 1], ...data, data[0]]
+			? [first, ...data, last]
 			: data; //实现无限轮播，复制一个新数组，防止改变原数组 implement infinite loop, copy a new array to prevent change original array
 	const indicateAlignObj = {
 		left: 'justify-start',
@@ -329,10 +331,6 @@
 	// slideing
 	const touchmoveFun = e => {
 		if (!isMove) return false;
-        // 非无限轮播边界处理
-        if (!loop && (active === 1 && moveX > 0 || (active === dataNew.length - 3 && moveX < 0))) {
-            return
-        }
 		swiperDom.setPointerCapture(e.pointerId);
 		clearInterval(intervalTime); //清除定时器 clear timer
 		moveX = e.clientX - startX;
@@ -341,11 +339,14 @@
 	//滑动结束
 	// slide end
 	const touchendFun = () => {
+        // 非无限轮播边界处理
+        if (!loop && (active === 1 && moveX > 0 || (active === dataNew.length - 3 && moveX < 0))) {
+            moveX =  moveX > 0 ? 10 : -10
+        }
 		endTime = new Date().getTime();
 		const moveXABS = Math.abs(moveX); //滑动距离，moveX绝对值。  slide distance, moveX absolute value
 		const timeLong = endTime - startTime; //滑动时间  slide time
 		const speed = moveXABS / timeLong; //滑动速度阈值  slide speed threshold
-
 		//滑动距离大于等于容器宽度 triggerLong/100 不用考虑滑动速度，都触发切换。
 		//滑动距离小于等于容器宽度 notTriggerLong/100，无论速度快慢都不触发切换。
 		//滑动距离大于容器宽度 notTriggerLong/100 且小于 triggerLong/100，需要判断滑动速度，用一个速度阈值来判断。阈值大于等于 triggerSpeed 切换，否则不切换。
@@ -504,7 +505,6 @@
 				indicateAlignObj[indicateAlign] || indicateAlignObj.center
 			}`}
 		>
-			<!-- eslint-disable-next-line no-unused-vars -->
 			{#each data as item, i}
 				<div
 					class={`${indicateStyleInnerFun(indicateStyle, currentIndicate === i, indicateColor, indicateActiveColor)} ${

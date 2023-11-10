@@ -1,9 +1,7 @@
 <script>
-    import { Grids, Grid, Icon } from 'stdf';
+    import { Grids, Grid, Icon, Mask } from 'stdf';
     import { createEventDispatcher } from 'svelte'
     const dispatch = createEventDispatcher()
-    let color = false;
-    $: colorCss = `${color ? ' bg-gradient-to-tr from-extend0/70 to-extend2/70' : ' bg-gray dark:bg-gray-700'}`;
     export let apps = [];
     export let injClass = '';
     const onClick = (e) => {
@@ -12,7 +10,7 @@
     }
 </script>
 <div class="pb-0 pt-0" style="height: 100%;" role="none" on:click={(e) => onClick(e)}>
-    <div class={`rounded-xl px-8 py-4 transition ${injClass} duration-300 ${colorCss}`}>
+    <div class={` px-8 py-4 transition ${injClass} duration-300`}>
         <Grids cols={4} mx="0" my="0" gap="8">
             {#each apps as app, i}
                 {#if app.type === 'app' || !app.type}

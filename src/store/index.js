@@ -1,5 +1,6 @@
 import { readable, writable } from 'svelte/store';
 import { http } from '$lib/request';
+import themeConfig from '$lib/themeConfig';
 function weatherData () {
     let requestTimes = 0
 	const { subscribe, set, update } = writable({});
@@ -18,7 +19,7 @@ function weatherData () {
 	};
 }
 function themeData () {
-	const { subscribe, set, update } = writable({bgColor: 'bg-gradient-to-t from-[#f8f8f8] to-[#ccc]'});
+	const { subscribe, set, update } = writable({ ...themeConfig || {} });
 	return {
 		subscribe,
 		set: async (res) => {

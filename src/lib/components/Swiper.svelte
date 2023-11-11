@@ -72,7 +72,6 @@
 	// let transition = true;
 	let swiperDom = null; //Swiper容器
 	$: movePercent = moveX / width; //滑动距离占总宽度的百分比 touch width percent
-
     let first = {...data[data.length - 1], props: loop?data[data.length - 1].props:{}}
     let last = {...data[0], props: loop?data[0].props:{}}
 	const dataNew =
@@ -500,7 +499,7 @@
 		<!-- 轮播指示器(内部) -->
 		<!-- Carousel indicator (inner) -->
 		<div
-			class:hidden={data.length < 2 || indicatePosition === 'out' || indicatePosition === 'none'}
+			class:!hidden={data.length < 2 || indicatePosition === 'out' || indicatePosition === 'none'}
 			class={`absolute bottom-0 flex pt-4 pb-2 px-4 space-x-2 w-full bg-gradient-to-b from-black/0 to-black/40 z-50 ${indicateInjClass} ${
 				indicateAlignObj[indicateAlign] || indicateAlignObj.center
 			}`}

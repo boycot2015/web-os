@@ -8,7 +8,7 @@
     const {likeCate, likeList, topList, modelsList } = data
 </script>
 <div class="main">
-    <div class="top" style="background: linear-gradient(190deg, {likeList.data[0].color}, {likeList.data[1].color});">
+    <div class="top" style="background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));">
         <div class="search flex-row just-b align-c">
             <div class="flex-1">
                 <Input placeholder="输入品牌名称" label6={{ name: 'ri-qr-scan-2-line', size: 18, alpha: 0.5 }} radius="full"></Input>

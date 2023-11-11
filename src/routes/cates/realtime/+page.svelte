@@ -8,17 +8,17 @@
             margin-bottom: var(--padding-gap);
             .title {
                 font-size: var(--font-size-18);
-                line-height: var(--font-size-28);
+                line-height: var(--font-size-24);
                 margin-bottom: var(--padding-gap);
             }
             .desc {
                 font-size: var(--font-size-16);
-                line-height: var(--font-size-22);
+                line-height: var(--font-size-20);
                 color: var(--color-666);
             }
             img {
                 width: auto;
-                height: 7rem;
+                height: 6rem;
                 background-color: rgba(0, 0, 0, 0.4);
                 margin-right: var(--padding-gap);
             }

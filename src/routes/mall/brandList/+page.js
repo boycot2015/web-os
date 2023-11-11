@@ -1,7 +1,5 @@
 
 import axios from 'axios';
-import { baseApiUrl } from '$lib';
-import '@brewer/beerui/assets/beer.css';
 /** @type {import('./$types').PageLoad} */
 export async function load({ params }) {
     let cate = await axios.get('/brand/like/cate', {})

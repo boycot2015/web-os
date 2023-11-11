@@ -31,7 +31,7 @@
     }
     onMount(() => {
         window.addEventListener('scroll', (e) => {
-            if (e.target.scrollingElement.scrollTop > coverHeight) {
+            if (e.target.scrollingElement.scrollTop > coverHeight - 48) {
                 fixed = true
             } else {
                 fixed = false
@@ -44,6 +44,7 @@
 </script>
 <style scoped lang="less">
     .main {
+        // padding-top: calc(2.8 * var(--gap-20));
         background-color: var(--bg-color);
         margin-bottom: var(--gap-5);
     }
@@ -58,7 +59,7 @@
         }
     }
     .cate-list {
-        top: 0;
+        top: 3rem;
         width: 100%;
         background-color: var(--color-fff);
         transition: all .3s;

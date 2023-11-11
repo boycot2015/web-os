@@ -38,7 +38,8 @@
 		},
 	];
 </script>
-<div class="layout">
+<!-- style="background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));" -->
+<div class="layout" style="background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));">
     <slot></slot>
     <TabBar injClass="bottom-tab-bar" love {labels} />
     <Action  path="/" title="品牌推荐" />

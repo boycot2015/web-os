@@ -6,7 +6,7 @@
     import { fly } from 'svelte/transition';
     import appConfig from '$lib/appConfig';
     $: visible = false;
-    const { apps = [], docks = [], bgContainer } = appConfig
+    const { apps = [], docks = [] } = appConfig
     const getTime = () => {
         const date = new Date();
         const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
@@ -15,10 +15,11 @@
     }
     $: time = getTime();
     let timer = [];
-    $:initActive = (appConfig.initActive > apps.length - 1 ? 1 : appConfig.initActive) || 0;
+    $:initActive = ($theme.initActive > apps.length - 1 ? 1 : $theme.initActive) || 0;
     const onChange = (e) => {
         initActive = e.detail
         visible = !initActive
+        theme.set({initActive: e.detail})
     }
     onMount(() => {
         timer.map(el => el && clearInterval(el))
@@ -41,10 +42,12 @@
 </style>
 <div class="indicate pb-0 pt-0 {$theme.bgColor}">
     <div class="bg fixed h-full w-full" style="z-index: 1;">
-        {#if bgContainer.component}
-        <svelte:component this={bgContainer.component} {...bgContainer.props || {}} ></svelte:component>
-        {:else if bgContainer.bgUrl}
-        <div style="background: url({bgContainer.bgUrl}) center/cover no-repeat;" class="bg-gradient-to-tr from-[#7367F0] to-[#CE9FFC] h-full w-full"></div>
+        {#if $theme.component}
+        <svelte:component this={$theme.component} {...$theme.props || {}} ></svelte:component>
+        {:else if $theme.bgColor}
+        <div class="{$theme.bgColor} h-full w-full"></div>
+        {:else if $theme.bgUrl}
+        <div style="background: url({$theme.bgUrl}) center/cover no-repeat;" class="bg-gradient-to-tr from-[#7367F0] to-[#CE9FFC] h-full w-full"></div>
         {:else}
         <div class="bg-gradient-to-tr from-[#7367F0] to-[#CE9FFC] h-full w-full"></div>
         {/if}
@@ -56,9 +59,9 @@
         </Popup> -->
         {#if initActive}
         <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-8 left-5 right-5 flex justify-around items-center">
-            <TabBar labels={docks} tabInjClass="text-extend0 dark:text-extend2" activeTabInjClass="!text-primary dark:!text-dark" injClass="!bg-white/30 px-2 tab-bar bottom-0 rounded-full shadow dark:shadow-white/10" />
+            <TabBar labels={docks} tabInjClass="text-extend0 dark:text-extend2" activeTabInjClass="!text-primary dark:!text-dark" injClass="!bg-white/30 backdrop-blur-{$theme.backdropBlur === 'none'?'md':$theme.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" />
         </div>
         {/if}
     </div>
-    <Mask visible={true} backdropBlur="{bgContainer.backdropBlur || 'base'}" opacity={0.1} zIndex={2} />
+    <Mask visible={true} backdropBlur="{$theme.backdropBlur || 'base'}" opacity={0.1} zIndex={2} />
 </div>

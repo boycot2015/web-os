@@ -1,4 +1,4 @@
-import { deepClone } from '$lib/utils'
+import { deepClone } from '$lib'
 import axios from 'axios'
 // import { Loading } from 'stdf'
 // import Cookies from 'js-cookie'

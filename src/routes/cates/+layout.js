@@ -1,6 +1,7 @@
 
 import { baseApiUrl } from '$lib';
-import '@brewer/beerui/assets/beer.css'
+// import '@brewer/beerui/assets/beer.css'
+import '/src/app.css';
 /** @type {import('./$types').LayoutLoad} */
 export async function load({ fetch, route }) {
 	const res = await fetch(baseApiUrl);

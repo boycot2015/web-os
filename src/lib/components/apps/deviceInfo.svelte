@@ -1,10 +1,11 @@
 <script>
     import { Grids, Grid, Switch, Icon, Button, TabBar } from 'stdf';
     // import { createEventDispatcher } from 'svelte';
+    import { goto } from '$app/navigation'
     import { theme } from '@/store';
     // const dispatch = createEventDispatcher();
     const changeColorFun = e => {
-        theme.set({bgColor: e.detail ? 'bg-gradient-to-t from-[#f8f8f8] to-[#ccc]': 'bg-gray dark:bg-gray-700'})
+        theme.set({bgColor: e.detail ? 'bg-gradient-to-t from-[#f8f8f8] to-[#ccc]': ''})
     };
     let devices = ['iOS', 'Android', 'Windows', 'macOS', 'Ubuntu'];
     let curentIndex = 0;
@@ -19,7 +20,7 @@
             class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10"
         >
             <div class="flex justify-center">
-                <Switch inside="slot" radius="full" check={true} on:change={changeColorFun}>
+                <Switch inside="slot" radius="full" check={!!$theme.bgColor} on:change={changeColorFun}>
                     <div slot="false">
                         <Icon name="ri-paint-brush-line" size={12} />
                     </div>
@@ -54,7 +55,7 @@
             <div class="flex flex-col justify-around">
                 <div class="text-sm">
                     {#if currentDevice === 'iOS'}
-                        A17 Pro Bionic
+                        A17 Bionic
                     {:else if currentDevice === 'Android'}
                         骁龙8 Gen3
                     {:else if currentDevice === 'Windows'}
@@ -152,22 +153,22 @@
         </div>
     </Grid>
     <Grid row={4} col={1}>
-        <a href="/cates/realtime" on:click={(e) => e.stopPropagation()} class="bg-white dark:bg-black p-1 h-full rounded-xl text-md font-bold text-center text-gray-800 flex justify-around items-center shadow dark:shadow-white/10">
+        <div role="none" on:click={(e) => {e.stopPropagation();goto('/cates/realtime')}} class="bg-white dark:bg-black p-1 h-full rounded-xl text-md font-bold text-center text-gray-800 flex justify-around items-center shadow dark:shadow-white/10">
             <Icon name="ri-newspaper-line" />
             <span
             >新闻动态</span>
-        </a>
+        </div>
     </Grid>
     <Grid row={4} col={2}>
-        <a href="/mall" on:click={(e) => e.stopPropagation()} class="bg-white dark:bg-black p-1 h-full rounded-xl text-xl font-bold text-center text-gray-800 flex justify-around justify-center shadow dark:shadow-white/10 items-center">
+        <div role="none" on:click={(e) => {e.stopPropagation();goto('/mall')}} on:click={(e) => e.stopPropagation()} class="bg-white dark:bg-black p-1 h-full rounded-xl text-xl font-bold text-center text-gray-800 flex justify-around justify-center shadow dark:shadow-white/10 items-center">
             <Icon name="ri-award-line" />
             <span>品牌推荐</span>
-        </a>
+        </div>
     </Grid>
     <Grid row={4} col={1}>
-        <a href="/cates/wallpaper/83" on:click={(e) => e.stopPropagation()} class="bg-white dark:bg-black p-1 h-full rounded-xl text-md font-bold text-center text-gray-800 flex flex-col items-center justify-around shadow dark:shadow-white/10">
+        <div role="none" on:click={(e) => {e.stopPropagation();goto('/cates/wallpaper/83')}} on:click={(e) => e.stopPropagation()} class="bg-white dark:bg-black p-1 h-full rounded-xl text-md font-bold text-center text-gray-800 flex flex-col items-center justify-around shadow dark:shadow-white/10">
             <Icon name="ri-folder-image-line" />
             <span>在线壁纸</span>
-        </a>
+        </div>
     </Grid>
 </Grids>

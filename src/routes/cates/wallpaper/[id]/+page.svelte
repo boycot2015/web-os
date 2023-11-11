@@ -26,6 +26,7 @@
             img {
                 height: auto;
                 width: 100%;
+                border-radius: var(--border-radius);
                 // margin-bottom: var(--padding-gap);
             }
         }
@@ -35,25 +36,36 @@
     // import { goto } from '$app/navigation'
     import Loading from '$lib/components/Loading.svelte'
     import { previewImages } from '@brewer/beerui'
+    import { createEventDispatcher } from 'svelte'
 	/** @type {import('./$types').PageData} */
 	export let data;
+    export let injClass = '';
+    export let isComponent = false;
     $:current = { id: data.id }
+    const dispatch = createEventDispatcher()
     const onNavClick = (/** @type {{ name: string;url: string; id: number; }} */ item) => {
         current = item
-        location.href = '/cates/wallpaper/' + item.id
-        // goto('/wallpaper/' + item.id)
+        if (!isComponent) {
+            location.href = '/cates/wallpaper/' + item.id
+            return
+        }
+        dispatch('cateChange', item)
     };
-    const promise = new Promise((call) => {
+    $: promise = new Promise((call) => {
         setTimeout(() => {
             call(data)
         }, 500);
     })
     const onPreviewImages = (/** @type {string} */ src) => {
+        if (isComponent) {
+            dispatch('select', src)
+            return
+        }
         let p = previewImages(src, data.datas.list.map((/** @type {{ img: string; }} */ el) => el.img))
         // 调用方法 监听图片的改变
     }
 </script>
-<div class="wallpaper list">
+<div class="wallpaper list {injClass}">
     <div class="nav flex-row">
         {#each data.cates as cate}
             <div class="nav-item {cate.id == current.id ? 'active': ''}" role={'button'} on:click={() => onNavClick(cate)}>{cate.name}</div>

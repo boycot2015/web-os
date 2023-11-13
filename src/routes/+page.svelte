@@ -53,15 +53,12 @@
         {/if}
     </div>
     <div class="container relative" style="z-index: 3;">
-        <Swiper autoplay={false} containerWidth={document.body.clientWidth} indicatePosition="{initActive?'out':'none'}" bind:initActive={initActive} loop={false} duration={500} aspectRatio={[10, initActive?16:21.6]} triggerSpeed={0.5} data={apps} on:change={(e) => onChange(e)} />
-        <!-- <Popup bind:visible={visible} transparent position="left" size={100} radiusPosition="all" radius="xl" px="0" mask={{ opacity: 0, backdropBlur: 'base' }}>
-            <svelte:component {...apps[initActive].props || {}} injClass={'bg-transparent'} on:click={() => {visible = false}} this={apps[initActive].component}></svelte:component>
-        </Popup> -->
-        {#if initActive}
+        <Swiper autoplay={false} containerWidth={document.body.clientWidth} indicatePosition="{initActive&&initActive !==apps.length - 1?'inner':'none'}" bind:initActive={initActive} loop={false} duration={500} aspectRatio={[10, initActive?16:21.6]} triggerSpeed={0.5} data={apps} on:change={(e) => onChange(e)} height={'100vh'} indicateInjClass={'!bottom-40 !from-black/0 !to-black/0'} />
+        {#if initActive && initActive !==apps.length - 1}
         <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-8 left-5 right-5 flex justify-around items-center">
             <TabBar labels={docks} tabInjClass="text-extend0 dark:text-extend2" activeTabInjClass="!text-primary dark:!text-dark" injClass="!bg-white/30 backdrop-blur-{$theme.backdropBlur === 'none'?'md':$theme.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" />
         </div>
         {/if}
     </div>
-    <Mask visible={true} backdropBlur="{$theme.backdropBlur || 'base'}" opacity={0.1} zIndex={2} />
+    <Mask visible={true} backdropBlur="{$theme.initActive == apps.length - 1?'base':($theme.backdropBlur || 'base')}" opacity={0.1} zIndex={2} />
 </div>

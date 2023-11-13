@@ -57,6 +57,7 @@
 	export let triggerSpeed = 0.5;
 
 	let width = containerWidth === 0 ? document.body.clientWidth : containerWidth; //宽度 width
+    export let height = 0; //高度 height
 	let active = data.length > 1 ? initActive + 1 : 1; //当前激活的item current active item
 	let currentIndicate = data.length > 1 ? initActive : 0; //当前激活的指示器  current active indicate
 	let longTransition = true; //长线指示器过渡 long line indicate transition
@@ -453,7 +454,7 @@
 >
 	<!-- 轮播容器 -->
 	<!-- Carousel container -->
-	<div class="overflow-hidden relative" style="width:{width}px;height:{(width * aspectRatio[1]) / aspectRatio[0]}px;perspective:{width}px;">
+	<div class="overflow-hidden relative" style="width:{width}px;height:{height || ((width * aspectRatio[1]) / aspectRatio[0]) + 'px'};perspective:{width}px;">
 		<!-- 通过循环dataNew渲染多个item -->
 		<!-- Render multiple item through loop dataNew -->
 		{#each dataNew as item, i}

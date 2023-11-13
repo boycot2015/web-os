@@ -4,6 +4,7 @@
     export let icon = 'ri-close-circle-line';
     export let path = '/';
     export let title = '超级app'
+    export let offsetHeight = 0;
     let scrollTop = 100;
     export let opacity = 0;
     onMount(() => {
@@ -25,7 +26,7 @@
         // background-color: var(--color-fff);
         // box-shadow: 0 0 var(--gap-20) var(--color-ccc);
         // border: 1px solid var(--border-color);
-        font-size: var(--font-size-20);
+        font-size: var(--font-size-18);
         // &.left {
         //     right: auto;
         //     left: var(--padding-gap);
@@ -46,7 +47,7 @@
         }
     }
 </style>
-<div style="background: rgba(255, 255, 255, {opacity})" class="actions fixed transition-all flex items-center left-0 right-0 justify-between">
+<div style="background: rgba(255, 255, 255, {opacity})" class="actions fixed transition-all flex items-center left-0 right-0 justify-between" bind:offsetHeight={offsetHeight}>
     <div class="flex-1 {opacity <1?'!text-white':''}">
         {title}
     </div>

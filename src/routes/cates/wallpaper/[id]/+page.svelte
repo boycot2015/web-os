@@ -41,15 +41,15 @@
 	export let data;
     export let injClass = '';
     export let isComponent = false;
-    $:current = { id: data.id }
+    let current = { id: data.id }
     const dispatch = createEventDispatcher()
     const onNavClick = (/** @type {{ name: string;url: string; id: number; }} */ item) => {
         current = item
-        if (!isComponent) {
-            location.href = '/cates/wallpaper/' + item.id
+        if (isComponent) {
+            dispatch('cateChange', item)
             return
         }
-        dispatch('cateChange', item)
+        location.href = '/cates/wallpaper/' + item.id
     };
     $: promise = new Promise((call) => {
         setTimeout(() => {

@@ -22,13 +22,14 @@
         'xl': [70, 100],
     }
     $: visible = false;
-    let blurValue = Number(Math.min(...steps[$theme.backdropBlur|| 'none']))
+    let blurValue = Number(Math.min(...steps[$theme.backdropBlur || 'none']))
     let timer = [];
     const changeBlur = (e) => {
-        blurValue = e.detail
+        blurValue = e.detail;
         for (const key in steps) {
-            if (e.detail >= steps[key][0] && e.detail > steps[key][1]) {
-                $theme.backdropBlur = key
+            if (blurValue >= steps[key][0] && blurValue < steps[key][1]) {
+                $theme.backdropBlur = key;
+                break;
             }
         }
     }
@@ -97,6 +98,6 @@
             </Grids>
         </Modal>
         <ActionSheet bind:visible={selectVisible} on:clickAction={clickActionFunc} actions={[{ content: '在线壁纸' }]} />
-        <Modal bind:visible={wallpaperVisible} title="选择壁纸" injTitleClass="text-gray-500 text-xl" showBtn={false} contentSlot popup={{size: 80, radiusPosition: 'all',radius: 'xl', transparent: false, position: 'center', hideScrollbar: true, easeType: 'none', px: 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}><Wallpaper injClass="!pt-0" data={wallpaperData} isComponent on:select={(e) => $theme.bgUrl = e.detail} on:cateChange={(e) => load(e.detail)}></Wallpaper></Modal>
+        <Modal bind:visible={wallpaperVisible} title="选择壁纸" injTitleClass="text-gray-800 text-xl" showBtn={false} contentSlot popup={{size: 80, radiusPosition: 'all',radius: 'xl', transparent: false, position: 'center', hideScrollbar: true, easeType: 'none', px: 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}><Wallpaper injClass="!pt-0" data={wallpaperData} isComponent on:select={(e) => $theme.bgUrl = e.detail} on:cateChange={(e) => load(e.detail)}></Wallpaper></Modal>
     </div>
 </Grid>

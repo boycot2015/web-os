@@ -8,7 +8,7 @@
     const {likeCate, likeList, topList, modelsList } = data
 </script>
 <div class="main">
-    <div class="top" style="background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));">
+    <div class="top">
         <div class="search flex-row just-b align-c">
             <div class="flex-1">
                 <Input placeholder="输入品牌名称" label6={{ name: 'ri-qr-scan-2-line', size: 18, alpha: 0.5 }} radius="full"></Input>
@@ -35,118 +35,119 @@
             </div>
         </div>
     </div>
-    <div class="cus-top-section">
-        <div class="nav-bar flex-row just-b align-c">
-            <div class="title">小程序消费榜</div>
-            <div class="more" role="none" on:click={() => goto('/mall/brandList')}>更多 ></div>
-        </div>
-        <div class="top-list scroll-h-container flex-row just-s align-c">
-            {#each topList.data.slice(0, 6) as list}
-            <div class="top-list-card">
-                <Card>
-                    <div class="title flex-row just-b align-c" slot="title" style="background: linear-gradient(190deg, {list.color}, {list.color});">
-                        {list.name}
-                        <div class="more">></div>
-                    </div>
-                    {#each list.list.slice(0, 3) as item, i}
-                        <div class="list-item flex-row align-c">
-                            <i class="order">{i+1}</i>
-                            <img src="{item.logo}" alt="{item.name}" />
-                            <div class="name line-clamp1">{item.name}</div>
+    <div class="bg-gray-50 pb-16">
+        <div class="cus-top-section">
+            <div class="nav-bar flex-row just-b align-c">
+                <div class="title">小程序消费榜</div>
+                <div class="more" role="none" on:click={() => goto('/mall/brandList')}>更多 ></div>
+            </div>
+            <div class="top-list scroll-h-container flex-row just-s align-c">
+                {#each topList.data.slice(0, 6) as list}
+                <div class="top-list-card">
+                    <Card>
+                        <div class="title flex-row just-b align-c" slot="title" style="background: linear-gradient(190deg, {list.color}, {list.color});">
+                            {list.name}
+                            <div class="more">></div>
                         </div>
-                    {/each}
+                        {#each list.list.slice(0, 3) as item, i}
+                            <div class="list-item flex-row align-c">
+                                <i class="order">{i+1}</i>
+                                <img src="{item.logo}" alt="{item.name}" />
+                                <div class="name line-clamp1">{item.name}</div>
+                            </div>
+                        {/each}
+                    </Card>
+                </div>
+                {/each}
+            </div>
+        </div>
+        <div class="models">
+            {#each modelsList.data as model}
+            <div class="models-item">
+                {#if model.type == 1005}
+                <div class="pic-card">
+                    <Card title={model.list[0].name} type="img">
+                        <div class="title nav-bar flex-row just-b align-c" slot="title">
+                            <div class="left flex-row just-b align-c">
+                                <img src="{model.list[0].logo}" alt="{model.list[0].name}">
+                                <span class="name">{model.list[0].name}</span>
+                            </div>
+                            <i class="more" role="none" on:click={() => goto('/mall/brandList')}>去逛逛 ></i>
+                        </div>
+                        <img src="{model.list[0].logo}" loading="lazy" alt="{model.list[0].name}">
+                    </Card>
+                </div>
+                {/if}
+                {#if model.type == 1004}
+                <Card>
+                    <div class="card-list" role="none" on:click={() => goto('/mall/brandList')}>
+                        <div class="sub-title">甄选{model.subName}小程序推荐</div>
+                        <div class="title">{model.name}</div>
+                        {#each model.list as item, i}
+                            <div class="card-list-item flex-row just-s align-c">
+                                <img src="{item.logo}" loading="lazy" alt="{item.name}">
+                                <div class="text flex-row flex-1 just-b align-c">
+                                    <div class="content">
+                                        <div class="title line-clamp1">{item.name}</div>
+                                        <div class="desc line-clamp1">{item.desc}</div>
+                                    </div>
+                                    <i class="more" role="none" on:click={() => goto('/mall/brandList')}>></i>
+                                </div>
+                            </div>
+                        {/each}
+                    </div>
                 </Card>
+                {/if}
+                {#if model.type == 1001 || model.type == 1002}
+                <Card type="img">
+                    <div class="slider-list {model.type == 1002?'flex-row just-b':''}" role="none" on:click={() => goto('/mall/brandList')}>
+                        {#if model.type == 1001}
+                        <div class="title">{model.name}</div>
+                        {/if}
+                        <div class="slider flex-1" style="padding: {model.type == 1001?'0px var(--padding-gap) 0':'0'};width: {model.type == 1001?'100%':'50%'};margin:{model.type == 1001?'0 auto':'auto var(--padding-gap) auto 0'}">
+                            <BeCarousel height='{model.type == 1001?'15.71rem': '10.71rem'}' autoplay={model.type == 1001} direction='horizontal' trigger='click' type='card'>
+                                {#each model.list as item, i}
+                                <BeCarouselItem>
+                                    <div class='w-full h-full carousel-item' style='background: url({item.logo}) center center / cover no-repeat;'></div>
+                                </BeCarouselItem>
+                                {/each}
+                            </BeCarousel>
+                        </div>
+                        {#if model.type == 1001}
+                        <div class="sub-title tc"><i class="dot">“</i>{model.subName}<i class="dot">”</i></div>
+                        {/if}
+                        {#if model.type == 1002}
+                        <div class="flex-column flex-1 right-content just-c">
+                            <div class="nav-bar flex-row just-s align-c">
+                                <img src="{model.logo}" loading="lazy" alt="{model.name}">
+                                <div class="sub-title">{model.subName}</div>
+                            </div>
+                            <div class="title">{model.name}</div>
+                            <div class="dot tr">”</div>
+                            <i class="more tr" role="none" on:click={() => goto('/mall/brandList')}>立即查看</i>
+                        </div>
+                        {/if}
+                    </div>
+                    <div class="nav-bar flex-row just-b align-c" role="none" on:click={() => goto('/mall/brandList')} style="display: {model.type == 1001?'':'none'};" slot="title">
+                        {#if model.type == 1001}
+                        <div class="flex-row just-b align-c" style="padding: 6px 0;">
+                            {#each model.list as item, i}
+                            <img src="{item.logo}" loading="lazy" style="z-index: {model.list.length - i};" alt="{item.name}">
+                            {/each}
+                        </div>
+                        <i class="more">立即查看 ></i>
+                        {/if}
+                    </div>
+                </Card>
+                {/if}
             </div>
             {/each}
         </div>
     </div>
-    <div class="models">
-        {#each modelsList.data as model}
-        <div class="models-item">
-            {#if model.type == 1005}
-            <div class="pic-card">
-                <Card title={model.list[0].name} type="img">
-                    <div class="title nav-bar flex-row just-b align-c" slot="title">
-                        <div class="left flex-row just-b align-c">
-                            <img src="{model.list[0].logo}" alt="{model.list[0].name}">
-                            <span class="name">{model.list[0].name}</span>
-                        </div>
-                        <i class="more" role="none" on:click={() => goto('/mall/brandList')}>去逛逛 ></i>
-                    </div>
-                    <img src="{model.list[0].logo}" loading="lazy" alt="{model.list[0].name}">
-                </Card>
-            </div>
-            {/if}
-            {#if model.type == 1004}
-            <Card>
-                <div class="card-list" role="none" on:click={() => goto('/mall/brandList')}>
-                    <div class="sub-title">甄选{model.subName}小程序推荐</div>
-                    <div class="title">{model.name}</div>
-                    {#each model.list as item, i}
-                        <div class="card-list-item flex-row just-s align-c">
-                            <img src="{item.logo}" loading="lazy" alt="{item.name}">
-                            <div class="text flex-row flex-1 just-b align-c">
-                                <div class="content">
-                                    <div class="title line-clamp1">{item.name}</div>
-                                    <div class="desc line-clamp1">{item.desc}</div>
-                                </div>
-                                <i class="more" role="none" on:click={() => goto('/mall/brandList')}>></i>
-                            </div>
-                        </div>
-                    {/each}
-                </div>
-            </Card>
-            {/if}
-            {#if model.type == 1001 || model.type == 1002}
-            <Card type="img">
-                <div class="slider-list {model.type == 1002?'flex-row just-b':''}" role="none" on:click={() => goto('/mall/brandList')}>
-                    {#if model.type == 1001}
-                    <div class="title">{model.name}</div>
-                    {/if}
-                    <div class="slider flex-1" style="padding: {model.type == 1001?'0px var(--padding-gap) 0':'0'};width: {model.type == 1001?'100%':'50%'};margin:{model.type == 1001?'0 auto':'auto var(--padding-gap) auto 0'}">
-                        <BeCarousel height='{model.type == 1001?'15.71rem': '10.71rem'}' autoplay={model.type == 1001} direction='horizontal' trigger='click' type='card'>
-                            {#each model.list as item, i}
-                            <BeCarouselItem>
-                                <div class='w-full h-full carousel-item' style='background: url({item.logo}) center center / cover no-repeat;'></div>
-                            </BeCarouselItem>
-                            {/each}
-                        </BeCarousel>
-                    </div>
-                    {#if model.type == 1001}
-                    <div class="sub-title tc"><i class="dot">“</i>{model.subName}<i class="dot">”</i></div>
-                    {/if}
-                    {#if model.type == 1002}
-                    <div class="flex-column flex-1 right-content just-c">
-                        <div class="nav-bar flex-row just-s align-c">
-                            <img src="{model.logo}" loading="lazy" alt="{model.name}">
-                            <div class="sub-title">{model.subName}</div>
-                        </div>
-                        <div class="title">{model.name}</div>
-                        <div class="dot tr">”</div>
-                        <i class="more tr" role="none" on:click={() => goto('/mall/brandList')}>立即查看</i>
-                    </div>
-                    {/if}
-                </div>
-                <div class="nav-bar flex-row just-b align-c" role="none" on:click={() => goto('/mall/brandList')} style="display: {model.type == 1001?'':'none'};" slot="title">
-                    {#if model.type == 1001}
-                    <div class="flex-row just-b align-c" style="padding: 6px 0;">
-                        {#each model.list as item, i}
-                        <img src="{item.logo}" loading="lazy" style="z-index: {model.list.length - i};" alt="{item.name}">
-                        {/each}
-                    </div>
-                    <i class="more">立即查看 ></i>
-                    {/if}
-                </div>
-            </Card>
-            {/if}
-        </div>
-        {/each}
-    </div>
 </div>
 <style scoped lang="less">
     .main {
-        background-color: var(--bg-color);
-        padding-bottom: var(--gap-5);
+        background: transparent;
     }
     .nav-bar {
         font-size: var(--font-size-18);
@@ -166,7 +167,8 @@
         padding-left: var(--padding-gap);
     }
     .top {
-        background: linear-gradient(190deg, skyblue, purple);
+        background: transparent;
+        // background: linear-gradient(190deg, skyblue, purple);
         position: relative;
         z-index: 1;
         filter: blur(0.2);
@@ -221,9 +223,9 @@
         position: relative;
         z-index: 2;
         top: -1.14rem;
-        background-color: var(--bg-color);
         border-radius: var(--border-radius) var(--border-radius) 0  0;
         overflow: hidden;
+        background-color: var(--bg-color);
     }
     .top-list-card {
         padding-right: var(--padding-gap);
@@ -258,7 +260,6 @@
     }
     .models {
         margin-top: -16px;
-        background-color: var(--bg-color);
         &-item {
             .pic-card {
                 img {

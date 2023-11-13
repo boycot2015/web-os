@@ -109,7 +109,9 @@
 		} else {
 			currentMove = 'one';
 			currentX = clientX - lineDomStartX;
+            currentX = currentX < 0 ? 0 : currentX
 			value = stepNumberFun((currentX / lineDomWidth) * (maxRange - minRange), step);
+            value = value < 0 ? 0 : value
 			dispatch('change', value); //触发事件 trigger event
 		}
 	};

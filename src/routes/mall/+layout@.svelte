@@ -2,10 +2,9 @@
     <title>品牌推荐</title>
 </svelte:head>
 <style lang="less" scoped>
-    .layout {
-        padding-top: calc(2.8 * var(--gap-20));
-        padding-bottom: var(--gap-60);
-    }
+    // .layout {
+    //     padding-bottom: var(--gap-60);
+    // }
 :global(.bottom-tab-bar) {
     position: fixed !important;
     bottom: 0;
@@ -37,10 +36,11 @@
 			activeIcon: { name: 'ri-account-circle-fill', size: 20 },
 		},
 	];
+    let offsetHeight = 0;
 </script>
 <!-- style="background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));" -->
-<div class="layout" style="background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));">
+<div class="layout" style="padding-top: {offsetHeight}px; background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));">
+    <Action bind:offsetHeight={offsetHeight} path="/" title="品牌推荐" />
     <slot></slot>
     <TabBar injClass="bottom-tab-bar" love {labels} />
-    <Action  path="/" title="品牌推荐" />
 </div>

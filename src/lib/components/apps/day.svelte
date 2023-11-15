@@ -19,7 +19,7 @@
         class="flex {injClass} flex-col justify-between dark:bg-black py-5 h-full rounded-xl text-xs text-center shadow dark:shadow-white/10"
     >
         <div>{weekDay}</div>
-        <div class="text-5xl py-4">{day}</div>
+        <div class="text-5xl py-5">{day}</div>
         <div class="text-md">{month}</div>
     </div>
 </Grid>

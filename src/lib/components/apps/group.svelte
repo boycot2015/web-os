@@ -18,7 +18,7 @@
     {#if type === 'swiper'}
     <div class="group {injClass}">
         <Swiper {autoplay} translateZ={400}
-        translateX={-200} indicatePosition="none" containerWidth={document.body.clientWidth/2 - 50} initActive={0} {loop} duration={500} aspectRatio={[1, 1]} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass}/>
+        translateX={-200} indicatePosition="none" containerWidth={document.body.clientWidth/2 - 40} initActive={0} {loop} duration={500} aspectRatio={[1, 1]} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass}/>
     </div>
     {:else if type === 'component'}
         <svelte:component injClass={injClass} {...props} apps={apps} this={component}></svelte:component>

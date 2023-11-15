@@ -127,16 +127,10 @@
     padding: 0;
     box-sizing: border-box;
     }
-    .clock {
-        width: 300px;
-        height: 300px;
-        background-color: rgb(15, 15, 15);
-        border-radius: 50px;
-    }
 </style>
 <Grid {row} {col}>
     <div
-        class="{injClass} bg-white dark:bg-black py-0 h-full rounded-xl text-5xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
+        class="{injClass} bg-white dark:bg-black py-0 h-full rounded-xl text-xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
     >
         <canvas width="300" height="300" bind:this={canvas} id="canvas"></canvas>
     </div>

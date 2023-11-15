@@ -56,7 +56,7 @@
 	// touch move speed coefficient
 	export let triggerSpeed = 0.5;
 
-	let width = containerWidth === 0 ? document.body.clientWidth : containerWidth; //宽度 width
+	let width = containerWidth || 0; //宽度 width
     export let height = 0; //高度 height
 	let active = data.length > 1 ? initActive + 1 : 1; //当前激活的item current active item
 	let currentIndicate = data.length > 1 ? initActive : 0; //当前激活的指示器  current active indicate
@@ -450,7 +450,7 @@
 	on:pointerdown={touchstartFun}
 	on:pointermove={touchmoveFun}
 	on:pointerup={touchendFun}
-	class="touch-none cursor-move"
+	class="touch-none cursor-move overflow-hidden"
 >
 	<!-- 轮播容器 -->
 	<!-- Carousel container -->

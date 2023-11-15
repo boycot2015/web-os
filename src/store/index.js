@@ -1,6 +1,12 @@
 import { readable, writable } from 'svelte/store';
 import { http } from '$lib/request';
 import themeConfig from '$lib/themeConfig';
+export const setBgColor = (bgUrl) => {
+    document.body.style.backgroundImage = `url(${bgUrl})`;
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundRepeat = 'no-repeat';
+}
 function weatherData () {
     let requestTimes = 0
 	const { subscribe, set, update } = writable({});
@@ -27,6 +33,7 @@ function themeData () {
                 ...data,
                 ...res
             }))
+            res.bgUrl && setBgColor(res.bgUrl)
         }
 	};
 }

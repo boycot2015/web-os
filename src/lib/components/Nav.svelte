@@ -1,7 +1,7 @@
 <style lang="less" scoped>
     .nav {
         position: fixed;
-        top: auto;
+        top: 0;
         left: 0;
         width: 100%;
         line-height: var(--gap-60);
@@ -33,8 +33,10 @@
         current = item
         goto(`/cates/${item.value}/${item.id || ''}`, { state: item })
     };
+    export let style = '';
+    export let offsetHeight = 0;
 </script>
-<div class="nav">
+<div class="nav" {style} bind:offsetHeight={offsetHeight}>
     <div class="wrap">
         { #each navs.slice(0,4) as item }
             <div class="nav-item {current.value === item.value ? 'active': ''}"  role={'button'} on:click={() => onNavClick(item)}>{item.label}</div>

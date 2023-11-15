@@ -18,6 +18,8 @@
 	// export let data;
     import { TabBar, Input } from 'stdf';
     import Action from '$lib/components/Action.svelte';
+    import { scale } from 'svelte/transition';
+    import { quintOut } from 'svelte/easing';
     const labels = [
 		{ text: '首页', icon: { name: 'ri-home-3-line', size: 20 }, activeIcon: { name: 'ri-home-3-fill', size: 20 } },
 		{
@@ -38,8 +40,7 @@
 	];
     let offsetHeight = 0;
 </script>
-<!-- style="background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));" -->
-<div class="layout" style="padding-top: {offsetHeight}px; background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));">
+<div transition:scale="{{ duration: 500, opacity: 0.3, start: 0, easing: quintOut }}" class="layout" style="padding-top: {offsetHeight}px; background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));">
     <Action bind:offsetHeight={offsetHeight} path="/" title="品牌推荐" />
     <slot></slot>
     <TabBar injClass="bottom-tab-bar" love {labels} />

@@ -12,4 +12,4 @@
     import Action from '$lib/components/Action.svelte';
 </script>
 <slot></slot>
-<Action icon={'ri-arrow-go-back-line'} path="/mall" />
+<Action path="/mall" />

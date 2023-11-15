@@ -65,10 +65,10 @@
     <div
     role="none"
     on:click={() => visible = true}
-        class="py-5 {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
+        class="py-6 {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10 overflow-hidden"
     >
         <div class="location text-xl">主题设置</div>
-        <Icon name="ri-paint-brush-line" size={40} injClass="py-5" />
+        <Icon name="ri-paint-brush-line" size={60} injClass="py-3" />
     </div>
     <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
         on:pointermove={(e) => e.stopPropagation()}

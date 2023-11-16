@@ -2,6 +2,8 @@
     import { onMount, onDestroy } from 'svelte';
     import { Grid, Icon } from 'stdf';
     import { weather } from '@/store';
+    import { weather as weatherApp } from '$lib/appConfig';
+    
     export let row = 3;
     export let col = 1;
     export let injClass = '';
@@ -18,11 +20,13 @@
     })
 </script>
 <Grid {row} {col}>
-    <div
+    <a
+        on:click={(e) => e.stopPropagation()}
+        href="/micro/{weatherApp.url}/{weatherApp.text}/{weatherApp.icon}"
         class="py-6 {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
     >
         <div class="location text-xl">{$weather.location?.name||'深圳'}</div>
         <Icon name="{weatherIcons[$weather.now?.text]||'ri-sun-line'}" size={40} injClass="py-2" />
         <span class="text-xl">{$weather.now?.temperature||25}℃</span>
-    </div>
+    </a>
 </Grid>

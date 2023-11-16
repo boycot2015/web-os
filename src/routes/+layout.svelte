@@ -1,6 +1,3 @@
-<svelte:head>
-    <title>小程序入口</title>
-</svelte:head>
 <style lang="less" scoped>
     .layout {
         height: 100%;
@@ -16,6 +13,6 @@
         }, 10))
     })
 </script>
-<div class="layout {$theme.bgColor} h-full w-full">
+<div class="layout {$theme.bgColor} h-full w-full"  style="background: url({$theme.bgUrl}) center/cover no-repeat;">
     <slot></slot>
 </div>

@@ -236,7 +236,7 @@
         width: 80%;
     }
 </style>
-<div class="main">
+<div class="main bg-gray-500 w-full h-full">
     <div class="cover" bind:offsetHeight={coverHeight}>
         <div class="img">
             <img src="{likeCate.data[0].cover}" alt="">

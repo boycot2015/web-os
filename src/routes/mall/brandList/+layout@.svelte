@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>品牌分类</title>
+    <title>{title}</title>
 </svelte:head>
 <style lang="less" scoped>
 // .container {
@@ -10,6 +10,7 @@
     // /** @type {import('./$types').LayoutData} */
 	// export let data;
     import Action from '$lib/components/Action.svelte';
+    let title = '品牌分类'
 </script>
 <slot></slot>
-<Action path="/mall" />
+<Action path="/mall" {title} />

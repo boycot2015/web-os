@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>品牌推荐</title>
+    <title>{title}</title>
 </svelte:head>
 <style lang="less" scoped>
     // .layout {
@@ -38,10 +38,11 @@
 			activeIcon: { name: 'ri-account-circle-fill', size: 20 },
 		},
 	];
+    let title = '品牌推荐'
     let offsetHeight = 0;
 </script>
-<div transition:scale="{{ duration: 500, opacity: 0.3, start: 0, easing: quintOut }}" class="layout" style="padding-top: {offsetHeight}px; background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));">
-    <Action bind:offsetHeight={offsetHeight} path="/" title="品牌推荐" />
+<div transition:scale="{{ duration: 500, opacity: 0.3, start: 0.3, easing: quintOut }}" class="layout" style="padding-top: {offsetHeight}px; background: linear-gradient(190deg, rgb(181, 121, 242), rgb(242, 121, 131));">
+    <Action bind:offsetHeight={offsetHeight} path="/" {title} />
     <slot></slot>
     <TabBar injClass="bottom-tab-bar" love {labels} />
 </div>

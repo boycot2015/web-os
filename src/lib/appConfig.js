@@ -22,32 +22,35 @@ const grid = {
     x2: {row: 1, col: 2, size: 36, hideTitle: true, injClass: 'p-4 text-sm'},
     sm2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white text-sm', injClass: '!p-1 text-sm'}
 }
-const qzone = {icon: 'ri-star-smile-fill', text: 'QQ空间', url: 'https://qzone.qq.com/', bgColor: 'bg-white', color: 'text-yellow-500'}
-const news = {icon: 'ri-newspaper-line', text: '新闻头条', url: 'http://news.boycot.top/', bgColor: 'bg-red-500', color: 'text-white'}
-const weather = {icon: 'ri-sun-fill', text: '天气', url: 'http://weather.boycot.top/', bgColor: 'bg-blue-800', color: 'text-white'}
-const shop = {icon: 'ri-shopping-bag-3-fill', text: '品牌推荐', url: '/mall', bgColor: 'bg-white', color: 'text-red-500'}
-const phone = { icon: 'ri-phone-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-const phoneFill = { icon: 'ri-phone-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-const compass = { icon: 'ri-compass-3-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-const compassFill = { icon: 'ri-compass-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-const chat = { icon: 'ri-chat-3-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-const chatFill = { icon: 'ri-chat-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-const account = { icon: 'ri-account-circle-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-const accountFill = { icon: 'ri-account-circle-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-const qq = { icon: 'ri-qq-fill', text: 'QQ', url: 'https://im.qq.com/', bgColor: 'bg-white', color: 'text-red-500' }
-const officeWechat = {icon: 'ri-wechat-line', text: '企业微信', url: 'https://work.weixin.qq.com/', bgColor: 'bg-white', color: 'text-blue-700'}
-const qqMap = { icon: 'ri-compass-fill', text: '腾讯地图', url: 'https://map.qq.com/', bgColor: 'bg-blue-200', color: 'text-blue-500' }
-const wechat = { icon: 'ri-wechat-fill', text: '微信', url: 'https://weixin.qq.com/', bgColor: 'bg-green-600', color: 'text-white' }
-const alipay = { icon: 'ri-alipay-line', text: '支付宝', url: 'https://www.alipay.com/', bgColor: 'bg-blue-800', color: 'text-white' }
-const picture = { icon: 'ri-landscape-line', text: '照片', url: '/cates/wallpaper/83', bgColor: 'bg-gray-300', color: 'text-purple-500' }
-const netease = { icon: 'ri-netease-cloud-music-line', url: 'http://m.music.boycot.top', text: '网易云音乐', bgColor: 'bg-red-600', color: 'text-white' }
-const navigation = { icon: 'ri-navigation-fill', url: 'https://www.amap.com/', text: '高德地图', bgColor: 'bg-blue-300', color: 'text-blue-700' }
-const music = { icon: 'ri-music-fill', text: '抖音', url: 'http://www.douyin.com/', bgColor: 'bg-black', color: 'text-white' }
-const settings = { icon: 'ri-settings-5-fill', text: '设置', bgColor: 'bg-gray-400', color: 'text-white' }
-const wallet = { icon: 'ri-wallet-line', text: '钱包', bgColor: 'bg-black', color: 'text-gray-300' }
-const appStore = { icon: 'ri-app-store-line', text: 'App Store', bgColor: 'bg-blue-500', color: 'text-white'  }
-const camera = { icon: 'ri-camera-fill', text: '相机', bgColor: 'bg-gray-400', color: 'text-black'  }
-const day = { icon: '', text: '日历', subText: getDate().weekDay, render: () => getDate().day, bgColor: 'bg-white' }
+export const taobao = {icon: 'ri-taobao-line', text: '淘宝', desc: '太好逛了吧', url: 'https://m.taobao.com/', bgColor: 'bg-white', color: 'text-orange-500'}
+export const qzone = {icon: 'ri-star-smile-fill', text: 'QQ空间', desc: '分享喜悦，留住感动', url: 'https://qzone.qq.com/', bgColor: 'bg-white', color: 'text-yellow-500'}
+export const news = {icon: 'ri-newspaper-line', text: '新闻头条', desc: '看见更大的世界', url: 'http://news.boycot.top/', bgColor: 'bg-red-500', color: 'text-white'}
+export const weather = {icon: 'ri-sun-cloudy-fill', text: '天气', url: 'https://xw.tianqi.qq.com/', bgColor: 'bg-blue-800', desc: '美好的一天从查看天气开始', color: 'text-white'}
+export const shop = {icon: 'ri-shopping-bag-3-fill', text: '品牌推荐', url: '/mall', bgColor: 'bg-white', color: 'text-red-500'}
+export const appleStore = {icon: 'ri-shopping-bag-fill', text: 'Apple Store', url: 'https://www.apple.com.cn/', bgColor: 'bg-white', color: 'text-blue-500'}
+export const phone = { icon: 'ri-phone-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const phoneFill = { icon: 'ri-phone-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const compass = { icon: 'ri-compass-3-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const compassFill = { icon: 'ri-compass-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const chat = { icon: 'ri-chat-3-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const chatFill = { icon: 'ri-chat-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const account = { icon: 'ri-account-circle-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const accountFill = { icon: 'ri-account-circle-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const qq = { icon: 'ri-qq-fill', text: 'QQ', url: 'https://im.qq.com/', bgColor: 'bg-white', color: 'text-red-500' }
+export const qqMusic = { icon: 'ri-disc-line', text: 'QQ音乐', url: 'https://music.qq.com/', bgColor: 'bg-white', color: 'text-green-500' }
+export const officeWechat = {icon: 'ri-wechat-line', text: '企业微信', desc: '兢兢业业，碌碌无为', url: 'https://work.weixin.qq.com/', bgColor: 'bg-white', color: 'text-blue-700'}
+export const qqMap = { icon: 'ri-compass-fill', text: '腾讯地图', url: 'https://map.qq.com/', bgColor: 'bg-blue-200', color: 'text-blue-500' }
+export const wechat = { icon: 'ri-wechat-fill', text: '微信', desc: '发生什么事了，让我先发个朋友圈', url: 'https://weixin.qq.com/', bgColor: 'bg-green-600', color: 'text-white' }
+export const alipay = { icon: 'ri-alipay-line', text: '支付宝', desc: '马爸爸的钱袋子', url: 'https://www.alipay.com/', bgColor: 'bg-blue-800', color: 'text-white' }
+export const picture = { icon: 'ri-landscape-line', text: '照片', desc: '把记忆留在这里', url: '/cates/wallpaper/83', bgColor: 'bg-gray-300', color: 'text-purple-500' }
+export const netease = { icon: 'ri-netease-cloud-music-line', url: 'https://music.163.com/', text: '网易云音乐',desc: '耳朵怀孕了', bgColor: 'bg-red-600', color: 'text-white' }
+export const navigation = { icon: 'ri-navigation-fill', url: 'https://www.amap.com/', text: '高德地图', desc: '缺德导航，出行必备',bgColor: 'bg-blue-300', color: 'text-blue-700' }
+export const music = { icon: 'ri-headphone-fill', text: '我的音乐', desc: '抖音,记录美好生活', url: 'http://music.boycot.top/', bgColor: 'bg-black', color: 'text-white' }
+export const settings = { icon: 'ri-settings-5-fill', text: '设置', bgColor: 'bg-gray-400', color: 'text-white' }
+export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地铁，钱包最铁', bgColor: 'bg-black', color: 'text-gray-300' }
+export const appStore = { icon: 'ri-app-store-line', url: 'http://m.appchina.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', color: 'text-white' }
+export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', desc: '照亮你的美', bgColor: 'bg-gray-400', color: 'text-black'  }
+export const day = { icon: 'ri-calendar-line', text: '日历', url: 'https://m.rili.com.cn/', desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white' }
 export default {
     apps: [
         {
@@ -78,10 +81,10 @@ export default {
                     wechat,
                     alipay,
                     picture,
-                    netease,
+                    taobao,
                     qqMap,
                     music,
-                    settings,
+                    qqMusic,
                     wallet,
                     appStore,
                     camera,
@@ -145,6 +148,7 @@ export default {
                     settings,
                     qzone,
                     weather,
+                    appleStore
                 ]
             }
         },
@@ -162,6 +166,7 @@ export default {
                         component: Input,
                         row: 2,
                         col: 4,
+                        url: '/apps',
                         props: {
                             radius: 'full',
                         }
@@ -240,8 +245,8 @@ export default {
                             injClass: 'text-white bg-transparent !p-3 backdrop-blur-xl rounded-xl',
                             apps: [
                                 { ...day, ...grid['x2'], injClass: '!py-2 text-gray-500 text-sm' },
-                                { ...navigation, ...grid['x2'] },
-                                { ...music, ...grid['x2'] },
+                                { ...qqMap, ...grid['x2'] },
+                                { ...picture, ...grid['x2'] },
                                 { 
                                     row: 1, col: 2,
                                     type: 'component',
@@ -255,7 +260,7 @@ export default {
                                                 gap: 4,
                                                 injClass: '!p-0 h-full',
                                                 apps: [
-                                                    { ...settings, ...grid['1'] },
+                                                    { ...weather, ...grid['1'] },
                                                     { ...wechat, ...grid['1'] },
                                                     { ...alipay, ...grid['1'] },
                                                     { ...netease, ...grid['1'] },
@@ -266,7 +271,7 @@ export default {
                                         cols: 4,
                                         injClass: 'text-white bg-transparent !p-0 rounded-xl',
                                         apps: [
-                                            { ...settings, ...grid['sm2'] },
+                                            { ...weather, ...grid['sm2'] },
                                             { ...wechat, ...grid['sm2'] },
                                             { ...alipay, ...grid['sm2'] },
                                             { ...netease, ...grid['sm2'] },
@@ -285,9 +290,9 @@ export default {
                             gap: 4,
                             injClass: 'text-white bg-trnsparent backdrop-blur-xl !p-3 rounded-xl',
                             apps: [
-                                { ...wechat, ...grid['x2'] },
+                                { ...taobao, ...grid['x2'] },
                                 { ...alipay, ...grid['x2'] },
-                                { ...netease, ...grid['x2'] },
+                                { ...wallet, ...grid['x2'] },
                                 { ...day, ...grid['x2'], injClass: '!py-2 text-gray-500 text-sm' },
                             ]
                         }

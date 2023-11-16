@@ -1,6 +1,6 @@
 import { readable, writable } from 'svelte/store';
 import { http } from '$lib/request';
-import themeConfig from '$lib/themeConfig';
+import config from '@/lib/config';
 export const setBgColor = (bgUrl) => {
     document.body.style.backgroundImage = `url(${bgUrl})`;
     document.body.style.backgroundPosition = 'center';
@@ -25,14 +25,37 @@ function weatherData () {
 	};
 }
 function themeData () {
-	const { subscribe, set, update } = writable({ ...themeConfig || {} });
+    let local = {}
+    try {
+        local = localStorage.getItem('_boycot_os_') || '{}'
+        local = JSON.parse(local)
+        if (location.pathname === '/' && local.app) {
+            local.app.name = ''
+        }
+    } catch (error) {
+        // console.log(error);
+    }
+	const { subscribe, set, update } = writable({ ...config || {}, ...local });
 	return {
 		subscribe,
 		set: async (res) => {
-            update((data) => ({
-                ...data,
-                ...res
-            }))
+            update((data) => {
+                try {
+                    if (location.pathname === '/' && res.app) {
+                        res.app.name = ''
+                    }
+                    localStorage.setItem('_boycot_os_', JSON.stringify({
+                        ...data,
+                        ...res
+                    }))
+                } catch (error) {
+                    // console.log(error);
+                }
+                return ({
+                    ...data,
+                    ...res
+                })
+            })
             res.bgUrl && setBgColor(res.bgUrl)
         }
 	};

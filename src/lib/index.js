@@ -24,6 +24,7 @@ export const deepClone = (object) => {
     }
     return newobj
 }
+
 export {
     week,
     baseApiUrl

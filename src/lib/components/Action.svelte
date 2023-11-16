@@ -2,8 +2,9 @@
     import { onMount } from 'svelte';
     import Icon from './Icon.svelte';
     import { Popup, Button } from 'stdf';
+    import { theme } from '@/store';
     import Links from '$lib/components/apps/grid.svelte'
-    export let icon = 'ri-close-circle-line';
+    export let icon = 'ri-close-circle-line'; // ri-album-line
     export let path = '/';
     export let injClass = '';
     export let title = '超级app';
@@ -53,18 +54,21 @@
     <div class="sups flex items-center justify-around border rounded-3xl bg-gray-300/10 border-black/10 border-gray-300 px-2 py-0.5">
         <Icon on:click={() => visible = true} injClass="text-gray-800 {opacity <1?'!text-white':''}" name="{'ri-more-fill'}" size={26} />
         <i class="line px-3 text-gray-300 {opacity <1?'!text-white':''}">|</i>
-        <a href="/">
+        <a href="/" on:click={() => $theme.app.name = '超级app'}>
             <Icon injClass="back text-gray-800 {opacity <1?'!text-white':''}" name="{icon}" size={26} />
         </a>
     </div>
 </div>
-<Popup radius={'2xl'} size={70} zIndex={9999} bind:visible={visible}>
+<Popup radius={'2xl'} size={50} zIndex={9999} bind:visible={visible}>
     <div class="flex items-center py-2 px-4 border-b text-sm">
         <Icon injClass="back text-gray-800" name="{info.logo || 'ri-product-hunt-line'}" size={30} />
         <div class="title text-xl text-gray pl-2 font-bold">{title}</div>
         <Icon injClass="back text-gray-800" name="ri-arrow-right-s-line" size={30} />
     </div>
     <div class="mini-info">
+        {#if $theme.app.desc}
+            <p class="desc text-xl my-3 p-4 py-6 border-b">{$theme.app.desc}</p>
+        {/if}
         <Links apps={links} injClass={'!px-0'} cols={4} mx={2} />
     </div>
     <div class="flex fixed w-full bottom-2 border-t flex-col justify-center">

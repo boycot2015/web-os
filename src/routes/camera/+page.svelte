@@ -31,7 +31,8 @@
         video.play();
     }
     function error(err) {
-        alert('video error: ' + err)
+        console.log('video error: ' + err);
+        hasPermission = false
     }
     // 开启视频
     navigator.mediaDevices && navigator.mediaDevices
@@ -45,6 +46,7 @@
     })
     .catch(function(err) {
         console.log(err.name + ": " + err.message);
+        hasPermission = false
     });
     function onHandlerPhoto () {
         // 使用canvas进行拍照

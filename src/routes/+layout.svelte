@@ -6,13 +6,13 @@
 <script>
     import { onMount } from 'svelte';
     import { debounce } from 'stdf/components/utils';
-    import { theme } from '@/store';
+    import { appConfig } from '@/store';
     onMount(() => {
         window.addEventListener('resize', debounce(() => {
             window.location.reload()
-        }, 10))
+        }, 1000))
     })
 </script>
-<div class="layout {$theme.bgColor} h-full w-full"  style="background: url({$theme.bgUrl}) center/cover no-repeat;">
+<div class="layout {$appConfig.bgColor} h-full w-full"  style="background: url({$appConfig.bgUrl}) center/cover no-repeat;">
     <slot></slot>
 </div>

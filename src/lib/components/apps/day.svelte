@@ -1,6 +1,8 @@
 <script>
     import { Grid } from 'stdf';
     import { day as dayApp } from '$lib/appConfig';
+    import { appConfig } from '@/store';
+    
     export let injClass = 'text-purple-600 bg-gray-200';
     export let row = 3;
     export let col = 1;
@@ -17,9 +19,9 @@
 </script>
 <Grid {row} {col}>
     <a
-        on:click={(e) => e.stopPropagation()}
+        on:click={(e) => {e.stopPropagation();$appConfig.app = dayApp;}}
         href="/micro/{dayApp.url}/{dayApp.text}/{dayApp.icon}"
-        class="flex {injClass} flex-col justify-between dark:bg-black py-5 h-full rounded-xl text-xs text-center shadow dark:shadow-white/10"
+        class="flex {injClass} h-full flex-col justify-between dark:bg-black py-5 h-full rounded-xl text-xs text-center shadow dark:shadow-white/10"
     >
         <div>{weekDay}</div>
         <div class="text-5xl py-5">{day}</div>

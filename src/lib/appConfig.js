@@ -36,16 +36,17 @@ export const chat = { icon: 'ri-chat-3-line', text: '', bgColor: 'bg-white', col
 export const chatFill = { icon: 'ri-chat-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
 export const account = { icon: 'ri-account-circle-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
 export const accountFill = { icon: 'ri-account-circle-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const guid = { icon: 'ri-compass-3-fill', url: 'https://www.pmbaobao.com/', text: '', bgColor: 'bg-white', color: 'text-red-500', opacity: 0 }
 export const qq = { icon: 'ri-qq-fill', text: 'QQ', url: 'https://im.qq.com/', bgColor: 'bg-white', color: 'text-red-500' }
 export const qqMusic = { icon: 'ri-disc-line', text: 'QQ音乐', url: 'https://music.qq.com/', bgColor: 'bg-white', color: 'text-green-500' }
 export const officeWechat = {icon: 'ri-wechat-line', text: '企业微信', desc: '兢兢业业，碌碌无为', url: 'https://work.weixin.qq.com/', bgColor: 'bg-white', color: 'text-blue-700'}
-export const qqMap = { icon: 'ri-compass-fill', text: '腾讯地图', url: 'https://map.qq.com/', bgColor: 'bg-blue-200', color: 'text-blue-500' }
+export const qqMap = { icon: 'ri-compass-fill', text: '腾讯地图', url: 'https://map.qq.com/m/index/map', bgColor: 'bg-blue-200', color: 'text-blue-500' }
 export const wechat = { icon: 'ri-wechat-fill', text: '微信', desc: '发生什么事了，让我先发个朋友圈', url: 'https://weixin.qq.com/', bgColor: 'bg-green-600', color: 'text-white' }
 export const alipay = { icon: 'ri-alipay-line', text: '支付宝', desc: '马爸爸的钱袋子', url: 'https://www.alipay.com/', bgColor: 'bg-blue-800', color: 'text-white' }
 export const picture = { icon: 'ri-landscape-line', text: '照片', desc: '把记忆留在这里', url: '/cates/wallpaper/83', bgColor: 'bg-gray-300', color: 'text-purple-500' }
-export const netease = { icon: 'ri-netease-cloud-music-line', url: 'https://music.163.com/', text: '网易云音乐',desc: '耳朵怀孕了', bgColor: 'bg-red-600', color: 'text-white' }
+export const netease = { icon: 'ri-netease-cloud-music-line', url: 'https://y.music.163.com/', text: '网易云音乐',desc: '耳朵怀孕了', bgColor: 'bg-red-600', color: 'text-white' }
 export const navigation = { icon: 'ri-navigation-fill', url: 'https://www.amap.com/', text: '高德地图', desc: '缺德导航，出行必备',bgColor: 'bg-blue-300', color: 'text-blue-700' }
-export const music = { icon: 'ri-headphone-fill', text: '我的音乐', desc: '抖音,记录美好生活', url: 'http://music.boycot.top/', bgColor: 'bg-black', color: 'text-white' }
+export const music = { icon: 'ri-headphone-fill', text: '我的音乐', desc: '抖音,记录美好生活', url: 'http://m.music.boycot.top', bgColor: 'bg-black', color: 'text-white' }
 export const settings = { icon: 'ri-settings-5-fill', text: '设置', bgColor: 'bg-gray-400', color: 'text-white' }
 export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地铁，钱包最铁', bgColor: 'bg-black', color: 'text-gray-300' }
 export const appStore = { icon: 'ri-app-store-line', url: 'http://m.appchina.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', color: 'text-white' }
@@ -163,12 +164,25 @@ export default {
                 apps: [
                     { 
                         type: 'component',
-                        component: Input,
-                        row: 2,
-                        col: 4,
-                        url: '/apps',
+                        component: appList,
+                        row: 4, col: 4,
                         props: {
-                            radius: 'full',
+                            cols: 12,
+                            injClass: '!py-1 !px-0 bg-black/30 rounded-2xl',
+                            apps: [
+                                { 
+                                    type: 'component',
+                                    component: Input,
+                                    row: 4,
+                                    col: 12,
+                                    url: '/apps',
+                                    props: {
+                                        placeholder: 'App资源库',
+                                        py: '0',
+                                        radius: '2xl'
+                                    }
+                                }
+                            ]
                         }
                     },
                     {
@@ -302,9 +316,17 @@ export default {
         }
     ],
     docks: [
-        { ...phone, ...grid['1'], text: '', size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
-        { ...compassFill, ...grid['1'], text: '', size: 48, injClass: '!py-1.5 !px-0 bg-white !text-blue-500' },
-        { ...chatFill, ...grid['1'], text: '', size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
-        { ...account, ...grid['1'], text: '', size: 48, injClass: '!py-1.5 !px-0 !text-gray-400 !bg-gray-300'},
+        {  ...grid['1'], ...phone, text: '', size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
+        {  ...grid['1'], ...guid, text: '', size: 48, injClass: '!py-1.5 !px-0 bg-white !text-blue-500' },
+        { ...grid['1'], ...chatFill, text: '', size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
+        { ...grid['1'], ...account, text: '', size: 48, injClass: '!py-1.5 !px-0 !text-gray-400 !bg-gray-300'},
+        { ...grid['1'], ...picture, text: '', size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...netease, text: '', size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...qq, text: '', size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...camera, text: '', size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...music, text: '', size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...navigation, text: '', size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...weather, text: '', size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...wallet, text: '', size: 48, injClass: '!py-1.5 !px-0'},
     ]
 }

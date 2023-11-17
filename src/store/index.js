@@ -24,7 +24,7 @@ function weatherData () {
         }
 	};
 }
-function themeData () {
+function appData () {
     let local = {}
     try {
         local = localStorage.getItem('_boycot_os_') || '{}'
@@ -61,5 +61,5 @@ function themeData () {
 	};
 }
 
+export const appConfig = appData();
 export const weather = weatherData();
-export const theme = themeData();

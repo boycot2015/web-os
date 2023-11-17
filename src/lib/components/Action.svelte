@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import Icon from './Icon.svelte';
     import { Popup, Button } from 'stdf';
-    import { theme } from '@/store';
+    import { appConfig } from '@/store';
     import Links from '$lib/components/apps/grid.svelte'
     export let icon = 'ri-close-circle-line'; // ri-album-line
     export let path = '/';
@@ -25,6 +25,7 @@
             scrollTop = e.target.scrollingElement.scrollTop
             scrollTop = scrollTop >= 100 ? 100 : parseInt(scrollTop)
             opacity = parseFloat(scrollTop / 100).toFixed(1)
+            console.log(opacity, 'opacity');
         })
     })
 </script>
@@ -54,7 +55,7 @@
     <div class="sups flex items-center justify-around border rounded-3xl bg-gray-300/10 border-black/10 border-gray-300 px-2 py-0.5">
         <Icon on:click={() => visible = true} injClass="text-gray-800 {opacity <1?'!text-white':''}" name="{'ri-more-fill'}" size={26} />
         <i class="line px-3 text-gray-300 {opacity <1?'!text-white':''}">|</i>
-        <a href="/" on:click={() => $theme.app.name = '超级app'}>
+        <a href="{$appConfig.app.from || '/'}" on:click={() => $appConfig.app.name = '超级app'}>
             <Icon injClass="back text-gray-800 {opacity <1?'!text-white':''}" name="{icon}" size={26} />
         </a>
     </div>
@@ -66,8 +67,8 @@
         <Icon injClass="back text-gray-800" name="ri-arrow-right-s-line" size={30} />
     </div>
     <div class="mini-info">
-        {#if $theme.app.desc}
-            <p class="desc text-xl my-3 p-4 py-6 border-b">{$theme.app.desc}</p>
+        {#if $appConfig.app.desc}
+            <p class="desc text-xl my-3 p-4 py-6 border-b">{$appConfig.app.desc}</p>
         {/if}
         <Links apps={links} injClass={'!px-0'} cols={4} mx={2} />
     </div>

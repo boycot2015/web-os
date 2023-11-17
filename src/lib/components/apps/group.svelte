@@ -7,7 +7,7 @@
     export let indicateInjClass = '';
     export let indicateStyle = 'pointLine';
     export let loop = true;
-    export let autoplay = true;
+    export let autoplay = false;
     export let type = 'swiper';
     export let component = '';
     export let props = '';
@@ -16,7 +16,7 @@
 </script>
 <Grid row={4} col={2}>
     {#if type === 'swiper'}
-    <div class="group {injClass}">
+    <div class="group h-full {injClass}">
         <Swiper {autoplay} translateZ={400}
         translateX={-200} indicatePosition="none" containerWidth={document.body.clientWidth/2 - 40} initActive={0} {loop} duration={500} aspectRatio={[1, 1]} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass}/>
     </div>

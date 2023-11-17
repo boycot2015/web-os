@@ -42,7 +42,7 @@ function topBrands () {
     return data
 }
 function decorationModels () {
-    types = [{
+    let types = [{
         code: 1001,
         count: 6,
     },

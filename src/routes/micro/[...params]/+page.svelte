@@ -1,7 +1,8 @@
 <svelte:head>
-    <title>{data.title}</title>
+    <title>{$appConfig.app?.text}</title>
 </svelte:head>
 <script>
-    export let data;
+    // export let data;
+    import { appConfig } from '@/store';
 </script>
-<iframe src="{data.url}" title={data.title} frameborder="0" style="width: 100%;height: 100%;"></iframe>
+<iframe src="{$appConfig.app?.url}" title={$appConfig.app?.text} frameborder="0" style="width: 100%;height: 100%;"></iframe>

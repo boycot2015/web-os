@@ -2,9 +2,11 @@
     import * as apps from '$lib/appConfig';
     import { Input } from 'stdf';
     import { IndexBar } from '$lib/components';
+    import { Icon } from '$lib/components';
     import { getInitials, convertToPinyin } from '$lib/convertToPinyin'
-    import { theme } from '@/store';
+    import { appConfig } from '@/store';
     import { goto } from '$app/navigation';
+    import { fade } from 'svelte/transition';
     const navHeight = 48;
 	const bottomHeight = 50;
 	const height = window.innerHeight - navHeight - bottomHeight;
@@ -30,14 +32,22 @@
     sourceData = sourceData.filter(el => el.child && el.child.length)
     data = sourceData
 </script>
-<div class="w-full p-3 h-full backdrop-blur-{$theme.backdropBlur === 'none'?'md':$theme.backdropBlur}">
-    <Input type="search" placeholder="请输入关键词" radius={'full'} on:change={(e) => {
-        let str = getInitials(e.detail)
-        data = e.detail ? sourceData.filter(el => str.toLocaleLowerCase().includes(el.index.slice(0, 1).toLocaleLowerCase()) || !!el.child.filter(child => child.text?.includes(e.detail)).length).map(el => {
-            el.child = el.child.filter(child => str.toLocaleLowerCase().includes(child.index.slice(0, 1).toLocaleLowerCase()) || child.text?.includes(e.detail))
-            return el
-        }).filter(el => el.child && el.child.length) : sourceData
-    }}></Input>
+<div transition:fade class="w-full p-3 h-full backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur}">
+    <div class="flex justify-center items-center px-2">
+        <div class="flex-1">
+            <Input label1={{ name: 'ri-search-line', size: 28, alpha: 0.8, injClass: 'text-white' }} type="search" lineTransition="left" placeholder="App资源库" radius={'xl'} on:change={(e) => {
+            let str = getInitials(e.detail)
+            data = e.detail ? sourceData.filter(el => str.toLocaleLowerCase().includes(el.index.slice(0, 1).toLocaleLowerCase()) || !!el.child.filter(child => child.text?.includes(e.detail)).length).map(el => {
+                el.child = el.child.filter(child => str.toLocaleLowerCase().includes(child.index.slice(0, 1).toLocaleLowerCase()) || child.text?.includes(e.detail))
+                return el
+            }).filter(el => el.child && el.child.length) : sourceData
+        }}></Input>
+        </div>
+        <Icon name="ri-close-line" alpha="0.8" size="36" on:click={(e) => {
+            e.stopPropagation();
+            goto('/');
+        }} injClass="text-white"></Icon>
+    </div>
     {#if data && data.length}
     <IndexBar
         data={data}
@@ -51,6 +61,8 @@
             let app = e.detail.child
             if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
             else if (app.url) goto(`${app.url}`);
+            $appConfig.app = app;
+            $appConfig.app.from = '/apps';
         }}
 	/>
     {/if}

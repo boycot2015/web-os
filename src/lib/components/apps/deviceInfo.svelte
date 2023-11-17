@@ -2,10 +2,10 @@
     import { Grids, Grid, Switch, Icon, Button, TabBar } from 'stdf';
     // import { createEventDispatcher } from 'svelte';
     import { goto } from '$app/navigation'
-    import { theme } from '@/store';
+    import { appConfig } from '@/store';
     // const dispatch = createEventDispatcher();
     const changeColorFun = e => {
-        theme.set({bgColor: e.detail ? 'bg-gradient-to-t from-[#f8f8f8] to-[#ccc]': ''})
+        appConfig.set({bgColor: e.detail ? 'bg-gradient-to-t from-[#f8f8f8] to-[#ccc]': ''})
     };
     let devices = ['iOS', 'Android', 'Windows', 'macOS', 'Ubuntu'];
     let curentIndex = 0;
@@ -20,7 +20,7 @@
             class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10"
         >
             <div class="flex justify-center">
-                <Switch inside="slot" radius="full" check={!!$theme.bgColor} on:change={changeColorFun}>
+                <Switch inside="slot" radius="full" check={!!$appConfig.bgColor} on:change={changeColorFun}>
                     <div slot="false">
                         <Icon name="ri-paint-brush-line" size={12} />
                     </div>

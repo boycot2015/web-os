@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
     import { Grids, Grid, Icon, Mask } from 'stdf';
     import { createEventDispatcher } from 'svelte'
-    import { theme } from '@/store';
+    import { appConfig } from '@/store';
     import { cubicInOut } from 'svelte/easing';
     const dispatch = createEventDispatcher()
     export let apps = [];
@@ -33,21 +33,26 @@
 		};
 	}
 </script>
+<!-- <style lang="less" scoped>
+    :global(.wrap-content > div) {
+        height: 100% !important;
+    }
+</style> -->
 <div class="pb-0 pt-0" role="none" on:click={(e) => onClick(e)}>
-    <div class={` px-8 py-4 pt-5 ${injClass}`}>
+    <div class={` px-8 py-4 pt-5 transition-all duration-500 ${injClass}`}>
         <Grids cols={cols} mx="{mx}" my="{my}" gap="{gap}">
             {#each apps.slice(0, 18) as app, i}
                 {#if app.type === 'app' || !app.type}
                 <Grid row={app.row || 3} col={app.col || 1}>
                     <div class="flex flex-col justify-center text-center" role="none" on:click={(e) => {
+                        if (app.reload) return window.location.reload();
                         !modal && e.stopPropagation();
                         if (modal) return
                         if (!app.url) return
                         modal = '';
-                        $theme.app = app;
+                        $appConfig.app = app;
                         if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
                         else if (app.url) goto(`${app.url}`);
-                        app.reload && window.location.reload();
                     }}>
                         <div
                             class="flex flex-col justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-xl text-md text-center shadow dark:shadow-white/10"
@@ -68,23 +73,23 @@
                 </Grid>
                 {:else if app.type === 'component' && app.component}
                 <Grid row={app.row || 4} col={app.col || 1}>
-                    <div class="wrap-content transition-all duration-300" transition:slideAndScale role="none"
+                    <div class="wrap-content h-full" role="none"
                     on:click={(e) => {
                         var event = event || window.event;  //标准化事件对象
                         dx = (event.pageX > window.screen.width / 2 ? window.screen.width / 2 - event.pageX : event.pageX) || -100;
                         dy = (event.pageY > window.screen.height / 2 ? window.screen.height / 2 - event.pageY : event.pageY) || 150;
                         e.preventDefault();
                         e.stopPropagation();
-                        $theme.modal = ''
+                        $appConfig.modal = ''
                         modal = ''
                         if (app.props && app.props.modal) {
                             modal = app.props.modal
                             modal.props.visible = true
-                            $theme.modal = modal
+                            $appConfig.modal = modal
                         }
                         if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
                         else if (app.url) goto(`${app.url}`);
-                        $theme.app = app
+                        $appConfig.app = app
                     }}>
                         <svelte:component {...app.props || {}} this={app.component}></svelte:component>
                         {#if app.title}

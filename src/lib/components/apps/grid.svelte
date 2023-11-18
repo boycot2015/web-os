@@ -62,8 +62,10 @@
                         {/if}
                         {#if app.render}
                             <div class="text-3xl">{app.render()}</div>
-                        {:else}
+                        {:else if app.icon}
                             <Icon injClass="{app.injClass?'text-xs':'text-xl'}" size="{app.size || 38}" name="{app.icon}"></Icon>
+                        {:else}
+                            <svelte:component {...app.props || {}} this={app.component}></svelte:component>
                         {/if}
                         </div>
                         {#if app.text && !app.hideTitle}

@@ -12,25 +12,69 @@
         //
         function drawPanel() {
             // ======
-            ctx.translate(150, 150);
+            // ctx.translate(150, 150);
+            // ctx.beginPath();
+            // ctx.arc(0, 0, 130, 0, 2 * Math.PI);
+            // ctx.fillStyle = "gray";
+            // ctx.fill()
+
+            // 清空画布
+            // ctx.clearRect(0, 0, 300, 300)
+            // // 保存canvas的状态（默认状态）
+            // ctx.save()
+
+            // 将坐标原点移至画布中心
+            ctx.translate(150, 150)
             ctx.beginPath();
-            ctx.arc(0, 0, 130, 0, 2 * Math.PI);
-            ctx.fillStyle = "gray";
-            ctx.fill();
+            ctx.arc(0, 0, 130, 0, 2 * Math.PI)
+            ctx.fillStyle = "white";
+            ctx.fill()
+
+            // 绘制数字
+            // ctx.font = '30px Arial'
+            // ctx.textAlign = 'center'
+            // ctx.textBaseline = 'middle'
+            // ctx.fillText('12', 0, -110)
+            // ctx.fillText('6', 0, 110)
+            // ctx.fillText('3', 110, 0)
+            // ctx.fillText('9', -110, 0)
+            // ctx.fillText('1', 55, -95)
+            // ctx.fillText('2', 95, -55)
+            // ctx.fillText('4', 95, 55)
+            // ctx.fillText('5', 55, 95)
+            // ctx.fillText('7', -55, 95)
+            // ctx.fillText('8', -95, 55)
+            // ctx.fillText('10', -95, -55)
+            // ctx.fillText('11', -55, -95)
+
+            // 绘制刻度
+            for(let i = 0; i < 60; i++) {
+            // 保存canvas的状态（ctx.translate(150, 150)）
+                ctx.save()
+                ctx.rotate(i * Math.PI / 30)
+                ctx.beginPath()
+                ctx.moveTo(0, -110)
+                ctx.lineTo(0, -120)
+                ctx.lineWidth = i % 5 ? 2 : 4
+                ctx.strokeStyle =  i % 5 ?'gray':'black'
+                ctx.stroke()
+                // 恢复canvas上一个保存的状态ctx.translate(150, 150)）
+                ctx.restore()
+            }
         }
     
         function hourNum() {
             var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             ctx.beginPath();
-            ctx.font = "30px fangsong";
+            ctx.font = "30px 微软雅黑";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "black";
             for (var i = 0; i < arr.length; i++) {
                 ctx.fillText(
                 arr[i],
-                108 * Math.cos(((i * 30 - 60) * Math.PI) / 180),
-                108 * Math.sin(((i * 30 - 60) * Math.PI) / 180)
+                90 * Math.cos(((i * 30 - 60) * Math.PI) / 180),
+                90 * Math.sin(((i * 30 - 60) * Math.PI) / 180)
                 );
             }
         }
@@ -40,7 +84,8 @@
             ctx.arc(0, 0, 8, 0, 2 * Math.PI);
             ctx.fill();
             ctx.beginPath();
-            ctx.fillStyle = "gray";
+            ctx.lineWidth = 2
+            ctx.fillStyle = "orange";
             ctx.arc(0, 0, 5, 0, 2 * Math.PI);
             ctx.fill();
         }
@@ -50,12 +95,12 @@
                 ((2 * Math.PI) / 12) * hours + (((1 / 6) * Math.PI) / 60) * minutes;
             ctx.save();
             ctx.beginPath();
-            ctx.lineWidth = 5;
+            ctx.lineWidth = 8;
             ctx.lineCap = "round";
-            ctx.strokeStyle = "white";
+            ctx.strokeStyle = "black";
             ctx.rotate(radius);
             ctx.moveTo(0, 0);
-            ctx.lineTo(0, -50);
+            ctx.lineTo(0, -70);
             ctx.stroke();
             ctx.restore();
         }
@@ -65,12 +110,12 @@
             var radius = ((2 * Math.PI) / 60) * minutes;
             ctx.save();
             ctx.beginPath();
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 6;
             ctx.lineCap = "round";
-            ctx.strokeStyle = "white";
+            ctx.strokeStyle = "black";
             ctx.rotate(radius);
             ctx.moveTo(0, 0);
-            ctx.lineTo(0, -70);
+            ctx.lineTo(0, -110);
         
             ctx.stroke();
             ctx.restore();
@@ -79,12 +124,12 @@
             var radius = ((2 * Math.PI) / 60) * seconds;
             ctx.save();
             ctx.beginPath();
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 2;
             ctx.lineCap = "round";
-            ctx.strokeStyle = "red";
+            ctx.strokeStyle = "orange";
             ctx.rotate(radius);
             ctx.moveTo(0, 20);
-            ctx.lineTo(0, -90);
+            ctx.lineTo(0, -120);
             ctx.stroke();
             ctx.restore();
         }
@@ -105,9 +150,9 @@
             ctx.save();
             drawPanel();
             hourNum();
-            secondHand(seconds);
-            minuteHand(minutes);
             hourHand(hours, minutes);
+            minuteHand(minutes);
+            secondHand(seconds);
             centerDot();
             ctx.restore();
         }

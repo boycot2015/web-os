@@ -33,7 +33,6 @@
     export let data;
     let ssr = data.ssr;
     let appData = [];
-    let barData = [];
     const onChange = (e) => {
         visible = !e.detail
         appConfig.set({ index: e.detail })
@@ -83,6 +82,11 @@
                 }
                 return el
             })
+            $appConfig.md = md
+            $appConfig.lg = lg
+            $appConfig.xl = lg
+            $appConfig.cols = cols
+            $appConfig.gap = gap
             // console.log(appData, 'appData');
         }, 100);
         $appConfig.bgUrl && setBgColor($appConfig.bgUrl)

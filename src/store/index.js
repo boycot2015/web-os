@@ -6,6 +6,7 @@ export const setBgColor = (bgUrl) => {
     document.body.style.backgroundPosition = 'center';
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundRepeat = 'no-repeat';
+    document.body.style.backgroundAttachment = 'fixed';
 }
 function weatherData () {
     let requestTimes = 0

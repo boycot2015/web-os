@@ -7,7 +7,7 @@
     import { scale } from 'svelte/transition';
     let visible = false
 </script>
-<div transition:scale class="settings bg-gray-200 w-full h-full p-3 pt-8">
+<div transition:scale class="settings bg-gray-200 w-full h-screen p-3 pt-8" style="max-width: 1200px;margin: auto;">
     <NavBar injClass="mb-8 rounded-2xl text-xl !bg-transparent !border-none" on:clickleft={() => goto('/')} title="设置" />
     <Cell left="slot" injClass="!m-0 !mb-8">
         <div slot="left" class="avatar flex justify-start items-center">

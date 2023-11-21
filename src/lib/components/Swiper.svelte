@@ -113,7 +113,6 @@
 		'2xl': 'rounded-2xl',
 		full: 'rounded-full',
 	};
-    console.log(width, 'width');
 	//根据 indicateStyle 和是否激活生成不同样式的 indicate
 	//generate different style indicate according to indicateStyle and isActive
 	const indicateStyleInnerFun = (indicateStyle, isActive, indicateColor, indicateActiveColor) => {

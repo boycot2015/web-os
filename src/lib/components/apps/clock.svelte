@@ -110,7 +110,7 @@
             var radius = ((2 * Math.PI) / 60) * minutes;
             ctx.save();
             ctx.beginPath();
-            ctx.lineWidth = 6;
+            ctx.lineWidth = 7;
             ctx.lineCap = "round";
             ctx.strokeStyle = "black";
             ctx.rotate(radius);

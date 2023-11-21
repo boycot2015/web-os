@@ -50,7 +50,7 @@
                         if (modal) return
                         if (!app.url) return
                         modal = '';
-                        $appConfig.app = app;
+                        app.url && ($appConfig.app = app)
                         if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
                         else if (app.url) goto(`${app.url}`);
                     }}>
@@ -91,7 +91,7 @@
                         }
                         if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
                         else if (app.url) goto(`${app.url}`);
-                        $appConfig.app = app
+                        app.url && ($appConfig.app = app)
                     }}>
                         <svelte:component {...app.props || {}} this={app.component}></svelte:component>
                         {#if app.title}

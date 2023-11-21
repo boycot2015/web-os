@@ -1,6 +1,6 @@
 <script>
     import { onMount, onDestroy } from 'svelte';
-    import { Grid, Grids, Switch, CellGroup, Cell, Button, ActionSheet } from 'stdf';
+    import { Grid, Grids, Switch, CellGroup, Cell, Toast } from 'stdf';
     import Modal from '$lib/components/Modal.svelte';
     import Slider from '$lib/components/Slider.svelte';
     import Icon from '$lib/components/Icon.svelte';
@@ -10,11 +10,11 @@
     import { baseApiUrl } from '$lib'
     export let col = 1;
     export let row = 4;
-    export let cols = 4;
-    console.log(col, cols, 'col:12312');
     export let injClass = '';
-    let selectVisible = false;
-    let wallpaperVisible = false;
+    export let visible = false;
+    let settingVisible = false;
+    export let contentSlot = false;
+    let toastVisible = false;
     $: wallpaperData = {};
     let steps = {
         'none': [0, 10],
@@ -41,7 +41,7 @@
     const clickActionFunc = e => {
 		let index = e.detail.index;
 		let item = e.detail.item;
-        wallpaperVisible = true
+        visible = true
 	};
     async function load (params = {}) {
         const res = await fetch(`${baseApiUrl}/wallpaper?id=${params.id || 83}`);
@@ -63,43 +63,47 @@
         timer.map(el => clearInterval(el))
     })
 </script>
+{#if !contentSlot}
 <Grid {row} {col}>
     <div
     role="none"
-    on:click={() => visible = true}
+    on:click={() => settingVisible = true}
         class="py-6 {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10 overflow-hidden"
     >
         <div class="location text-xl">主题设置</div>
         <Icon name="ri-paint-brush-line" size={60} injClass="py-3" />
     </div>
-    <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
-        on:pointermove={(e) => e.stopPropagation()}
-        on:pointerup={(e) => e.stopPropagation()}>
-        <Modal bind:visible={visible} title="主题设置" injTitleClass="text-white text-xl" showBtn={false} contentSlot popup={{size: 40, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'backOut', px: 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}>
-            <Grids cols={4} mx="0" my="0" gap="4">
-                <Grid row={1} col={4}>
-                    <div class="flex flex-col justify-between dark:bg-black py-0 h-full text-gray-800 text-lg text-center">
-                        <CellGroup shadow="xl" radius="2xl">
-                            <Cell title="背景墙纸" detail="slot" right="none" mx="0" my="0" shadow="none" line radius="none">
-                                <div slot="detail" class="w-40">
-                                    <Icon size={30} name={'ri-landscape-fill'} on:click={() => wallpaperVisible = true}></Icon>
-                                </div>
-                            </Cell>
-                            <Cell title="模糊程度" detail="slot" right="none" mx="0" my="0" shadow="none" line radius="none">
-                                <div class="w-40" slot="detail">
-                                    <Slider showTip="never" minRange={0} on:change={changeBlur} step={20} value={blurValue}  />
-                                </div>
-                            </Cell>
-                            <Cell title="负一屏" detail="slot" right="none" mx="0" my="0" shadow="none" line radius="none">
-                                <Switch slot="detail" inside="slot" radius="full" check={$appConfig.showPanel} on:change={changeIndex}>
-                                </Switch>
-                            </Cell>
-                        </CellGroup>
-                    </div>
-                </Grid>
-            </Grids>
-        </Modal>
-        <ActionSheet bind:visible={selectVisible} on:clickAction={clickActionFunc} actions={[{ content: '在线壁纸' }]} />
-        <Modal bind:visible={wallpaperVisible} title="选择壁纸" injTitleClass="text-gray-800 text-xl" showBtn={false} contentSlot popup={{size: 80, radiusPosition: 'all',radius: 'xl', transparent: false, position: 'center', hideScrollbar: true, easeType: 'none', px: 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}><Wallpaper injClass="!pt-0" data={wallpaperData} isComponent on:select={(e) => $appConfig.bgUrl = e.detail} on:cateChange={(e) => load(e.detail)}></Wallpaper></Modal>
-    </div>
 </Grid>
+{:else}
+<Cell left={{ name: 'ri-plant-line', theme: true, size: 24, injClass: 'bg-blue-400 px-1 py-0.5 mr-3 text-white rounded-lg' }} injClass='text-lg' mx="0" my="0" on:click={() => visible = true} title="墙纸"></Cell>
+{/if}
+<div class="modal" on:pointerdown={(e) => e.stopPropagation()}
+    on:pointermove={(e) => e.stopPropagation()}
+    on:pointerup={(e) => e.stopPropagation()}>
+    <Modal bind:visible={settingVisible} title="主题设置" injTitleClass="text-white text-xl" showBtn={false} contentSlot popup={{size: 40, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'backOut', px: 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}>
+        <Grids cols={4} mx="0" my="0" gap="4">
+            <Grid row={1} col={4}>
+                <div class="flex flex-col justify-between dark:bg-black py-0 h-full text-gray-800 text-lg text-center">
+                    <CellGroup shadow="xl" radius="2xl">
+                        <Cell title="背景墙纸" detail="slot" right="none" mx="0" my="0" shadow="none" line radius="none">
+                            <div slot="detail" class="w-40">
+                                <Icon size={30} name={'ri-landscape-fill'} on:click={() => visible = true}></Icon>
+                            </div>
+                        </Cell>
+                        <Cell title="模糊程度" detail="slot" right="none" mx="0" my="0" shadow="none" line radius="none">
+                            <div class="w-40" slot="detail">
+                                <Slider showTip="never" minRange={0} on:change={changeBlur} step={20} value={blurValue}  />
+                            </div>
+                        </Cell>
+                        <Cell title="负一屏" detail="slot" right="none" mx="0" my="0" shadow="none" line radius="none">
+                            <Switch slot="detail" inside="slot" radius="full" check={$appConfig.showPanel} on:change={changeIndex}>
+                            </Switch>
+                        </Cell>
+                    </CellGroup>
+                </div>
+            </Grid>
+        </Grids>
+    </Modal>
+    <Modal bind:visible={visible} title="选择壁纸" injTitleClass="text-gray-800 text-xl" showBtn={false} contentSlot popup={{size: 80, radiusPosition: 'all',radius: 'xl', transparent: false, position: 'center', hideScrollbar: true, easeType: 'none', px: 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}><Wallpaper injClass="!pt-0" data={wallpaperData} isComponent on:select={(e) => {$appConfig.bgUrl = e.detail;toastVisible = true}} on:cateChange={(e) => load(e.detail)}></Wallpaper></Modal>
+    <Toast message="设置成功！" bind:visible={toastVisible}></Toast>
+</div>

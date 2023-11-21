@@ -22,7 +22,7 @@ const grid = {
     x2: {row: 1, col: 2, size: 36, hideTitle: true, injClass: 'p-4 text-sm'},
     sm2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white text-sm', injClass: '!p-1 text-sm'}
 }
-export const clock = {icon: '', component: Clock, text: '时钟', desc: '秒钟', url: '', bgColor: 'bg-white', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none', props: {width: 100}}
+export const clock = {icon: '', component: Clock, text: '时钟', desc: '秒钟', url: '', bgColor: 'bg-white', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none'}
 export const taobao = {icon: 'ri-taobao-line', text: '淘宝', desc: '太好逛了吧', url: 'https://m.taobao.com/', bgColor: 'bg-white', color: 'text-orange-500'}
 export const qzone = {icon: 'ri-star-smile-fill', text: 'QQ空间', desc: '分享喜悦，留住感动', url: 'https://qzone.qq.com/', bgColor: 'bg-white', color: 'text-yellow-500'}
 export const news = {icon: 'ri-newspaper-line', text: '新闻头条', desc: '看见更大的世界', url: 'http://news.boycot.top/', bgColor: 'bg-red-500', color: 'text-white'}

@@ -1,6 +1,6 @@
 // place files you want to import through the `$lib` alias in this folder.
 import { baseApiUrl } from './request/base'
-let week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 /**
  * 对一个对象进行深拷贝
  * @param object
@@ -17,7 +17,7 @@ export const deepClone = (object) => {
         newobj = JSON.parse(str)
     } else {
         for (const i in object) {
-            if (object.hasOwnProperty(i)) {
+            if (Object.prototype.hasOwnProperty.call(object, i)) {
                 newobj[i] = typeof object[i] === 'object' ? deepClone(object[i]) : object[i]
             }
         }

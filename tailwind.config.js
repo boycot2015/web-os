@@ -44,15 +44,15 @@ export default {
             extend: [
                 {
                         color: '96, 110, 104', // #606E68 hsl(154, 7%, 40%)
-                        alias: "Corduroy",
+                        alias: 'Corduroy',
                     },
                     {
                         color: '78, 102, 73', // #4E6649 hsl(110, 17%, 34%)
-                        alias: "Axolotl",
+                        alias: 'Axolotl',
                     },
                     {
                         color: '153, 17, 153', // #991199 hsl(300, 80%, 33%)
-                        alias: "Violet Eggplant",
+                        alias: 'Violet Eggplant',
                     },
             ],
         },
@@ -64,8 +64,8 @@ export default {
         },
         extend: {
             spacing: {
-                '128': '32rem',
-                '144': '36rem',
+                128: '32rem',
+                144: '36rem',
             },
             borderRadius: {
                 '4xl': '2rem',
@@ -73,6 +73,18 @@ export default {
             fontFamily: {
                 Trueno: 'Trueno',
             },
+            animation: {
+                shake: 'shake 200ms linear infinite',
+            },
+            keyframes: {
+                shake: {
+                    '0%': { transform: ' rotate(-1deg)' },
+                    '25%': { transform: 'rotate(0deg)' },
+                    '50%': { transform: 'rotate(1deg)' },
+                    '75%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(-1deg)' }
+                }
+              }
         }
     },
     plugins: [],

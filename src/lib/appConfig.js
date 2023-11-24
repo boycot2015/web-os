@@ -1,11 +1,11 @@
-import appList from '$lib/components/apps/grid.svelte'
+import gridList from '$lib/components/apps/grid.svelte'
 import groupList from '$lib/components/apps/group.svelte'
 import Day from '$lib/components/apps/day.svelte'
 import Clock from '$lib/components/apps/clock.svelte'
 import Weather from '$lib/components/apps/weather.svelte'
 import Theme from '$lib/components/apps/theme.svelte'
 import DeviceInfo from '$lib/components/apps/deviceInfo.svelte'
-import { Input } from 'stdf';
+import { Input, Cell } from 'stdf';
 const getDate = () => {
     //获取当前时间
     const date = new Date();
@@ -22,51 +22,51 @@ const grid = {
     x2: {row: 1, col: 2, size: 36, hideTitle: true, injClass: 'p-4 text-sm'},
     sm2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white text-sm', injClass: '!p-1 text-sm'}
 }
-export const clock = {icon: '', component: Clock, text: '时钟', desc: '秒钟', url: '', bgColor: 'bg-white', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none'}
-export const taobao = {icon: 'ri-taobao-line', text: '淘宝', desc: '太好逛了吧', url: 'https://m.taobao.com/', bgColor: 'bg-white', color: 'text-orange-500'}
-export const qzone = {icon: 'ri-star-smile-fill', text: 'QQ空间', desc: '分享喜悦，留住感动', url: 'https://qzone.qq.com/', bgColor: 'bg-white', color: 'text-yellow-500'}
-export const news = {icon: 'ri-newspaper-line', text: '新闻头条', desc: '看见更大的世界', url: 'http://news.boycot.top/', bgColor: 'bg-red-500', color: 'text-white'}
-export const weather = {icon: 'ri-sun-cloudy-fill', text: '天气', url: 'https://xw.tianqi.qq.com/', bgColor: 'bg-blue-800', desc: '美好的一天从查看天气开始', color: 'text-white'}
-export const shop = {icon: 'ri-shopping-bag-3-fill', text: '品牌推荐', url: '/mall', bgColor: 'bg-white', color: 'text-red-500'}
-export const appleStore = {icon: 'ri-shopping-bag-fill', text: 'Apple Store', url: 'https://www.apple.com.cn/', bgColor: 'bg-white', color: 'text-blue-500'}
-export const phone = { icon: 'ri-phone-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-export const phoneFill = { icon: 'ri-phone-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-export const compass = { icon: 'ri-compass-3-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-export const compassFill = { icon: 'ri-compass-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-export const chat = { icon: 'ri-chat-3-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-export const chatFill = { icon: 'ri-chat-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
+export const clock = {icon: '', component: Clock, text: '时钟', desc: '秒钟', url: '', bgColor: 'bg-white', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none', closeable: false, readOnly: true }
+export const taobao = {icon: 'ri-taobao-line', text: '淘宝', desc: '太好逛了吧', url: 'https://m.taobao.com/', bgColor: 'bg-white', color: 'text-orange-500', closeable: false}
+export const qzone = {icon: 'ri-star-smile-fill', text: 'QQ空间', desc: '分享喜悦，留住感动', url: 'https://qzone.qq.com/', bgColor: 'bg-white', color: 'text-yellow-500', closeable: false}
+export const news = {icon: 'ri-newspaper-line', text: '新闻头条', desc: '看见更大的世界', url: 'http://news.boycot.top/', bgColor: 'bg-red-500', color: 'text-white', closeable: false}
+export const weather = {icon: 'ri-sun-cloudy-fill', text: '天气', url: 'https://xw.tianqi.qq.com/', bgColor: 'bg-blue-800', desc: '美好的一天从查看天气开始', color: 'text-white', closeable: false}
+export const shop = {icon: 'ri-shopping-bag-3-fill', text: '品牌推荐', url: '/mall', bgColor: 'bg-white', color: 'text-red-500', closeable: false}
+export const appleStore = {icon: 'ri-shopping-bag-fill', text: 'Apple Store', url: 'https://www.apple.com.cn/', bgColor: 'bg-white', color: 'text-blue-500', closeable: false}
+export const phone = { icon: 'ri-phone-line', text: '', bgColor: 'bg-white', color: 'text-red-500', closeable: false }
+export const phoneFill = { icon: 'ri-phone-fill', text: '', bgColor: 'bg-white', color: 'text-red-500', closeable: false }
+export const compass = { icon: 'ri-compass-3-line', text: '', bgColor: 'bg-white', color: 'text-red-500', closeable: false }
+export const compassFill = { icon: 'ri-compass-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500', closeable: false }
+export const chat = { icon: 'ri-chat-3-line', text: '', bgColor: 'bg-white', color: 'text-red-500', closeable: false }
+export const chatFill = { icon: 'ri-chat-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500', closeable: false }
 export const account = { icon: 'ri-account-circle-line', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-export const accountFill = { icon: 'ri-account-circle-fill', text: '', bgColor: 'bg-white', color: 'text-red-500' }
-export const guid = { icon: 'ri-compass-3-fill', url: 'https://www.pmbaobao.com/', text: '', bgColor: 'bg-white', color: 'text-red-500', opacity: 0 }
-export const qq = { icon: 'ri-qq-fill', text: 'QQ', url: 'https://im.qq.com/', bgColor: 'bg-white', color: 'text-red-500' }
-export const qqMusic = { icon: 'ri-disc-line', text: 'QQ音乐', url: 'https://music.qq.com/', bgColor: 'bg-white', color: 'text-green-500' }
-export const officeWechat = {icon: 'ri-wechat-line', text: '企业微信', desc: '兢兢业业，碌碌无为', url: 'https://work.weixin.qq.com/', bgColor: 'bg-white', color: 'text-blue-700'}
-export const qqMap = { icon: 'ri-compass-fill', text: '腾讯地图', url: 'https://map.qq.com/m/index/map', bgColor: 'bg-blue-200', color: 'text-blue-500' }
-export const wechat = { icon: 'ri-wechat-fill', text: '微信', desc: '发生什么事了，让我先发个朋友圈', url: 'https://weixin.qq.com/', bgColor: 'bg-green-600', color: 'text-white' }
-export const alipay = { icon: 'ri-alipay-line', text: '支付宝', desc: '马爸爸的钱袋子', url: 'https://www.alipay.com/', bgColor: 'bg-blue-800', color: 'text-white' }
-export const picture = { icon: 'ri-landscape-line', text: '照片', desc: '把记忆留在这里', url: '/cates/wallpaper/83', bgColor: 'bg-gray-300', color: 'text-purple-500' }
-export const netease = { icon: 'ri-netease-cloud-music-line', url: 'https://y.music.163.com/', text: '网易云音乐',desc: '耳朵怀孕了', bgColor: 'bg-red-600', color: 'text-white' }
-export const navigation = { icon: 'ri-navigation-fill', url: 'https://www.amap.com/', text: '高德地图', desc: '缺德导航，出行必备',bgColor: 'bg-blue-300', color: 'text-blue-700' }
-export const music = { icon: 'ri-headphone-fill', text: '我的音乐', desc: '抖音,记录美好生活', url: 'http://m.music.boycot.top', bgColor: 'bg-black', color: 'text-white' }
-export const settings = { icon: 'ri-settings-5-fill', text: '设置', url: '/settings', bgColor: 'bg-gray-400', color: 'text-white' }
-export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地铁，钱包最铁', bgColor: 'bg-black', color: 'text-gray-300' }
-export const appStore = { icon: 'ri-app-store-line', url: 'http://m.appchina.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', color: 'text-white' }
-export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', desc: '照亮你的美', bgColor: 'bg-gray-400', color: 'text-black'  }
-export const day = { icon: 'ri-calendar-line', text: '日历', url: 'https://m.rili.com.cn/', desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white' }
+export const accountFill = { icon: 'ri-account-circle-fill', text: '', bgColor: 'bg-white', color: 'text-red-500', closeable: false }
+export const guid = { icon: 'ri-compass-3-fill', url: 'https://www.pmbaobao.com/', text: '', bgColor: 'bg-white', color: 'text-red-500', opacity: 0, closeable: false }
+export const qq = { icon: 'ri-qq-fill', text: 'QQ', url: 'https://im.qq.com/', bgColor: 'bg-white', color: 'text-red-500', closeable: false }
+export const qqMusic = { icon: 'ri-disc-line', text: 'QQ音乐', url: 'https://music.qq.com/', bgColor: 'bg-white', color: 'text-green-500', closeable: false }
+export const officeWechat = {icon: 'ri-wechat-line', text: '企业微信', desc: '兢兢业业，碌碌无为', url: 'https://work.weixin.qq.com/', bgColor: 'bg-white', color: 'text-blue-700', closeable: false}
+export const qqMap = { icon: 'ri-compass-fill', text: '腾讯地图', url: 'https://map.qq.com/m/index/map', bgColor: 'bg-blue-200', color: 'text-blue-500', closeable: false }
+export const wechat = { icon: 'ri-wechat-fill', text: '微信', desc: '发生什么事了，让我先发个朋友圈', url: 'https://weixin.qq.com/', bgColor: 'bg-green-600', color: 'text-white', closeable: false }
+export const alipay = { icon: 'ri-alipay-line', text: '支付宝', desc: '马爸爸的钱袋子', url: 'https://www.alipay.com/', bgColor: 'bg-blue-800', color: 'text-white', closeable: false }
+export const picture = { icon: 'ri-landscape-line', text: '照片', desc: '把记忆留在这里', url: '/cates/wallpaper/83', bgColor: 'bg-gray-300', color: 'text-purple-500', closeable: false, readOnly: true }
+export const netease = { icon: 'ri-netease-cloud-music-line', url: 'https://y.music.163.com/', text: '网易云音乐',desc: '耳朵怀孕了', bgColor: 'bg-red-600', color: 'text-white', closeable: false }
+export const navigation = { icon: 'ri-navigation-fill', url: 'https://www.amap.com/', text: '高德地图', desc: '缺德导航，出行必备',bgColor: 'bg-blue-300', color: 'text-blue-700', closeable: false }
+export const music = { icon: 'ri-headphone-fill', text: '我的音乐', desc: '抖音,记录美好生活', url: 'http://m.music.boycot.top', bgColor: 'bg-black', color: 'text-white', closeable: false }
+export const settings = { icon: 'ri-settings-5-fill', text: '设置', url: '/settings', bgColor: 'bg-gray-400', color: 'text-white', closeable: false, readOnly: true }
+export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地铁，钱包最铁', bgColor: 'bg-black', color: 'text-gray-300', closeable: false, readOnly: true }
+export const appStore = { icon: 'ri-app-store-line', url: 'http://m.appchina.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', color: 'text-white', closeable: false }
+export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', desc: '照亮你的美', bgColor: 'bg-gray-400', color: 'text-black', closeable: false, readOnly: true  }
+export const day = { icon: 'ri-calendar-line', text: '日历', url: 'https://m.rili.com.cn/', desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white', closeable: false, readOnly: true }
 export default {
     apps: [
         {
             index: 0,
             name: '负一屏',
             type: 'component',
-            component: appList,
+            component: gridList,
             props: {
                 apps: [
-                    { type: 'component', component: DeviceInfo, row: 4, col: 4 },
-                    { type: 'component', component: Day, row: 4, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]'} },
-                    { type: 'component', component: Clock, row: 4, col: 2 },
-                    { type: 'component', component: Weather, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]'}},
-                    { type: 'component', component: Theme, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]'}},
+                    { type: 'component', component: DeviceInfo, row: 4, col: 4, props: { closeable: false } },
+                    { type: 'component', component: Day, row: 4, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]', closeable: false} },
+                    { type: 'component', component: Clock, row: 4, col: 2, props: { closeable: false } },
+                    { type: 'component', component: Weather, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]', closeable: false}},
+                    { type: 'component', component: Theme, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]', closeable: false}},
                 ]
             }
         },
@@ -74,11 +74,11 @@ export default {
             index: 1,
             name: '首页',
             type: 'component',
-            component: appList,
+            component: gridList,
             props: {
                 apps: [
-                    { type: 'component', component: Clock, row: 4, col: 2 },
-                    { type: 'component', component: Weather, row: 4, col: 2, props: {injClass: 'text-white bg-gray-500'}},
+                    { type: 'component', component: Clock, row: 4, col: 2, props: { closeable: false } },
+                    { type: 'component', component: Weather, row: 4, col: 2, props: {injClass: 'text-white bg-gray-500', closeable: false}},
                     qq,
                     wechat,
                     alipay,
@@ -102,7 +102,7 @@ export default {
             index: 2,
             name: '自定义页面',
             type: 'component',
-            component: appList,
+            component: gridList,
             props: {
                 apps: [
                     { type: 'component',
@@ -159,14 +159,14 @@ export default {
             index: 3,
             name: '应用列表',
             type: 'component',
-            component: appList,
+            component: gridList,
             props: {
                 injClass: '!p-6',
                 gap: 4,
                 apps: [
                     { 
                         type: 'component',
-                        component: appList,
+                        component: gridList,
                         row: 4, col: 4,
                         props: {
                             cols: 12,
@@ -190,7 +190,7 @@ export default {
                     {
                         title: '社交',
                         type: 'component',
-                        component: appList,
+                        component: gridList,
                         row: 4, col: 2,
                         props: {
                             gap: 4,
@@ -205,7 +205,7 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: appList,
+                        component: gridList,
                         row: 4, col: 2,
                         title: '理财',
                         props: {
@@ -218,14 +218,17 @@ export default {
                                 {
                                     row: 1, col: 2,
                                     type: 'component',
-                                    component: appList,
+                                    component: gridList,
                                     props: {
                                         modal: {
-                                            component: appList,
+                                            component: gridList,
                                             props: {
                                                 title: '理财',
                                                 visible: false,
                                                 gap: 4,
+                                                mx: 0,
+                                                my: 0,
+                                                cols: 4,
                                                 injClass: '!p-0 h-full',
                                                 apps: [
                                                     { ...music, ...grid['1'] },
@@ -253,7 +256,7 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: appList,
+                        component: gridList,
                         row: 4, col: 2,
                         title: '娱乐',
                         props: {
@@ -266,14 +269,17 @@ export default {
                                 { 
                                     row: 1, col: 2,
                                     type: 'component',
-                                    component: appList,
+                                    component: gridList,
                                     props: {
                                         modal: {
-                                            component: appList,
+                                            component: gridList,
                                             props: {
                                                 title: '娱乐',
                                                 visible: false,
                                                 gap: 4,
+                                                mx: 0,
+                                                my: 0,
+                                                cols: 4,
                                                 injClass: '!p-0 h-full',
                                                 apps: [
                                                     { ...weather, ...grid['1'] },
@@ -303,7 +309,7 @@ export default {
                     {
                         title: '购物',
                         type: 'component',
-                        component: appList,
+                        component: gridList,
                         row: 4, col: 2,
                         props: {
                             gap: 4,
@@ -333,5 +339,52 @@ export default {
         { ...grid['1'], ...navigation, text: '', size: 48, injClass: '!py-1.5 !px-0'},
         { ...grid['1'], ...weather, text: '', size: 48, injClass: '!py-1.5 !px-0'},
         { ...grid['1'], ...wallet, text: '', size: 48, injClass: '!py-1.5 !px-0'},
-    ]
+    ],
+    components: {
+        index: 3,
+        name: '组件列表',
+        type: 'component',
+        component: gridList,
+        props: {
+            injClass: '!p-6',
+            gap: 4,
+            apps: [
+                { type: 'component', name: '设备管理', isComponent: true, component: DeviceInfo, row: 4, col: 4 },
+                { type: 'component', name: '日历', isComponent: true, component: Day, row: 4, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]'} },
+                { type: 'component', name: '时钟', isComponent: true, component: Clock, row: 4, col: 2 },
+                { type: 'component', name: '天气', isComponent: true, component: Weather, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]'}},
+                { type: 'component', name: '主题设置', isComponent: true, component: Theme, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]'}},
+                {
+                    type: 'component',
+                    name: taobao.text || '',
+                    component: Cell, row: 4, col: 4, cols: 1,
+                    props: {
+                        title: taobao.text || '',
+                        injClass: 'text-xl !m-0',
+                        left: { name: taobao.icon, size: grid['x2'].size, injClass: `rounded-lg !mr-3 ${taobao.color} ${taobao.bgColor}` },
+                    }
+                },
+                {
+                    type: 'component',
+                    name: alipay.text || '',
+                    component: Cell, row: 4, col: 4, cols: 1,
+                    props: {
+                        title: alipay.text || '',
+                        injClass: 'text-xl !m-0',
+                        left: { name: alipay.icon, size: grid['x2'].size, injClass: `rounded-lg !mr-3 ${alipay.color} ${alipay.bgColor}` },
+                    }
+                },
+                {
+                    type: 'component',
+                    name: wallet.text || '',
+                    component: Cell, row: 4, col: 4, cols: 1,
+                    props: {
+                        title: wallet.text || '',
+                        injClass: 'text-xl !m-0',
+                        left: { name: wallet.icon, size: grid['x2'].size, injClass: `rounded-lg !mr-3 ${wallet.color} ${wallet.bgColor}` },
+                    }
+                }
+            ]
+        }
+    },
 }

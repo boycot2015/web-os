@@ -3,11 +3,12 @@
     import { Grid, Grids, Switch, CellGroup, Cell, Toast } from 'stdf';
     import Modal from '$lib/components/Modal.svelte';
     import Slider from '$lib/components/Slider.svelte';
-    import Icon from '$lib/components/Icon.svelte';
     import Wallpaper from '@/routes/cates/wallpaper/[id]/+page.svelte';
     import { weather } from '@/store';
     import { appConfig } from '@/store';
-    import { baseApiUrl } from '$lib'
+    import { baseApiUrl } from '$lib';
+    import { Icon } from '$lib/components';
+    export let closeable = false;
     export let col = 1;
     export let row = 4;
     export let injClass = '';
@@ -67,9 +68,12 @@
 <Grid {row} {col}>
     <div
     role="none"
-    on:click={() => settingVisible = true}
-        class="py-6 {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10 overflow-hidden"
+    on:click={(e) => {e.preventDefault();settingVisible = true}}
+        class="relative py-6 {closeable && 'animate-shake'} {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
     >
+        {#if closeable}
+            <Icon on:click={(e) => {e.stopPropagation();}} injClass="!absolute bg-white/80 rounded-2xl p-0 shadow z-99 text-gray-500 !top-[-5px] !left-[-5px] text-sm" size="22" name="ri-close-line"></Icon>
+        {/if}
         <div class="location text-xl">主题设置</div>
         <Icon name="ri-paint-brush-line" size={60} injClass="py-3" />
     </div>

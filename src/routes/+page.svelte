@@ -5,16 +5,18 @@
 </svelte:head>
 <script>
     import { onMount, onDestroy } from 'svelte';
-    import { Mask } from 'stdf';
+    import { Mask, Input } from 'stdf';
     import { appConfig, setBgColor } from '@/store';
     import Swiper from '$lib/components/Swiper.svelte';
     import Modal from '$lib/components/Modal.svelte';
     import { fly, scale } from 'svelte/transition';
     import appsConf from '$lib/appConfig';
     import Bars from '$lib/components/apps/grid.svelte';
+    import { Icon, BottomSheet } from '$lib/components';
     $: visible = false;
     $: modal = $appConfig.modal;
-    const { apps = [], docks = [] } = appsConf
+    $: mask = $appConfig.mask;
+    const { apps = [], docks = [], components = [] } = appsConf
     let md = false;
     let lg = false;
     let xl = false;
@@ -27,15 +29,55 @@
     $: time = getTime();
     let timer = [];
     let clientWidth = 0;
-    let container = {};
+    let container = {
+        clientWidth: $appConfig.clientWidth
+    };
     let cols = 4;
     let gap = 4;
     export let data;
     let ssr = data.ssr;
     let appData = [];
+    let docksData = [];
+    let pressTime = 0;
+    let pressInterval = null;
+    let componentsVisible = false;
+    let keyword = '';
     const onChange = (e) => {
         visible = !e.detail
         appConfig.set({ index: e.detail })
+    }
+    const sortAppData = (apps, props) => {
+        return apps.map(app => {
+            if (app.props) {
+                if (md || lg || xl) {
+                    if (app.props && app.props.cols >= 12) {
+                        app.col = 12
+                    }
+                    if (app.props && app.props.modal && app.props.modal.props) {
+                        app.props.modal.props.cols = props.cols || app.props.modal.props.cols
+                        app.props.modal.props.gap = props.gap || app.props.modal.props.gap
+                        if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
+                            app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, props)
+                        }
+                    }
+                } else {
+                    if (app.props && app.props.modal && app.props.modal.props) {
+                        if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
+                            app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, props)
+                        }
+                    }
+                }
+                if (app.props.apps && app.props.apps.length) {
+                    app.props.apps = sortAppData(app.props.apps, {...props, closeable: props.closeable && !app.props.modal })
+                }
+                for (const key in props) {
+                    if (Object.hasOwnProperty.call(app.props, key)) {
+                        app.props[key] = props[key]
+                    }
+                }
+            }
+            return { ...app, ...props }
+        })
     }
     onMount(() => {
         ssr = false
@@ -50,31 +92,11 @@
             xl = clientWidth >= 1200
             cols = xl ? 12 : lg ? 8 : 4
             gap = xl ? 8 : lg ? 2 : 4
-            const adapterWindow = (apps) => {
-                return apps.map(app => {
-                    if (app.props) {
-                        if (app.props && app.props.cols >= 12) {
-                            app.col = 12
-                        }
-                        if (app.props && app.props.modal && app.props.modal.props) {
-                            app.props.modal.props.cols = cols
-                            app.props.modal.props.gap = gap
-                            if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
-                                app.props.modal.props.apps = adapterWindow(app.props.modal.props.apps)
-                            }
-                        }
-                        if (app.props.apps && app.props.apps.length) {
-                            app.props.apps = adapterWindow(app.props.apps)
-                        }
-                    }
-                    return app
-                })
-            }
             appData = apps.map((el, index) => {
                 if (md || lg || xl) {
                     if (el.props) {
                         el.props.apps = el.props.apps.filter(app => !app.component || !index || index === apps.length - 1)
-                        el.props.apps = adapterWindow(el.props.apps)
+                        el.props.apps = sortAppData(el.props.apps, { cols, gap })
                         el.props.cols = cols
                         el.props.gap = gap
                     }
@@ -82,15 +104,51 @@
                 }
                 return el
             })
+            docksData = docks.slice(0, cols);
             $appConfig.md = md
             $appConfig.lg = lg
             $appConfig.xl = lg
             $appConfig.cols = cols
             $appConfig.gap = gap
-            // console.log(appData, 'appData');
+            $appConfig.clientWidth = clientWidth
         }, 100);
         $appConfig.bgUrl && setBgColor($appConfig.bgUrl)
+        $appConfig.modal = ''
+        $appConfig.editable = false
     })
+    const onEditApps = (props = { closeable: true }) => {
+        clearInterval(pressInterval);
+        if ((pressTime < 5 && props.closeable) || !$appConfig.editable) {
+            return
+        }
+        appData = apps.map((el, index) => {
+            if (el.props) {
+                el.props.apps = sortAppData(el.props.apps, props)
+            }
+            return el
+        })
+        docksData = docksData.map(el => ({...el, ...props}))
+        // console.log(appData, 'appData');
+        $appConfig.editable = props.closeable;
+        ssr = true
+        setTimeout(() => {
+            ssr = false
+        }, 600);
+    }
+    const onPointerdown = (e) => {
+        pressTime = 0;
+        e.preventDefault();
+        e.stopPropagation();
+        if ($appConfig.editable) return
+        clearInterval(pressInterval);
+        pressInterval = setInterval(() => {
+            pressTime++;
+        }, 200)
+    }
+    $: if (pressTime >= 5) {
+        $appConfig.editable = true;
+        onEditApps({ closeable: true })
+    }
     onDestroy(() => {
         timer.map(el => clearInterval(el))
     })
@@ -98,6 +156,7 @@
 <style scoped lang="less">
     .indicate, .container {
         height: 100%;
+        user-select: none;
         max-width: 100% !important;
         // max-width: 750px !important;
     }
@@ -106,31 +165,64 @@
         height: 100%;
     }
 </style>
-<div class="indicate pb-0 pt-0 {$appConfig.bgColor}" style="background: url({$appConfig.bgUrl}) center/cover no-repeat;">
-    <!-- <div class="bg fixed h-full w-full" style="z-index: 1;">
-        {#if $appConfig.component}
-        <svelte:component this={$appConfig.component} {...$appConfig.props || {}} ></svelte:component>
-        {:else if $appConfig.bgColor}
-        <div class="{$appConfig.bgColor} h-full w-full"></div>
-        {:else if $appConfig.bgUrl}
-        <div style="background: url({$appConfig.bgUrl}) center/cover no-repeat;" class="bg-gradient-to-tr from-[#7367F0] to-[#CE9FFC] h-full w-full"></div>
-        {:else}
-        <div class="bg-gradient-to-tr from-[#7367F0] to-[#CE9FFC] h-full w-full"></div>
+<!-- style="background: url({$appConfig.bgUrl}) center/cover no-repeat;" -->
+<div class="indicate pb-0 pt-0 {$appConfig.bgColor}">
+    {#if $appConfig.editable}
+        {#if $appConfig.index !==apps.length - 1}
+            <div class="fixed text-lg bg-white/30 text-black rounded-2xl px-3 left-3 top-1.5"
+            role="none"
+            on:click={(e) => {
+                componentsVisible = true;
+                mask = true;
+            }} style="z-index:4;">
+                <Icon name="ri-add-fill" size="20"></Icon>
+            </div>
         {/if}
-    </div> -->
+        <div class="fixed text-lg bg-white/30 text-black rounded-2xl px-3 right-3 top-1.5"
+        role="none"
+        on:click={(e) => {
+            pressTime = 0;
+            e.preventDefault();
+            clearInterval(pressInterval);
+            onEditApps({ closeable: false });
+            $appConfig.editable = false;
+        }} style="z-index:4;">完成</div>
+    {/if}
     {#if !ssr && (!$appConfig.modal || ($appConfig.modal && !$appConfig.modal.props.visible))}
-        <div class="container relative" bind:this={container} transition:scale={{start: 0.8, duration: 500 }} style="z-index: 3;">
+        <div class="container relative" bind:this={container} transition:scale={{start: 0.8, duration: 500 }} style="z-index: 3;" role="none"
+            on:click={(e) => {
+                pressTime = 0;
+                e.preventDefault();
+                clearInterval(pressInterval);
+                onEditApps({ closeable: false });
+                $appConfig.editable = false;
+            }}
+            on:pointermove={(e) => {
+                pressTime = 0;
+                clearInterval(pressInterval);
+            }}
+            on:pointerup={(e) => {
+                pressTime = 0;
+                clearInterval(pressInterval);
+            }}
+            on:pointerdown={onPointerdown}>
             {#if clientWidth}
                 <Swiper autoplay={false} innerInjClass={`wrap-content ${md || lg || xl ?'!py-4':''}`} containerWidth={clientWidth} indicatePosition="{$appConfig.index&&$appConfig.index !==apps.length - 1?'inner':'none'}" bind:initActive={$appConfig.index} loop={false} duration={500} aspectRatio={[10, $appConfig.index?16:21.6]} triggerSpeed={0.5} data={appData} on:change={(e) => onChange(e)} height={'100vh'} indicateInjClass={'!bottom-40 !from-black/0 !to-black/0'} />
                 {#if $appConfig.index && $appConfig.index !==apps.length - 1}
                     <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-8 left-5 right-5 flex justify-around items-center">
                         <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;">
-                            <Bars apps={docks.slice(0, cols)} cols={cols} gap={8} injClass="!px-2"></Bars>
+                            <Bars apps={docksData} cols={cols} gap={8} injClass="!px-2"></Bars>
                         </div>
                     </div>
                 {/if}
             {/if}
         </div>
+        <BottomSheet closeContent="" injClass="!bg-transparent backdrop-blur-2xl" closeHeight={50} showDivider={false} title="slot" stayHeightList={[50, 90]}  maskClosable on:close={() => mask = ''} on:clickMask={() => mask = ''} radius="full" bind:visible={componentsVisible}>
+            <div slot="title" class="search-box px-4">
+                <Input radius="2xl" value={keyword} placeholder="搜索小组件"></Input>
+            </div>
+            <svelte:component this={components.component} {...components.props} injClass='!px-6 !pt-3 !pb-[6rem] rounded-2xl'></svelte:component>
+        </BottomSheet>
     {/if}
     {#if modal}
     <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
@@ -146,5 +238,5 @@
         </Modal>
     </div>
     {/if}
-    <Mask visible={true} backdropBlur="{(!$appConfig.index || $appConfig.index == apps.length - 1)&&$appConfig.backdropBlur==='none'?'base':($appConfig.backdropBlur || 'base')}" opacity={0.1} zIndex={2} />
+    <Mask visible={true} backdropBlur="{(!$appConfig.index || $appConfig.index == apps.length - 1)&&$appConfig.backdropBlur==='none'?'base':($appConfig.backdropBlur || 'base')}" opacity={0.1} zIndex={mask ? 3 : 2} />
 </div>

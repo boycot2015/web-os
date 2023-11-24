@@ -42,7 +42,7 @@
     {:then data}
     {#each data.dataList as list}
     <div class="list-item flex-row">
-        <img src="{list.img}" alt="{list.title}" title="{list.title}">
+        <img src="{list.img}" class="rounded-xl" alt="{list.title}" title="{list.title}">
         <div class="text">
             <span class="title line-clamp2">{list.title}</span>
             <div class="desc line-clamp2">{list.desc}</div>

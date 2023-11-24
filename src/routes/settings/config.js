@@ -1,13 +1,12 @@
 import * as apps from '$lib/appConfig';
 import { Badge } from 'stdf';
 import Theme from '$lib/components/apps/theme.svelte'
-let appList = []
+const appList = []
 for (const key in apps) {
     if (apps[key].text && apps[key].icon) {
         appList.push({ icon: { name: apps[key].icon, size: apps[key].size || 26, injClass: `${apps[key].bgColor} ${apps[key].color} p-1 px-1.5 rounded-lg mr-3` }, title: apps[key].text, url: apps[key].url })
     }
 }
-// console.log(appList, 'appList');
 export default [
     {
         type: 'single',
@@ -139,19 +138,3 @@ export default [
         list: [...appList]
     }
 ]
-    // userInfo: {
-
-    // },
-    // update: {
-
-    // },
-    // netWork: {
-
-    // },
-    // notice: {
-
-    // },
-    // common: {
-
-    // },
-    // pay: {}

@@ -16,7 +16,7 @@ const config = {
 	},
     preprocess: preprocess({
         less: {
-          prependData: `@import './src/styles/base.less';`
+          prependData: '@import \'./src/styles/base.less\';'
         }
     })
 };

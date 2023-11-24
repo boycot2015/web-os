@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import Icon from './Icon.svelte';
-    import { Popup, Button } from 'stdf';
+    import { Popup, Button, Cell } from 'stdf';
     import { appConfig } from '@/store';
     import Links from '$lib/components/apps/grid.svelte'
     export let icon = 'ri-close-circle-line'; // ri-album-line
@@ -61,12 +61,10 @@
     </div>
 </div>
 <Popup radius={'2xl'} size={50} zIndex={9999} bind:visible={visible}>
-    <div class="flex items-center py-2 px-4 border-b text-sm">
-        <Icon injClass="back text-gray-800" name="{info.logo || 'ri-product-hunt-line'}" size={30} />
-        <div class="title text-xl text-gray pl-2 font-bold">{title}</div>
-        <Icon injClass="back text-gray-800" name="ri-arrow-right-s-line" size={30} />
-    </div>
-    <div class="mini-info">
+    <Cell left="slot" {title} shadow="none" radius="none" injClass="!m-0 !py-0 px-4 border-b text-xl !bg-gray-100">
+        <Icon slot="left" injClass="back text-gray-800 mr-5 p-1 rounded-lg {info.color} {info.bgColor}" name="{info.logo || info.icon ||'ri-product-hunt-line'}" size={26} />
+    </Cell>
+    <div class="mini-info min-height-4">
         {#if $appConfig.app.desc}
             <p class="desc text-xl my-3 p-4 py-6 border-b">{$appConfig.app.desc}</p>
         {/if}

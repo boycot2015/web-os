@@ -1,4 +1,4 @@
-import { readable, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { http } from '$lib/request';
 import config from '@/lib/config';
 export const setBgColor = (bgUrl) => {
@@ -10,9 +10,9 @@ export const setBgColor = (bgUrl) => {
 }
 function weatherData () {
     let requestTimes = 0
-	const { subscribe, set, update } = writable({});
+	const { subscribe, set } = writable({});
     const fetchData = async () => {
-        let res = await http('http://api.boycot.top/api/weather', { location: '深圳' })
+        const res = await http('http://api.boycot.top/api/weather', { location: '深圳' })
         set(res.data || {})
         requestTimes = 0
     }
@@ -36,7 +36,7 @@ function appData () {
     } catch (error) {
         // console.log(error);
     }
-	const { subscribe, set, update } = writable({ ...config || {}, ...local });
+	const { subscribe, update } = writable({ ...config || {}, ...local });
 	return {
 		subscribe,
 		set: async (res) => {

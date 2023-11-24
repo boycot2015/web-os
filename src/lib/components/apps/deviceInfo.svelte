@@ -1,9 +1,9 @@
 <script>
-    import { Grids, Grid, Switch, Icon, Button, TabBar } from 'stdf';
-    // import { createEventDispatcher } from 'svelte';
+    import { Grids, Grid, Switch, Button } from 'stdf';
     import { goto } from '$app/navigation'
     import { appConfig } from '@/store';
-    // const dispatch = createEventDispatcher();
+    import { Icon } from '$lib/components';
+    export let closeable = false;
     const changeColorFun = e => {
         appConfig.set({bgColor: e.detail ? 'bg-gradient-to-t from-[#f8f8f8] to-[#ccc]': ''})
     };
@@ -14,161 +14,166 @@
         curentIndex === devices.length - 1 ? (curentIndex = 0) : curentIndex++;
     };
 </script>
-<Grids cols={5} mx="0" my="0" gap="2">
-    <Grid row={2}>
-        <div
-            class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10"
-        >
-            <div class="flex justify-center">
-                <Switch inside="slot" radius="full" check={!!$appConfig.bgColor} on:change={changeColorFun}>
-                    <div slot="false">
-                        <Icon name="ri-paint-brush-line" size={12} />
-                    </div>
-                    <div slot="true">
-                        <Icon name="ri-paint-brush-fill" size={12} theme />
-                    </div>
-                </Switch>
+<div class="relative mt-6 {closeable && 'animate-shake'}">
+    {#if closeable}
+        <Icon on:click={(e) => {e.stopPropagation();}} injClass="!absolute bg-white/80 rounded-2xl p-0 shadow z-99 text-gray-500 !top-[-5px] !left-[-5px] text-sm" size="22" name="ri-close-line"></Icon>
+    {/if}
+    <Grids cols={5} mx="0" my="0" gap="2">
+        <Grid row={2}>
+            <div
+                class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10"
+            >
+                <div class="flex justify-center">
+                    <Switch inside="slot" radius="full" check={!!$appConfig.bgColor} on:change={changeColorFun}>
+                        <div slot="false">
+                            <Icon name="ri-paint-brush-line" size={12} />
+                        </div>
+                        <div slot="true">
+                            <Icon name="ri-paint-brush-fill" size={12} theme />
+                        </div>
+                    </Switch>
+                </div>
+                <div>彩 色</div>
             </div>
-            <div>彩 色</div>
-        </div>
-    </Grid>
-    <Grid row={2} col={2}>
-        <div class="bg-white dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-center shadow dark:shadow-white/10">
-            <Button fill="lineTheme" radius="full" on:click={changeDeviceFun}>切换设备</Button>
-        </div>
-    </Grid>
-    <Grid row={2} col={2}>
-        <div class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex justify-around shadow dark:shadow-white/10 py-1">
-            <div class="flex flex-col justify-center">
-                {#if currentDevice === 'iOS'}
-                    <Icon name="ri-apple-fill" size={30} />
-                {:else if currentDevice === 'Android'}
-                    <Icon name="ri-android-fill" size={30} />
-                {:else if currentDevice === 'Windows'}
-                    <Icon name="ri-windows-fill" size={30} />
-                {:else if currentDevice === 'macOS'}
-                    <Icon name="ri-command-fill" size={30} />
-                {:else}
-                    <Icon name="ri-ubuntu-fill" size={30} />
-                {/if}
+        </Grid>
+        <Grid row={2} col={2}>
+            <div class="bg-white dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-center shadow dark:shadow-white/10">
+                <Button fill="lineTheme" radius="full" on:click={changeDeviceFun}>切换设备</Button>
             </div>
-            <div class="flex flex-col justify-around">
-                <div class="text-sm">
+        </Grid>
+        <Grid row={2} col={2}>
+            <div class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex justify-around shadow dark:shadow-white/10 py-1">
+                <div class="flex flex-col justify-center">
                     {#if currentDevice === 'iOS'}
-                        A17 Bionic
+                        <Icon name="ri-apple-fill" size={30} />
                     {:else if currentDevice === 'Android'}
-                        骁龙8 Gen3
+                        <Icon name="ri-android-fill" size={30} />
                     {:else if currentDevice === 'Windows'}
-                        AMD Intel
+                        <Icon name="ri-windows-fill" size={30} />
                     {:else if currentDevice === 'macOS'}
-                        M2 Ultra
+                        <Icon name="ri-command-fill" size={30} />
                     {:else}
-                        Intel
+                        <Icon name="ri-ubuntu-fill" size={30} />
                     {/if}
+                </div>
+                <div class="flex flex-col justify-around">
+                    <div class="text-sm">
+                        {#if currentDevice === 'iOS'}
+                            A17 Bionic
+                        {:else if currentDevice === 'Android'}
+                            骁龙8 Gen3
+                        {:else if currentDevice === 'Windows'}
+                            AMD Intel
+                        {:else if currentDevice === 'macOS'}
+                            M2 Ultra
+                        {:else}
+                            Intel
+                        {/if}
+                    </div>
+                    <div>
+                        {#if currentDevice === 'iOS'}
+                            iPhone
+                        {:else if currentDevice === 'Android'}
+                            Android
+                        {:else if currentDevice === 'Windows'}
+                            Windows
+                        {:else if currentDevice === 'macOS'}
+                            MacBook Pro
+                        {:else}
+                            Ubuntu
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </Grid>
+        <Grid row={2}>
+            <div
+                class="bg-white dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10 py-1"
+            >
+                <div>
+                    <Icon name="ri-sun-line" size={20} />
                 </div>
                 <div>
-                    {#if currentDevice === 'iOS'}
-                        iPhone
-                    {:else if currentDevice === 'Android'}
-                        Android
-                    {:else if currentDevice === 'Windows'}
-                        Windows
-                    {:else if currentDevice === 'macOS'}
-                        MacBook Pro
-                    {:else}
-                        Ubuntu
-                    {/if}
+                    <div>68%</div>
                 </div>
             </div>
-        </div>
-    </Grid>
-    <Grid row={2}>
-        <div
-            class="bg-white dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10 py-1"
-        >
-            <div>
-                <Icon name="ri-sun-line" size={20} />
+        </Grid>
+        <Grid row={6}>
+            <div class="bg-white dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10">
+                <div>92%</div>
+                <div class="animate-pulse">
+                    <Icon name="ri-battery-2-charge-line" size={30} injClass="text-extend1" />
+                </div>
+                <div>充电中</div>
             </div>
-            <div>
-                <div>68%</div>
+        </Grid>
+        <Grid row={2}>
+            <div class="bg-white dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-center shadow dark:shadow-white/10">
+                {#if currentDevice === 'iOS'}
+                    <Icon name="ri-smartphone-line" size={30} />
+                {:else if currentDevice === 'Android'}
+                    <Icon name="ri-tablet-line" size={30} />
+                {:else if currentDevice === 'Windows'}
+                    <Icon name="ri-computer-line" size={30} />
+                {:else if currentDevice === 'macOS'}
+                    <Icon name="ri-macbook-fill" size={30} />
+                {:else}
+                    <Icon name="ri-ubuntu-line" size={30} />
+                {/if}
             </div>
-        </div>
-    </Grid>
-    <Grid row={6}>
-        <div class="bg-white dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10">
-            <div>92%</div>
-            <div class="animate-pulse">
-                <Icon name="ri-battery-2-charge-line" size={30} injClass="text-extend1" />
+        </Grid>
+        <Grid row={2}>
+            <div
+                class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10"
+            >
+                <div class="flex justify-center">
+                    <Switch inside="slot" radius="full">
+                        <div slot="false">
+                            <Icon name="ri-wifi-off-line" size={12} />
+                        </div>
+                        <div slot="true">
+                            <Icon name="ri-wifi-line" size={12} theme />
+                        </div>
+                    </Switch>
+                </div>
+                <div>Wi-Fi</div>
             </div>
-            <div>充电中</div>
-        </div>
-    </Grid>
-    <Grid row={2}>
-        <div class="bg-white dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-center shadow dark:shadow-white/10">
-            {#if currentDevice === 'iOS'}
-                <Icon name="ri-smartphone-line" size={30} />
-            {:else if currentDevice === 'Android'}
-                <Icon name="ri-tablet-line" size={30} />
-            {:else if currentDevice === 'Windows'}
-                <Icon name="ri-computer-line" size={30} />
-            {:else if currentDevice === 'macOS'}
-                <Icon name="ri-macbook-fill" size={30} />
-            {:else}
-                <Icon name="ri-ubuntu-line" size={30} />
-            {/if}
-        </div>
-    </Grid>
-    <Grid row={2}>
-        <div
-            class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10"
-        >
-            <div class="flex justify-center">
-                <Switch inside="slot" radius="full">
-                    <div slot="false">
-                        <Icon name="ri-wifi-off-line" size={12} />
-                    </div>
-                    <div slot="true">
-                        <Icon name="ri-wifi-line" size={12} theme />
-                    </div>
-                </Switch>
+        </Grid>
+        <Grid row={2}>
+            <div
+                class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10"
+            >
+                <div class="flex justify-center">
+                    <Switch inside="slot" radius="full">
+                        <div slot="false">
+                            <Icon name="ri-bluetooth-line" size={12} top={-1} />
+                        </div>
+                        <div slot="true">
+                            <Icon name="ri-bluetooth-connect-line" size={12} theme top={-1} />
+                        </div>
+                    </Switch>
+                </div>
+                <div>蓝 牙</div>
             </div>
-            <div>Wi-Fi</div>
-        </div>
-    </Grid>
-    <Grid row={2}>
-        <div
-            class="bg-white dark:bg-black p-1 h-full rounded-xl text-xs text-center flex flex-col justify-around shadow dark:shadow-white/10"
-        >
-            <div class="flex justify-center">
-                <Switch inside="slot" radius="full">
-                    <div slot="false">
-                        <Icon name="ri-bluetooth-line" size={12} top={-1} />
-                    </div>
-                    <div slot="true">
-                        <Icon name="ri-bluetooth-connect-line" size={12} theme top={-1} />
-                    </div>
-                </Switch>
+        </Grid>
+        <Grid row={4} col={1}>
+            <div role="none" on:click={(e) => {e.stopPropagation();goto('/cates/realtime')}} class="bg-white dark:bg-black p-1 h-full rounded-xl text-md font-bold text-center text-gray-800 flex justify-around items-center shadow dark:shadow-white/10">
+                <Icon name="ri-newspaper-line" />
+                <span
+                >新闻动态</span>
             </div>
-            <div>蓝 牙</div>
-        </div>
-    </Grid>
-    <Grid row={4} col={1}>
-        <div role="none" on:click={(e) => {e.stopPropagation();goto('/cates/realtime')}} class="bg-white dark:bg-black p-1 h-full rounded-xl text-md font-bold text-center text-gray-800 flex justify-around items-center shadow dark:shadow-white/10">
-            <Icon name="ri-newspaper-line" />
-            <span
-            >新闻动态</span>
-        </div>
-    </Grid>
-    <Grid row={4} col={2}>
-        <div role="none" on:click={(e) => {e.stopPropagation();goto('/mall')}} on:click={(e) => e.stopPropagation()} class="bg-white dark:bg-black p-1 h-full rounded-xl text-xl font-bold text-center text-gray-800 flex justify-around justify-center shadow dark:shadow-white/10 items-center">
-            <Icon name="ri-award-line" />
-            <span>品牌推荐</span>
-        </div>
-    </Grid>
-    <Grid row={4} col={1}>
-        <div role="none" on:click={(e) => {e.stopPropagation();goto('/cates/wallpaper/83')}} on:click={(e) => e.stopPropagation()} class="bg-white dark:bg-black p-1 h-full rounded-xl text-md font-bold text-center text-gray-800 flex flex-col items-center justify-around shadow dark:shadow-white/10">
-            <Icon name="ri-folder-image-line" />
-            <span>在线壁纸</span>
-        </div>
-    </Grid>
-</Grids>
+        </Grid>
+        <Grid row={4} col={2}>
+            <div role="none" on:click={(e) => {e.stopPropagation();goto('/mall')}} on:click={(e) => e.stopPropagation()} class="bg-white dark:bg-black p-1 h-full rounded-xl text-xl font-bold text-center text-gray-800 flex justify-around justify-center shadow dark:shadow-white/10 items-center">
+                <Icon name="ri-award-line" />
+                <span>品牌推荐</span>
+            </div>
+        </Grid>
+        <Grid row={4} col={1}>
+            <div role="none" on:click={(e) => {e.stopPropagation();goto('/cates/wallpaper/83')}} on:click={(e) => e.stopPropagation()} class="bg-white dark:bg-black p-1 h-full rounded-xl text-md font-bold text-center text-gray-800 flex flex-col items-center justify-around shadow dark:shadow-white/10">
+                <Icon name="ri-folder-image-line" />
+                <span>在线壁纸</span>
+            </div>
+        </Grid>
+    </Grids>
+</div>

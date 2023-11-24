@@ -1,9 +1,11 @@
 <script>
     import { Grid } from 'stdf';
-    import { onMount, onDestroy } from 'svelte'
+    import { onMount, onDestroy } from 'svelte';
+    import { Icon } from '$lib/components';
     export let row = 2;
     export let col = 1;
     export let injClass = 'text-purple-600 !bg-gray-800';
+    export let closeable = false;
     $: canvas = {};
     let timer = null;
     onMount(() => {
@@ -11,17 +13,6 @@
         // console.log(ctx);
         //
         function drawPanel() {
-            // ======
-            // ctx.translate(150, 150);
-            // ctx.beginPath();
-            // ctx.arc(0, 0, 130, 0, 2 * Math.PI);
-            // ctx.fillStyle = "gray";
-            // ctx.fill()
-
-            // 清空画布
-            // ctx.clearRect(0, 0, 300, 300)
-            // // 保存canvas的状态（默认状态）
-            // ctx.save()
 
             // 将坐标原点移至画布中心
             ctx.translate(150, 150)
@@ -30,22 +21,6 @@
             ctx.fillStyle = "white";
             ctx.fill()
 
-            // 绘制数字
-            // ctx.font = '30px Arial'
-            // ctx.textAlign = 'center'
-            // ctx.textBaseline = 'middle'
-            // ctx.fillText('12', 0, -110)
-            // ctx.fillText('6', 0, 110)
-            // ctx.fillText('3', 110, 0)
-            // ctx.fillText('9', -110, 0)
-            // ctx.fillText('1', 55, -95)
-            // ctx.fillText('2', 95, -55)
-            // ctx.fillText('4', 95, 55)
-            // ctx.fillText('5', 55, 95)
-            // ctx.fillText('7', -55, 95)
-            // ctx.fillText('8', -95, 55)
-            // ctx.fillText('10', -95, -55)
-            // ctx.fillText('11', -55, -95)
 
             // 绘制刻度
             for(let i = 0; i < 60; i++) {
@@ -133,15 +108,7 @@
             ctx.stroke();
             ctx.restore();
         }
-    
-        /* ctx.clearRect(0, 0, ctx.width, ctx.height);
-        var time = new Date();
-        var hours = time.getHours();
-        var minutes = time.getMinutes();
-        var seconds = time.getSeconds();
-        minuteHand(minutes);
-        secondHand(seconds);
-        hourHand(hours, minutes); */
+
         function update() {
             var time = new Date();
             var hours = time.getHours();
@@ -175,8 +142,11 @@
 </style>
 <Grid {row} {col}>
     <div
-        class="{injClass} h-full bg-white dark:bg-black py-0 h-full rounded-xl text-xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
+        class="{injClass} {closeable && 'animate-shake'} relative h-full bg-white dark:bg-black py-0 h-full rounded-xl text-xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
     >
+        {#if closeable}
+        <Icon on:click={(e) => {e.stopPropagation();}} injClass="!absolute bg-white/80 rounded-2xl p-0 shadow z-99 text-gray-500 !top-[-5px] !left-[-5px] text-sm" size="22" name="ri-close-line"></Icon>
+        {/if}
         <canvas width="300" height="300" bind:this={canvas} id="canvas"></canvas>
     </div>
 </Grid>

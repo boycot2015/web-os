@@ -2,10 +2,12 @@
     import { Grid } from 'stdf';
     import { day as dayApp } from '$lib/appConfig';
     import { appConfig } from '@/store';
-    
+    import { goto } from '$app/navigation';
+    import { Icon } from '$lib/components';
     export let injClass = 'text-purple-600 bg-gray-200';
     export let row = 3;
     export let col = 1;
+    export let closeable = false;
     //获取当前时间
     const date = new Date();
     const day = date.getDate();
@@ -16,15 +18,24 @@
     const monthIndex = date.getMonth();
     $: month = monthArr[monthIndex];
     $: weekDay = week[date.getDay()];
+    const handleClick = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        $appConfig.app = dayApp;
+        goto(`/micro/${dayApp.url}/${dayApp.text}/${dayApp.icon}`)
+    }
 </script>
 <Grid {row} {col}>
-    <a
-        on:click={(e) => {e.stopPropagation();$appConfig.app = dayApp;}}
-        href="/micro/{dayApp.url}/{dayApp.text}/{dayApp.icon}"
-        class="flex {injClass} h-full flex-col justify-between dark:bg-black py-5 h-full rounded-xl text-xs text-center shadow dark:shadow-white/10"
+    <div
+        role="none"
+        on:click={handleClick}
+        class="relative flex {closeable && 'animate-shake'} {injClass} h-full flex-col justify-between dark:bg-black py-5 h-full rounded-xl text-xs text-center shadow dark:shadow-white/10"
     >
+        {#if closeable}
+        <Icon on:click={(e) => {e.stopPropagation();}} injClass="!absolute bg-white/80 rounded-2xl p-0 shadow z-99 text-gray-500 !top-[-5px] !left-[-5px] text-sm" size="22" name="ri-close-line"></Icon>
+        {/if}
         <div>{weekDay}</div>
         <div class="text-5xl py-5">{day}</div>
         <div class="text-md">{month}</div>
-    </a>
+    </div>
 </Grid>

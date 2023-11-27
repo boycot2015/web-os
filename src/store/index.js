@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
 import { http } from '$lib/request';
 import config from '@/lib/config';
+import appsConf from '$lib/appConfig';
+const { apps = [], docks = [], components = [] } = appsConf
 export const setBgColor = (bgUrl) => {
     document.body.style.backgroundImage = `url(${bgUrl})`;
     document.body.style.backgroundPosition = 'center';
@@ -36,7 +38,7 @@ function appData () {
     } catch (error) {
         // console.log(error);
     }
-	const { subscribe, update } = writable({ ...config || {}, ...local });
+	const { subscribe, update } = writable({ ...config || {}, apps, components, docks, ...local  });
 	return {
 		subscribe,
 		set: async (res) => {

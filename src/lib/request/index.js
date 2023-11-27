@@ -7,7 +7,7 @@ const TIMEOUT = 3000000
 const CancelToken = new axios.CancelToken(cancel => cancel())
 const ERRORS = {
     'Network Error': '网络错误，请检查网络',
-    '99999': '系统繁忙，请稍后再试！',
+    99999: '系统繁忙，请稍后再试！',
     [`timeout of ${TIMEOUT}ms exceeded`]: '请求超时，服务器未响应',
     'Internal Server Error': '请求服务器错误',
     'Request failed with status code 502': '请求服务器错误',
@@ -19,8 +19,8 @@ const removeHttpPending = (config, isRemove = true) => {
     if (!config || !config.headers.method) {
         return false
     }
-    let key = config.headers.method
-    let val = typeof config.data === 'object' ? JSON.stringify(config.data) : config.data
+    const key = config.headers.method
+    const val = typeof config.data === 'object' ? JSON.stringify(config.data) : config.data
     if (httpPending[key] === val) {
         isRemove ? delete httpPending[key] : console.warn(`[${key}]: repeated http request`)
         return true
@@ -65,7 +65,7 @@ service.interceptors.request.use(
         }
         if (config.method === 'get') {
             // 遍历get请求参数中含有数组参数转化成字符串传参
-            for (var key in config.data) {
+            for (const key in config.data) {
                 if (config.data[key] instanceof Array) {
                     config.data[key] = config.data[key].toString()
                 }
@@ -101,7 +101,7 @@ service.interceptors.response.use(
         // if (response.data instanceof Blob) {
         //     return response.data
         // }
-        let { code } = response.data
+        const { code } = response.data
         if (code === '00000') {
             return response.data
         }
@@ -110,11 +110,11 @@ service.interceptors.response.use(
     error => {
         // 请求异常处理, 如网络错误、http 500
         removeHttpPending(error.config)
-        let msg = error.message
+        const msg = error.message
         if (msg) {
             error.message = ERRORS[msg] || msg
         }
-        let data = {
+        const data = {
             success: false,
             code: 500,
             message: error.message
@@ -154,7 +154,7 @@ export const http = (url, data, opt) => {
     const reg2 = /[^\{}]*\{(.*)\}[^\}]*/ // 匹配{}
     let methodName = 'get'
     if (regex2.test(url)) {
-        let domainName = url.match(regex2)[0].replace(reg2, '$1')
+        const domainName = url.match(regex2)[0].replace(reg2, '$1')
         proxy[domainName] && (url = url.replace(regex2, proxy[domainName]))
     } else {
         url = `${proxy.baseUrl || ''}${url}`

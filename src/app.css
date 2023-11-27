@@ -1,3 +1,39 @@
+:root {
+    /* 初始 CSS 变量 */
+    --theme-color-primary-50: 245, 255, 249;
+    --theme-color-primary-100: 232, 255, 243;
+    --theme-color-primary-200: 173, 238, 205;
+    --theme-color-primary-300: 120, 220, 174;
+    --theme-color-primary-400: 74, 203, 147;
+    --theme-color-primary-500: 34, 185, 125;
+    --theme-color-primary: 0, 168, 107;
+    --theme-color-primary-700: 0, 145, 97;
+    --theme-color-primary-800: 0, 122, 86;
+    --theme-color-primary-900: 0, 99, 73;
+    --theme-color-primary-950: 0, 77, 59;
+    --theme-color-dark-50: 255, 254, 251;
+    --theme-color-dark-100: 255, 252, 232;
+    --theme-color-dark-200: 255, 252, 213;
+    --theme-color-dark-300: 255, 252, 195;
+    --theme-color-dark-400: 255, 254, 176;
+    --theme-color-dark-500: 253, 255, 158;
+    --theme-color-dark: 249, 255, 139;
+    --theme-color-dark-700: 200, 210, 86;
+    --theme-color-dark-800: 152, 166, 45;
+    --theme-color-dark-900: 105, 121, 17;
+    --theme-color-dark-950: 62, 77, 0;
+    --theme-color-primaryBlack: 1, 25, 16;
+    --theme-color-primaryWhite: 242, 243, 242;
+    --theme-color-darkBlack: 24, 25, 1;
+    --theme-color-darkWhite: 243, 243, 242;
+    --theme-color-functional-success: 103, 194, 58;
+    --theme-color-functional-warning: 230, 162, 60;
+    --theme-color-functional-error: 245, 108, 108;
+    --theme-color-functional-info: 144, 147, 153;
+    --theme-color-extend0: 176, 102, 8;
+    --theme-color-extend1: 152, 61, 97;
+    --theme-color-extend2: 144, 0, 32;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

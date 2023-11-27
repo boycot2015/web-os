@@ -6,17 +6,19 @@
 <script>
     import { onMount, onDestroy } from 'svelte';
     import { Mask, Input } from 'stdf';
+    import * as stdfComs from 'stdf';
     import { appConfig, setBgColor } from '@/store';
     import Swiper from '$lib/components/Swiper.svelte';
     import Modal from '$lib/components/Modal.svelte';
     import { fly, scale } from 'svelte/transition';
-    import appsConf from '$lib/appConfig';
     import Bars from '$lib/components/apps/grid.svelte';
     import { Icon, BottomSheet } from '$lib/components';
+    import * as coms from '$lib/components/apps'
+    import GridList from '$lib/components/apps/grid.svelte'
     $: visible = false;
     $: modal = $appConfig.modal;
     $: mask = $appConfig.mask;
-    const { apps = [], docks = [], components = [] } = appsConf
+    const { apps = [], docks = [], components = [] } = JSON.parse(JSON.stringify($appConfig))
     let md = false;
     let lg = false;
     let xl = false;
@@ -38,6 +40,7 @@
     let ssr = data.ssr;
     let appData = [];
     let docksData = [];
+    let componentsData = {};
     let pressTime = 0;
     let pressInterval = null;
     let componentsVisible = false;
@@ -47,28 +50,23 @@
         appConfig.set({ index: e.detail })
     }
     const sortAppData = (apps, props) => {
-        return apps.map(app => {
+        return apps.map((app, index) => {
             if (app.props) {
-                if (md || lg || xl) {
-                    if (app.props && app.props.cols >= 12) {
-                        app.col = 12
-                    }
-                    if (app.props && app.props.modal && app.props.modal.props) {
+                if (app.props && app.props.modal && app.props.modal.props) {
+                    if (md || lg || xl) {
+                        if (app.props && app.props.cols >= 12) {
+                            app.col = 12
+                        }
                         app.props.modal.props.cols = props.cols || app.props.modal.props.cols
                         app.props.modal.props.gap = props.gap || app.props.modal.props.gap
-                        if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
-                            app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, props)
-                        }
                     }
-                } else {
-                    if (app.props && app.props.modal && app.props.modal.props) {
-                        if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
-                            app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, props)
-                        }
+                    if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
+                        app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, {...props, index: (props.index||0) + '' + index})
                     }
+                    typeof app.props.modal.component === 'string' && (app.props.modal.component = coms.default[app.props.modal.component] ||stdfComs[app.props.modal.component]|| GridList)
                 }
                 if (app.props.apps && app.props.apps.length) {
-                    app.props.apps = sortAppData(app.props.apps, {...props, closeable: props.closeable && !app.props.modal })
+                    app.props.apps = sortAppData(app.props.apps, {...props, index: (props.index||0) + '' + index, closeable: props.closeable && !app.props.modal })
                 }
                 for (const key in props) {
                     if (Object.hasOwnProperty.call(app.props, key)) {
@@ -76,7 +74,8 @@
                     }
                 }
             }
-            return { ...app, ...props }
+            typeof app.component === 'string' && (app.component = coms.default[app.component]||stdfComs[app.component]||GridList)
+            return { ...app, ...props, index: (props.index||0) + '' + index }
         })
     }
     onMount(() => {
@@ -93,24 +92,28 @@
             cols = xl ? 12 : lg ? 8 : 4
             gap = xl ? 8 : lg ? 2 : 4
             appData = apps.map((el, index) => {
-                if (md || lg || xl) {
-                    if (el.props) {
+                if (el.props) {
+                    if (md || lg || xl) {
                         el.props.apps = el.props.apps.filter(app => !app.component || !index || index === apps.length - 1)
-                        el.props.apps = sortAppData(el.props.apps, { cols, gap })
                         el.props.cols = cols
+                        el.props.apps = sortAppData(el.props.apps, { cols, gap, index })
                         el.props.gap = gap
+                    } else {
+                        el.props.apps = sortAppData(el.props.apps, { index })
                     }
-                    return el
                 }
+                typeof el.component === 'string' && (el.component = coms.default[el.component] ||stdfComs[el.component]|| GridList)
                 return el
             })
-            docksData = docks.slice(0, cols);
+            docksData = docks.slice(0, cols).map(el => ({...el, component: typeof el.component === 'string' ? coms.default[app.component] ||stdfComs[app.component]|| GridList : el.component }));
+            componentsData = {...components, component: GridList, props: {...components.props, apps: sortAppData(components.props.apps, { cols, gap })}}
             $appConfig.md = md
             $appConfig.lg = lg
             $appConfig.xl = lg
             $appConfig.cols = cols
             $appConfig.gap = gap
             $appConfig.clientWidth = clientWidth
+            console.log(appData, 'appData')
         }, 100);
         $appConfig.bgUrl && setBgColor($appConfig.bgUrl)
         $appConfig.modal = ''
@@ -121,7 +124,7 @@
         if ((pressTime < 5 && props.closeable) || !$appConfig.editable) {
             return
         }
-        appData = apps.map((el, index) => {
+        appData = appData.map((el, index) => {
             if (el.props) {
                 el.props.apps = sortAppData(el.props.apps, props)
             }
@@ -157,6 +160,7 @@
     .indicate, .container {
         height: 100%;
         user-select: none;
+        min-height: 100vh;
         max-width: 100% !important;
         // max-width: 750px !important;
     }
@@ -166,7 +170,7 @@
     }
 </style>
 <!-- style="background: url({$appConfig.bgUrl}) center/cover no-repeat;" -->
-<div class="indicate pb-0 pt-0 {$appConfig.bgColor}">
+<div class="indicate pb-0 pt-0 {$appConfig.bgColor}" style="background: url({$appConfig.bgUrl}) center/cover no-repeat;">
     {#if $appConfig.editable}
         {#if $appConfig.index !==apps.length - 1}
             <div class="fixed text-lg bg-white/30 text-black rounded-2xl px-3 left-3 top-1.5"
@@ -189,7 +193,7 @@
         }} style="z-index:4;">完成</div>
     {/if}
     {#if !ssr && (!$appConfig.modal || ($appConfig.modal && !$appConfig.modal.props.visible))}
-        <div class="container relative" bind:this={container} transition:scale={{start: 0.8, duration: 500 }} style="z-index: 3;" role="none"
+        <div transition:scale={{opacity: 0.3, start: 0.8, duration: 500 }} class="container relative" bind:this={container} style="z-index: 3;" role="none"
             on:click={(e) => {
                 pressTime = 0;
                 e.preventDefault();
@@ -221,7 +225,7 @@
             <div slot="title" class="search-box px-4">
                 <Input radius="2xl" value={keyword} placeholder="搜索小组件"></Input>
             </div>
-            <svelte:component this={components.component} {...components.props} injClass='!px-6 !pt-3 !pb-[6rem] rounded-2xl'></svelte:component>
+            <svelte:component this={componentsData.component} {...componentsData.props} injClass='!px-6 !pt-3 !pb-[6rem] rounded-2xl'></svelte:component>
         </BottomSheet>
     {/if}
     {#if modal}

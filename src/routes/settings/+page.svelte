@@ -69,6 +69,6 @@
             </div>
         {/if}
     {/each}
-    <Button injClass="mt-8 text-lg rounded-xl !px-0" on:click={() => visible = true}>恢复出厂设置</Button>
-    <Dialog bind:visible title="温馨提示" popup={{ px: '10', radius: '2xl' }} btnGap={8} primaryText="重置" primaryButton={{type: 'danger'}} on:primary={() => {appConfig.set({ ...config });goto('/')}} content="确认清除所有数据包括本地用户信息？"></Dialog>
+    <Button state="error" injClass="mt-8 text-lg rounded-xl !px-0" on:click={() => visible = true}>恢复出厂设置</Button>
+    <Dialog bind:visible title="温馨提示" popup={{ px: '10', radius: '2xl' }} btnGap={8} primaryText="重置" primaryButton={{state: 'warning'}} on:primary={() => {appConfig.set({ ...config });goto('/')}} content="确认清除所有数据包括本地用户信息？"></Dialog>
 </div>

@@ -1,11 +1,3 @@
-import gridList from '$lib/components/apps/grid.svelte'
-import groupList from '$lib/components/apps/group.svelte'
-import Day from '$lib/components/apps/day.svelte'
-import Clock from '$lib/components/apps/clock.svelte'
-import Weather from '$lib/components/apps/weather.svelte'
-import Theme from '$lib/components/apps/theme.svelte'
-import DeviceInfo from '$lib/components/apps/deviceInfo.svelte'
-import { Input, Cell } from 'stdf';
 const getDate = () => {
     //获取当前时间
     const date = new Date();
@@ -22,7 +14,7 @@ const grid = {
     x2: {row: 1, col: 2, size: 36, hideTitle: true, injClass: 'p-4 text-sm'},
     sm2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white text-sm', injClass: '!p-1 text-sm'}
 }
-export const clock = {icon: '', component: Clock, text: '时钟', desc: '秒钟', url: '', bgColor: 'bg-white', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none', closeable: false, readOnly: true }
+export const clock = {icon: '', component: 'Clock', text: '时钟', desc: '秒钟', url: '', bgColor: 'bg-white', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none', closeable: false, readOnly: true }
 export const taobao = {icon: 'ri-taobao-line', text: '淘宝', desc: '太好逛了吧', url: 'https://m.taobao.com/', bgColor: 'bg-white', color: 'text-orange-500', closeable: false}
 export const qzone = {icon: 'ri-star-smile-fill', text: 'QQ空间', desc: '分享喜悦，留住感动', url: 'https://qzone.qq.com/', bgColor: 'bg-white', color: 'text-yellow-500', closeable: false}
 export const news = {icon: 'ri-newspaper-line', text: '新闻头条', desc: '看见更大的世界', url: 'http://news.boycot.top/', bgColor: 'bg-red-500', color: 'text-white', closeable: false}
@@ -59,14 +51,14 @@ export default {
             index: 0,
             name: '负一屏',
             type: 'component',
-            component: gridList,
+            component: 'GridList',
             props: {
                 apps: [
-                    { type: 'component', component: DeviceInfo, row: 4, col: 4, props: { closeable: false } },
-                    { type: 'component', component: Day, row: 4, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]', closeable: false} },
-                    { type: 'component', component: Clock, row: 4, col: 2, props: { closeable: false } },
-                    { type: 'component', component: Weather, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]', closeable: false}},
-                    { type: 'component', component: Theme, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]', closeable: false}},
+                    { type: 'component', component: 'DeviceInfo', row: 4, col: 4, props: { closeable: false } },
+                    { type: 'component', component: 'Day', row: 4, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]', closeable: false} },
+                    { type: 'component', component: 'Clock', row: 4, col: 2, props: { closeable: false } },
+                    { type: 'component', component: 'Weather', row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]', closeable: false}},
+                    { type: 'component', component: 'Theme', row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]', closeable: false}},
                 ]
             }
         },
@@ -74,11 +66,11 @@ export default {
             index: 1,
             name: '首页',
             type: 'component',
-            component: gridList,
+            component: 'GridList',
             props: {
                 apps: [
-                    { type: 'component', component: Clock, row: 4, col: 2, props: { closeable: false } },
-                    { type: 'component', component: Weather, row: 4, col: 2, props: {injClass: 'text-white bg-gray-500', closeable: false}},
+                    { type: 'component', component: 'Clock', row: 4, col: 2, props: { closeable: false } },
+                    { type: 'component', component: 'Weather', row: 4, col: 2, props: {injClass: 'text-white bg-gray-500', closeable: false}},
                     qq,
                     wechat,
                     alipay,
@@ -102,11 +94,11 @@ export default {
             index: 2,
             name: '自定义页面',
             type: 'component',
-            component: gridList,
+            component: 'GridList',
             props: {
                 apps: [
                     { type: 'component',
-                        component: groupList,
+                        component: 'Group',
                         row: 4,
                         col: 2,
                         props: {
@@ -116,7 +108,7 @@ export default {
                                     index: 0,
                                     name: '日历',
                                     type: 'component',
-                                    component: Day,
+                                    component: 'Day',
                                     props: {
                                         injClass: 'text-white w-full h-full bg-red-500 !py-5',
                                     }
@@ -125,13 +117,13 @@ export default {
                                     index: 1,
                                     name: '时钟',
                                     type: 'component',
-                                    component: Clock,
+                                    component: 'Clock',
                                 },
                                 {
                                     index: 2,
                                     name: '天气',
                                     type: 'component',
-                                    component: Weather,
+                                    component: 'Weather',
                                     props: {
                                         injClass: 'text-white w-full h-full bg-blue-500 !py-6',
                                     }
@@ -139,7 +131,7 @@ export default {
                             ]
                         }
                     },
-                    { type: 'component', component: Weather, row: 4, col: 2, props: {injClass: 'text-white bg-gray-500'}},
+                    { type: 'component', component: 'Weather', row: 4, col: 2, props: {injClass: 'text-white bg-gray-500'}},
                     clock,
                     news,
                     alipay,
@@ -159,14 +151,14 @@ export default {
             index: 3,
             name: '应用列表',
             type: 'component',
-            component: gridList,
+            component: 'GridList',
             props: {
                 injClass: '!p-6',
                 gap: 4,
                 apps: [
                     { 
                         type: 'component',
-                        component: gridList,
+                        component: 'GridList',
                         row: 4, col: 4,
                         props: {
                             cols: 12,
@@ -174,7 +166,7 @@ export default {
                             apps: [
                                 { 
                                     type: 'component',
-                                    component: Input,
+                                    component: 'Input',
                                     row: 4,
                                     col: 12,
                                     url: '/apps',
@@ -190,7 +182,7 @@ export default {
                     {
                         title: '社交',
                         type: 'component',
-                        component: gridList,
+                        component: 'GridList',
                         row: 4, col: 2,
                         props: {
                             gap: 4,
@@ -205,7 +197,7 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: gridList,
+                        component: 'GridList',
                         row: 4, col: 2,
                         title: '理财',
                         props: {
@@ -218,10 +210,10 @@ export default {
                                 {
                                     row: 1, col: 2,
                                     type: 'component',
-                                    component: gridList,
+                                    component: 'GridList',
                                     props: {
                                         modal: {
-                                            component: gridList,
+                                            component: 'GridList',
                                             props: {
                                                 title: '理财',
                                                 visible: false,
@@ -256,7 +248,7 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: gridList,
+                        component: 'GridList',
                         row: 4, col: 2,
                         title: '娱乐',
                         props: {
@@ -269,10 +261,10 @@ export default {
                                 { 
                                     row: 1, col: 2,
                                     type: 'component',
-                                    component: gridList,
+                                    component: 'GridList',
                                     props: {
                                         modal: {
-                                            component: gridList,
+                                            component: 'GridList',
                                             props: {
                                                 title: '娱乐',
                                                 visible: false,
@@ -309,7 +301,7 @@ export default {
                     {
                         title: '购物',
                         type: 'component',
-                        component: gridList,
+                        component: 'GridList',
                         row: 4, col: 2,
                         props: {
                             gap: 4,
@@ -344,20 +336,20 @@ export default {
         index: 3,
         name: '组件列表',
         type: 'component',
-        component: gridList,
+        component: 'GridList',
         props: {
             injClass: '!p-6',
             gap: 4,
             apps: [
-                { type: 'component', name: '设备管理', isComponent: true, component: DeviceInfo, row: 4, col: 4 },
-                { type: 'component', name: '日历', isComponent: true, component: Day, row: 4, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]'} },
-                { type: 'component', name: '时钟', isComponent: true, component: Clock, row: 4, col: 2 },
-                { type: 'component', name: '天气', isComponent: true, component: Weather, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]'}},
-                { type: 'component', name: '主题设置', isComponent: true, component: Theme, row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]'}},
+                { type: 'component', name: '设备管理', isComponent: true, component: 'DeviceInfo', row: 4, col: 4 },
+                { type: 'component', name: '日历', isComponent: true, component: 'Day', row: 4, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]'} },
+                { type: 'component', name: '时钟', isComponent: true, component: 'Clock', row: 4, col: 2 },
+                { type: 'component', name: '天气', isComponent: true, component: 'Weather', row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]'}},
+                { type: 'component', name: '主题设置', isComponent: true, component: 'Theme', row: 4, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]'}},
                 {
                     type: 'component',
                     name: taobao.text || '',
-                    component: Cell, row: 4, col: 4, cols: 1,
+                    component: 'Cell', row: 4, col: 4, cols: 1,
                     props: {
                         title: taobao.text || '',
                         injClass: 'text-xl !m-0',
@@ -367,7 +359,7 @@ export default {
                 {
                     type: 'component',
                     name: alipay.text || '',
-                    component: Cell, row: 4, col: 4, cols: 1,
+                    component: 'Cell', row: 4, col: 4, cols: 1,
                     props: {
                         title: alipay.text || '',
                         injClass: 'text-xl !m-0',
@@ -377,7 +369,7 @@ export default {
                 {
                     type: 'component',
                     name: wallet.text || '',
-                    component: Cell, row: 4, col: 4, cols: 1,
+                    component: 'Cell', row: 4, col: 4, cols: 1,
                     props: {
                         title: wallet.text || '',
                         injClass: 'text-xl !m-0',

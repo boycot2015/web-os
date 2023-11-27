@@ -4,7 +4,7 @@
     import { createEventDispatcher } from 'svelte'
     import { appConfig } from '@/store';
     import { cubicInOut } from 'svelte/easing';
-    import appList from '$lib/components/apps/grid.svelte'
+    import appList from '$lib/components/apps'
     const dispatch = createEventDispatcher();
     export let apps = [];
     export let injClass = '';
@@ -113,7 +113,7 @@
                                 <svelte:component {...app.props || {}} this={app.component}></svelte:component>
                             {/if}
                             {#if app.closeable && !app.readOnly}
-                                <Icon on:click={(e) => {e.stopPropagation();app.hidden = true}} injClass="!absolute bg-white/80 rounded-2xl p-0 shadow z-99 text-gray-500 !top-[-5px] !left-[-5px] text-sm" size="22" name="ri-close-line"></Icon>
+                                <Icon on:click={(e) => {e.stopPropagation();app.hidden = true}} injClass="!absolute bg-white/80 rounded-2xl p-0 shadow z-99999 text-gray-500 !top-[-5px] !left-[-5px] text-sm" size="22" name="ri-close-line"></Icon>
                             {/if}
                         </div>
                         {#if app.text && !app.hideTitle}

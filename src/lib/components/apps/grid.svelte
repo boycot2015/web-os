@@ -1,10 +1,11 @@
 <script>
 	import { goto } from '$app/navigation';
-    import { Grids, Grid, Icon, Mask } from 'stdf';
+    import { Grids, Grid, Mask } from 'stdf';
     import { createEventDispatcher } from 'svelte'
     import { appConfig } from '@/store';
     import { cubicInOut } from 'svelte/easing';
-    import appList from '$lib/components/apps'
+    import appList from '$lib/components/apps/grid.svelte'
+    import { Icon } from '$lib/components'
     const dispatch = createEventDispatcher();
     export let apps = [];
     export let injClass = '';
@@ -14,6 +15,7 @@
     export let my = 0;
     export let path = '';
     export let modal = '';
+    export let readOnly = false;
     let current = '';
     let dx = -100;
     let dy = 150;
@@ -26,6 +28,7 @@
             return
         }
         dispatch('click', e)
+        console.log(readOnly, 'readOnly');
     }
     const slideAndScale = (node, params) => {
 		const existingTransform = getComputedStyle(node).transform.replace('none', '');
@@ -73,6 +76,26 @@
         }, 200)
         current = app
     }
+    const onRemove = (e, app) => {
+        pressTime = 0;
+        clearInterval(pressInterval);
+        e.preventDefault();
+        e.stopPropagation();
+        app.hidden = true;
+        const findChild = (apps, app) => {
+            return apps.map(el => {
+                if (el.props && el.props.apps) {
+                    el.props.apps = findChild(el.props.apps, app)
+                } else {
+                    if (app.index === el.index) {
+                        el.hidden = true
+                    }
+                }
+                return el
+            }).filter(el => !el.hidden)
+        }
+        $appConfig.apps = findChild($appConfig.apps, app)
+    }
     $: pressTime >=3 && onEditApps();
 </script>
 <!-- <style lang="less" scoped>
@@ -85,7 +108,7 @@
         <Grids cols={cols} mx="{mx}" my="{my}" gap="{gap}">
             {#each apps.slice(0, 18) as app, i}
                 {#if (app.type === 'app' || !app.type) && !app.hidden}
-                <Grid row={app.row || 3} col={app.col || 1}>
+                <Grid row={app.row || 2} col={app.col || 1}>
                     <div class="{app.closeable ? 'animate-shake': ''} flex flex-col justify-center text-center" on:pointerdown={(e) => onPointerdown(e, app)} on:pointermove={touchmoveFun} role="none" on:click={(e) => {
                         if (app.reload) return window.location.reload();
                         pressTime = 0;
@@ -100,7 +123,7 @@
                         else if (app.url) goto(`${app.url}`);
                     }}>
                         <div
-                            class="flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-xl text-md text-center shadow dark:shadow-white/10"
+                            class="relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-xl text-md text-center shadow dark:shadow-white/10"
                         >
                             {#if app.subText}
                                 <div class="text-xs">{app.subText}</div>
@@ -113,7 +136,9 @@
                                 <svelte:component {...app.props || {}} this={app.component}></svelte:component>
                             {/if}
                             {#if app.closeable && !app.readOnly}
-                                <Icon on:click={(e) => {e.stopPropagation();app.hidden = true}} injClass="!absolute bg-white/80 rounded-2xl p-0 shadow z-99999 text-gray-500 !top-[-5px] !left-[-5px] text-sm" size="22" name="ri-close-line"></Icon>
+                                <div role="none" on:click={(e) => onRemove(e, app)} class="!absolute bg-white/80 rounded-2xl p-0 shadow z-99999 text-gray-500 !top-[-5px] !left-[-5px] text-sm" >
+                                    <Icon size="22" name="ri-close-line"></Icon>
+                                </div>
                             {/if}
                         </div>
                         {#if app.text && !app.hideTitle}
@@ -121,10 +146,16 @@
                         {/if}
                     </div>
                 </Grid>
-                {:else if app.type === 'component' && app.component}
-                <Grid row={app.row || 4} col={app.col || 1}>
-                    <div class="wrap-content h-full" role="none"
+                {:else if app.type === 'component' && app.component && !app.hidden}
+                <Grid row={app.row || 2} col={app.col || 1}>
+                    <div class="wrap-content h-full relative {(app.closeable && !app.props?.apps && !app.readOnly) || (app.closeable && app.componentName === 'Group') || (app.closeable && app.props?.modal) ? 'animate-shake':''}" role="none"
                     on:click={(e) => {
+                        if (app.isComponent) {
+                            app.isComponent = false;
+                            $appConfig.apps[$appConfig.index].props.apps = [...$appConfig.apps[$appConfig.index].props.apps, app]
+                            // console.log($appConfig.apps, app, '$appConfig.apps');
+                            return
+                        }
                         var event = event || window.event;  //标准化事件对象
                         dx = (event.pageX > window.screen.width / 2 ? window.screen.width / 2 - event.pageX : event.pageX) || -100;
                         dy = (event.pageY > window.screen.height / 2 ? window.screen.height / 2 - event.pageY : event.pageY) || 150;
@@ -141,6 +172,11 @@
                         else if (app.url) goto(`${app.url}`);
                         app.url && ($appConfig.app = app)
                     }}>
+                        {#if (app.closeable && !app.props?.apps && !app.readOnly) || (app.closeable && app.componentName === 'Group')}
+                            <div role="none" on:click={(e) => onRemove(e, app)} class="!absolute bg-white/80 rounded-2xl p-0 shadow z-[99999] text-gray-500 !top-[-5px] !left-[-5px] text-sm" >
+                                <Icon size="22" name="ri-close-line"></Icon>
+                            </div>
+                        {/if}
                         <svelte:component {...app.props || {}} this={app.component}></svelte:component>
                         {#if app.title}
                         <div class="text-sm text-white text-center mt-2 {app.injTitleClass}">{app.title}</div>

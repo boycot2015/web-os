@@ -10,6 +10,26 @@ export const setBgColor = (bgUrl) => {
     document.body.style.backgroundRepeat = 'no-repeat';
     document.body.style.backgroundAttachment = 'fixed';
 }
+const sortAppData = (apps, props) => {
+    return apps.map((app, index) => {
+        if (app.props) {
+            if (app.props && app.props.modal && app.props.modal.props) {
+                if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
+                    app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, {...props, index: (props.index||0) + '' + index})
+                }
+            }
+            if (app.props.apps && app.props.apps.length) {
+                app.props.apps = sortAppData(app.props.apps, {...props, index: (props.index||0) + '' + index, closeable: props.closeable && !app.props.modal })
+            }
+            for (const key in props) {
+                if (Object.hasOwnProperty.call(app.props, key)) {
+                    app.props[key] = props[key]
+                }
+            }
+        }
+        return { ...app, ...props, index: (props.index||0) + '' + index }
+    })
+}
 function weatherData () {
     let requestTimes = 0
 	const { subscribe, set } = writable({});
@@ -38,7 +58,12 @@ function appData () {
     } catch (error) {
         // console.log(error);
     }
-	const { subscribe, update } = writable({ ...config || {}, apps, components, docks, ...local  });
+	const { subscribe, update } = writable({ ...config || {}, apps: apps.map((el, index) => {
+        if (el.props) {
+            el.props.apps = sortAppData(el.props.apps, { index })
+        }
+        return el
+    }), components, docks, ...local  });
 	return {
 		subscribe,
 		set: async (res) => {

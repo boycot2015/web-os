@@ -1,9 +1,9 @@
 <script>
     import { Grids, Grid, Switch, Button } from 'stdf';
-    import { goto } from '$app/navigation'
+    import { goto } from '$app/navigation';
     import { appConfig } from '@/store';
     import { Icon } from '$lib/components';
-    export let closeable = false;
+    export let injClass = '';
     const changeColorFun = e => {
         appConfig.set({bgColor: e.detail ? 'bg-gradient-to-t from-[#f8f8f8] to-[#ccc]': ''})
     };
@@ -14,10 +14,7 @@
         curentIndex === devices.length - 1 ? (curentIndex = 0) : curentIndex++;
     };
 </script>
-<div class="relative mt-6 {closeable && 'animate-shake'}">
-    {#if closeable}
-        <Icon on:click={(e) => {e.stopPropagation();}} injClass="!absolute bg-white/80 rounded-2xl p-0 shadow z-99 text-gray-500 !top-[-5px] !left-[-5px] text-sm" size="22" name="ri-close-line"></Icon>
-    {/if}
+<div class="relative mt-6 {injClass}">
     <Grids cols={5} mx="0" my="0" gap="2">
         <Grid row={2}>
             <div

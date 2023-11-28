@@ -1,11 +1,9 @@
 <script>
     import { Grid } from 'stdf';
     import { onMount, onDestroy } from 'svelte';
-    import { Icon } from '$lib/components';
     export let row = 2;
     export let col = 1;
     export let injClass = 'text-purple-600 !bg-gray-800';
-    export let closeable = false;
     $: canvas = {};
     let timer = null;
     onMount(() => {
@@ -142,11 +140,8 @@
 </style>
 <Grid {row} {col}>
     <div
-        class="{injClass} {closeable && 'animate-shake'} relative h-full bg-white dark:bg-black py-0 h-full rounded-xl text-xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
+        class="{injClass} h-full bg-white dark:bg-black py-0 h-full rounded-xl text-xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
     >
-        {#if closeable}
-        <Icon on:click={(e) => {e.stopPropagation();}} injClass="!absolute bg-white/80 rounded-2xl p-0 shadow z-99 text-gray-500 !top-[-5px] !left-[-5px] text-sm" size="22" name="ri-close-line"></Icon>
-        {/if}
         <canvas width="300" height="300" bind:this={canvas} id="canvas"></canvas>
     </div>
 </Grid>

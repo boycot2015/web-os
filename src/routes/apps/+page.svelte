@@ -10,13 +10,13 @@
     const navHeight = 48;
 	const bottomHeight = 50;
 	const height = window.innerHeight - navHeight - bottomHeight;
+	let scrollAlign = true;
+	let injClassList = ['text-xl text-white', 'text-lg text-white !py-3 my-2'];
 	let radius = 'full';
 	let data = [];
     let sourceData = [];
 	let source = {};
     let strArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-	let scrollAlign = true;
-	let injClassList = ['text-xl text-white', 'text-lg text-white !py-3 my-2'];
     for (const key in apps) {
         if (apps[key].text && apps[key].icon) {
             source[key] = {...apps[key], index: getInitials(apps[key].text).slice(0, 1), py: convertToPinyin({text: apps[key].text})}

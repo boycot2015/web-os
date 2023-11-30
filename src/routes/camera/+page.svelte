@@ -1,7 +1,7 @@
 <!-- svelte-ignore a11y-media-has-caption -->
 <div class="camera w-full h-full">
     {#if !hasPermission}
-    <Modal bind:visible={visible} title="温馨提示" injTitleClass="text-white text-2xl" on:close={() => {visible = false;goto('/')}} showBtn={true} contentSlot popup={{size: 50, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 4, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}}}>
+    <Modal bind:visible={visible} title="温馨提示" injTitleClass="text-white text-2xl" on:close={() => {visible = false;goto($appConfig.app.from || '/')}} showBtn={true} contentSlot popup={{size: 50, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 4, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}}}>
         <div class="flex flex-col items-center w-full h-full justify-center">
             <Icon name={'ri-shield-keyhole-line'} size={50} injClass="text-white"></Icon>
             <p class="my-10 text-xl text-white">检测到环境异常，无法打开摄像头！</p>
@@ -16,6 +16,7 @@
     import { Icon } from 'stdf';
     import { goto } from '$app/navigation';
     import Modal from '$lib/components/Modal.svelte';
+    import { appConfig } from '@/store';
     // 视频大小
     var video = null;
     var canvas = null;

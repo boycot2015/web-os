@@ -1,0 +1,263 @@
+<script>
+	import { goto } from '$app/navigation';
+    import { Grids, Grid, Mask } from 'stdf';
+    import { createEventDispatcher, onMount } from 'svelte'
+    import { appConfig } from '@/store';
+    import { cubicInOut } from 'svelte/easing';
+    
+    import { Icon, GridList } from '$lib/components'
+    import { drag } from '$lib'
+    const dispatch = createEventDispatcher();
+    export let apps = [];
+    export let injClass = '';
+    export let gap = 4;
+    export let cols = 4;
+    export let mx = 0;
+    export let my = 0;
+    export let path = '';
+    export let modal = '';
+    export let readOnly = false;
+    export let limit = 18;
+    let current = '';
+    let dx = -100;
+    let dy = 150;
+    let pressTime = 0;
+    let pressInterval = null;
+    let dragEls = [];
+    let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 32 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 64 : 24
+    const onClick = (e) => {
+        e.preventDefault();
+        if (path) {
+            goto(path)
+            return
+        }
+        dispatch('click', e)
+    }
+    const clearTimer = () => {
+        pressTime = 0;
+        clearInterval(pressInterval);
+    }
+    const slideAndScale = (node, params) => {
+		const existingTransform = getComputedStyle(node).transform.replace('none', '');
+		return {
+			delay: params.delay || 0,
+			duration: params.duration || 300,
+			easing: params.easing || cubicInOut,
+			css: (t, u) => `transform: ${existingTransform} translate(${u * dx}px, ${u * dy}px) scale(${1-t});`
+		};
+	}
+    const onEditApps = (props = { closable: true }) => {
+        clearInterval(pressInterval);
+        if (pressTime < 3) {
+            pressTime = 0
+            return
+        }
+        $appConfig.modal = {
+            component: GridList,
+            props: {
+                title: '',
+                popup: {
+                    size: 30,
+                },
+                visible: true,
+                gap: 4,
+                mx: 0,
+                my: 0,
+                cols: 4,
+                injClass: '!p-0 h-full',
+                apps: [
+                    { ...current , row: 1, col: 1, size: 40, injTitleClass: 'text-white text-sm', injClass: '!p-0 !py-3.5 mx-1'},
+                ],
+                list: [{}]
+            }
+        }
+        pressTime = 0
+    }
+    const touchmoveFun = () => {
+        clearTimer()
+    }
+    const onPointerdown = (e, app) => {
+        clearTimer()
+        e.preventDefault();
+        pressInterval = setInterval(() => {
+            pressTime++;
+        }, 200)
+        current = app
+    }
+    const onRemove = (e, app) => {
+        clearTimer()
+        e.preventDefault();
+        e.stopPropagation();
+        $appConfig.dialog = {
+            onConfirm: () => {
+                app.hidden = true;
+                $appConfig.apps[$appConfig.index].limit -= (app.row ? app.row + (app.col || 2) : 1)
+                const findChild = (apps, app) => {
+                    return apps.map(el => {
+                        if (el.props && el.props.apps) {
+                            el.props.apps = findChild(el.props.apps, app)
+                        } else {
+                            if (app.index === el.index) {
+                                el.hidden = true
+                            }
+                        }
+                        return el
+                    }).filter(el => !el.hidden)
+                }
+                $appConfig.apps = findChild($appConfig.apps, app)
+                $appConfig.dialog.props.visible = false;
+            },
+            onCancel: () => {
+                // $appConfig.dialog = ''
+            },
+            props: {
+                title: '温馨提示',
+                content: '确定移除？',
+                btnGap: 4,
+                // primaryButton: {size: 'md'},
+                // secondaryButton: {size: 'md'},
+                popup: {
+                    px: 16,
+                    transparent: false
+                },
+                visible: true
+            }
+        }
+    }
+    const onExced = () => {
+        clearTimer()
+        $appConfig.modal = {
+            onConfirm: () => {
+                $appConfig.modal.props.visible = false;
+            },
+            props: {
+                title: '温馨提示',
+                content: '没有多余的空间了！',
+                titleAlign: 'center',
+                injTitleClass: '!text-lg !text-gray-800 font-normal',
+                showBtn: true,
+                btnText: '确定',
+                popup: {
+                    px: 12,
+                    size: 20,
+                    transparent: false,
+                    zIndex: 999,
+                    mask: {
+                        zIndex: 998,
+                        backdropBlur: 'base'
+                    },
+                },
+                visible: true
+            }
+        }
+    }
+    const onAddComponent = (app) => {
+        let current = $appConfig.apps[$appConfig.index]
+        let next = $appConfig.apps[$appConfig.index+1]
+        let nextIndex = next && next.limit < maxCount ? $appConfig.index + 1 : 0
+        nextIndex = (nextIndex === $appConfig.apps.length - 1 ? 0 : nextIndex)
+        if ((current.limit + (app.row ? app.row + (app.col || 2) : 1)) <= maxCount) {
+            $appConfig.apps[$appConfig.index].props.apps = [...$appConfig.apps[$appConfig.index].props.apps, {...app, isComponent: false, closable: true}]
+        } else if (nextIndex && $appConfig.apps[nextIndex].limit + (app.row ? app.row + (app.col || 2) : 1) <= maxCount) {
+            $appConfig.apps[nextIndex].props.apps = [...$appConfig.apps[nextIndex].props.apps, {...app, isComponent: false, closable: true}]
+        } else {
+            onExced()
+            return
+        }
+        $appConfig.componentVisible = false
+        $appConfig.refresh = true
+        // dispatch('click', e)
+        return false
+    }
+    onMount(() => {
+        // dragEl && drag(dragEl)
+    })
+    $: pressTime >=3 && onEditApps();
+    // $: $appConfig.editable && dragEls && dragEls.length && dragEls.map(el => drag(el))
+</script>
+<!-- <style lang="less" scoped>
+    :global(.wrap-content > div) {
+        height: 100% !important;
+    }
+</style> -->
+<div class="pb-0 pt-0 {readOnly}" role="none" on:click={(e) => onClick(e)}>
+    <div class={` px-8 py-4 pt-10 transition-all duration-500 ${injClass}`}>
+        <Grids cols={cols} mx="{mx}" my="{my}" gap="{gap}">
+            {#each apps.slice(0, limit < 100 ? maxCount : limit) as app, i}
+                {#if (app.type === 'app' || !app.type) && !app.hidden}
+                <Grid row={app.row || 1} col={app.col || 1}>
+                    <div class="{app.closable ? 'animate-shake': ''} flex flex-col justify-center text-center" bind:this={dragEls[i]} on:pointerdown={(e) => onPointerdown(e, app)} on:pointermove={touchmoveFun} role="none" on:click={(e) => {
+                        if (app.isComponent) return onAddComponent(app);
+                        if (app.reload) return window.location.reload();
+                        pressTime = 0;
+                        clearInterval(pressInterval);
+                        !modal && e.stopPropagation();
+                        e.preventDefault();
+                        if (modal) return
+                        if (!app.url) return
+                        modal = '';
+                        app.url && ($appConfig.app = app)
+                        if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
+                        else if (app.url) goto(`${app.url}`);
+                    }}>
+                        <div
+                            class="relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-xl text-md text-center shadow dark:shadow-white/10"
+                        >
+                            {#if app.subText}
+                                <div class="text-xs">{app.subText}</div>
+                            {/if}
+                            {#if app.render}
+                                <div class="text-3xl">{app.render()}</div>
+                            {:else if app.icon}
+                                <Icon injClass="{app.injClass?'text-xs':'text-xl'}" size="{app.size || 38}" name="{app.icon}"></Icon>
+                            {:else}
+                                <svelte:component {...app.props || {}} this={app.component}></svelte:component>
+                            {/if}
+                            {#if app.closable && !app.readOnly}
+                                <div role="none" on:click={(e) => onRemove(e, app)} class="!absolute bg-white/80 rounded-2xl p-0 shadow z-99999 text-gray-500 !top-[-5px] !left-[-5px] text-sm" >
+                                    <Icon size="22" name="ri-close-line"></Icon>
+                                </div>
+                            {/if}
+                        </div>
+                        {#if app.text && !app.hideTitle}
+                            <div class="font-bold text-xs text-white {app.injTitleClass} mt-2">{app.text}</div>
+                        {/if}
+                    </div>
+                </Grid>
+                {:else if app.type === 'component' && app.component && !app.hidden}
+                <Grid row={app.row || 1} col={app.col || 1}>
+                    <div bind:this={dragEls[i]} class="wrap-content h-full relative {(app.closable && !app.props?.apps && !app.fixed) || (app.closable && app.componentName === 'Group') || (app.closable && app.props?.modal) ? 'animate-shake':''}" role="none"
+                    on:click={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (app.isComponent) return onAddComponent(app);
+                        var event = event || window.event;  //标准化事件对象
+                        dx = (event.pageX > window.screen.width / 2 ? window.screen.width / 2 - event.pageX : event.pageX) || -100;
+                        dy = (event.pageY > window.screen.height / 2 ? window.screen.height / 2 - event.pageY : event.pageY) || 150;
+                        $appConfig.modal = ''
+                        modal = ''
+                        if (app.props && app.props.modal) {
+                            modal = app.props.modal
+                            modal.props.visible = true
+                            $appConfig.modal = modal
+                        }
+                        if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
+                        else if (app.url) goto(`${app.url}`);
+                        app.url && ($appConfig.app = app)
+                    }}>
+                        {#if (app.closable && !app.props?.apps && !app.readOnly) || (app.closable && app.componentName === 'Group')}
+                            <div role="none" on:click={(e) => onRemove(e, app)} class="!absolute bg-white/80 rounded-2xl p-0 shadow z-[99999] text-gray-500 !top-[-5px] !left-[-5px] text-sm" >
+                                <Icon size="22" name="ri-close-line"></Icon>
+                            </div>
+                        {/if}
+                        <svelte:component {...app.props || {}} this={app.component}></svelte:component>
+                        {#if (app.title || app.text) && !app.hideTitle}
+                        <div class="text-sm text-white text-center mt-2 {app.injTitleClass}">{app.title||app.text}</div>
+                        {/if}
+                    </div>
+                </Grid>
+                {/if}
+            {/each}
+        </Grids>
+    </div>
+</div>

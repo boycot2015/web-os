@@ -31,7 +31,8 @@
 	"type": "module",
 	"dependencies": {
 		"less": "^4.2.0",
-		"svelte-preprocess": "^5.0.4"
+		"svelte-preprocess": "^5.0.4",
+		"wujie": "^1.0.21"
 	},
 	"eslintConfig": {
 		"extends": "@sveltejs"

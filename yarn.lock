@@ -42,6 +42,13 @@
     "chalk" "^2.4.2"
     "js-tokens" "^4.0.0"
 
+"@babel/runtime@^7.18.6":
+  "integrity" "sha512-2Yv65nlWnWlSpe3fXEyX5i7fx5kIKo4Qbcj+hMO0odwaneFjfXw5fdum+4yL20O0QiaHpia0cYQ9xpNMqrBwHg=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/@babel/runtime/-/runtime-7.23.4.tgz"
+  "version" "7.23.4"
+  dependencies:
+    "regenerator-runtime" "^0.14.0"
+
 "@brewer/beerui@^1.1.17":
   "integrity" "sha512-v4ohQMat8nPBRg5gVxDNme/kdwsuhEuHp9YqVnGdf6mFzCJnXaC1lZtZHoyR7gu/5pXqW8Fi1mFdlt10QlucHA=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/@brewer/beerui/-/beerui-1.1.17.tgz"
@@ -2362,6 +2369,11 @@
   dependencies:
     "picomatch" "^2.2.1"
 
+"regenerator-runtime@^0.14.0":
+  "integrity" "sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz"
+  "version" "0.14.0"
+
 "regexp-tree@^0.1.27":
   "integrity" "sha512-iETxpjK6YoRWJG5o6hXLwvjYAoW+FEZn9os0PD/b6AP6xQwsa/Y7lCVgIixBbUPMfhu+i2LtdeAqVTgGlQarfA=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/regexp-tree/-/regexp-tree-0.1.27.tgz"
@@ -2916,6 +2928,13 @@
   "integrity" "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/wrappy/-/wrappy-1.0.2.tgz"
   "version" "1.0.2"
+
+"wujie@^1.0.21":
+  "integrity" "sha512-MTTFsjIT2dI/WLNczyUB50oLrWNuaPiWJiqC/xhMq67Ff2smcBtiBW3pKqzJxrHbefa1C8YsP3wtqar/+YckzQ=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/wujie/-/wujie-1.0.21.tgz"
+  "version" "1.0.21"
+  dependencies:
+    "@babel/runtime" "^7.18.6"
 
 "yallist@^4.0.0":
   "integrity" "sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A=="

@@ -14,7 +14,7 @@
         curentIndex === devices.length - 1 ? (curentIndex = 0) : curentIndex++;
     };
 </script>
-<div class="relative mt-6 {injClass}">
+<div class="relative {injClass}">
     <Grids cols={5} mx="0" my="0" gap="2">
         <Grid row={2}>
             <div

@@ -5,31 +5,30 @@
 </svelte:head>
 <script>
     import { onMount, onDestroy } from 'svelte';
-    import { Mask, Input } from 'stdf';
+    import { Mask, Input, Dialog } from 'stdf';
     import * as stdfComs from 'stdf';
+    import * as appConf from '$lib/appConfig';
     import { appConfig, setBgColor } from '@/store';
     import Swiper from '$lib/components/Swiper.svelte';
     import Modal from '$lib/components/Modal.svelte';
     import { fly, scale } from 'svelte/transition';
-    import Bars from '$lib/components/apps/grid.svelte';
-    import { Icon, BottomSheet } from '$lib/components';
-    import * as coms from '$lib/components/apps'
-    import GridList from '$lib/components/apps/grid.svelte'
+    import { Icon, BottomSheet, GridList } from '$lib/components';
+    import * as coms from '$lib/components/apps';
     export let data;
-    const onEditApps = (props = { closeable: true, init: false }) => {
+    const onEditApps = (props = { closable: true, refresh: false }) => {
         clearInterval(pressInterval);
-        if ((pressTime < 5 && props.closeable) || !$appConfig.editable) {
+        if (((pressTime < 5 && props.closable) || !$appConfig.editable) && !props.refresh) {
             return
         }
         $appConfig.apps = $appConfig.apps.map((el, index) => {
             if (el.props) {
                 el.props.apps = sortAppData(el.props.apps, { ...props, index })
+                el.limit = el.props.apps.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
             }
             return el
         })
         $appConfig.docks =  $appConfig.docks.map((el, index) => ({...el, ...props, index}))
-        // console.log(apps, 'apps');
-        $appConfig.editable = props.closeable;
+        $appConfig.editable = props.closable;
         ssr = true
         setTimeout(() => {
             ssr = false
@@ -56,24 +55,25 @@
     let ssr = data.ssr;
     let pressTime = 0;
     let pressInterval = null;
-    let componentsVisible = false;
     let keyword = '';
+    let componentApps = appConf.default.components?.props?.apps || [];
+    let componentsData = appConf.default.components || {}
     const onChange = (e) => {
         visible = !e.detail
         appConfig.set({ index: e.detail })
     }
     const sortAppData = (apps, props) => {
         return apps.map((app, index) => {
+            app.componentName = typeof app.component === 'string' ? app.component : app.componentName
+            app.componentName && (app.component = coms.default[app.componentName]||stdfComs[app.componentName]||GridList)
             if (app.props) {
-                if (md || lg || xl) {
-                    if (app.props && app.props.cols >= 12) {
-                        app.col = 12
-                    }
-                }
                 for (const key in props) {
                     if (Object.hasOwnProperty.call(app.props, key)) {
                         app.props[key] = props[key]
                     }
+                }
+                if (app.full) {
+                    app.col = (md || lg || xl) ? 12 : 4
                 }
                 if (app.props && app.props.modal && app.props.modal.props) {
                     app.props.modal.props.cols = props.cols || app.props.modal.props.cols
@@ -81,17 +81,15 @@
                     if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
                         app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, {...props, index: (props.index||0) + '' + index})
                     }
-                    app.props.cols = 4
+                    app.props.cols&&(app.props.cols = 4)
                     app.props.gap = md || lg || xl ? 2:1
                     app.props.modal.componentName = typeof app.props.modal.component === 'string' ? app.props.modal.component : app.props.modal.componentName
                     app.props.modal.componentName && (app.props.modal.component = coms.default[app.props.modal.componentName] ||stdfComs[app.props.modal.componentName]|| GridList)
                 }
                 if (app.props.apps && app.props.apps.length) {
-                    app.props.apps = sortAppData(app.props.apps, {...props, index: (props.index||0) + '' + index, closeable: props.closeable && !app.props.modal })
+                    app.props.apps = sortAppData(app.props.apps, {...props, index: (props.index||0) + '' + index, closable: props.closable && !app.props.modal })
                 }
             }
-            app.componentName = typeof app.component === 'string' ? app.component : app.componentName
-            app.componentName && (app.component = coms.default[app.componentName]||stdfComs[app.componentName]||GridList)
             return { ...app, ...props, index: (props.index||0) + '' + index }
         })
     }
@@ -99,10 +97,10 @@
         ssr = false
         timer.map(el => el && clearInterval(el))
         timer.push(setInterval(() => {
-            time = getTime();
+            time = getTime()
         }, 1000))
         setTimeout(() => {
-            clientWidth = container.clientWidth
+            clientWidth = container?.clientWidth || $appConfig.clientWidth
             md = clientWidth >= 640 && clientWidth < 768
             lg = clientWidth >= 768 && clientWidth < 1200
             xl = clientWidth >= 1200
@@ -115,24 +113,26 @@
             $appConfig.gap = gap
             $appConfig.clientWidth = clientWidth
             $appConfig.apps = $appConfig.apps.map((el, index) => {
-                if (el.props) {
-                    if (md || lg || xl) {
-                        el.props.apps = el.props.apps.map(app => ({...app, hidden: app.type==='component'&&index && index !== $appConfig.apps.length - 1}))
-                    }
-                    el.props.cols = cols
-                    el.props.gap = gap
-                    el.props.apps = sortAppData(el.props.apps, { cols, gap, index, closeable: false })
-                }
                 el.componentName = typeof el.component === 'string' ? el.component : el.componentName
                 el.componentName && (el.component = coms.default[el.componentName] ||stdfComs[el.componentName]|| GridList)
+                if (el.props) {
+                    // el.props.apps = el.props.apps.map(app => ({...app, hidden: (md || lg || xl) && (app.type==='component'&&index && index !== $appConfig.apps.length - 1)}))
+                    el.props.cols = cols
+                    el.props.gap = gap
+                    el.props.apps = sortAppData(el.props.apps, { cols, gap, index, closable: false })
+                    el.limit = el.props.apps?.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
+                }
                 return el
             })
-            $appConfig.docks = $appConfig.docks.map(el => ({...el, componentName: typeof el.component === 'string' ? el.component : el.componentName, component: (el.component||el.componentName)?coms.default[app.component||el.componentName] ||stdfComs[app.component||el.componentName]|| GridList:null, closeable: false }));
-            $appConfig.components = {...$appConfig.components, component: GridList, props: {...$appConfig.components.props, apps: sortAppData($appConfig.components.props.apps, { cols, gap })}}
+            $appConfig.docks = $appConfig.docks.map(el => ({...el, componentName: typeof el.component === 'string' ? el.component : el.componentName, component: (el.component||el.componentName)?coms.default[app.component||el.componentName] ||stdfComs[app.component||el.componentName]|| GridList:null, closable: false }));
+            componentsData = {...appConf.default.components, component: GridList, props: {...appConf.default.components.props, apps: sortAppData(appConf.default.components.props.apps, { cols, gap }), cols, limit: 100}}
         }, 100);
         $appConfig.bgUrl && setBgColor($appConfig.bgUrl)
-        $appConfig.modal = ''
+        $appConfig.mask = '';
+        $appConfig.modal = '';
+        $appConfig.dialog = '';
         $appConfig.editable = false
+        $appConfig.componentVisible = false
     })
     const onPointerdown = (e) => {
         pressTime = 0;
@@ -149,11 +149,24 @@
     })
     $: if (pressTime >= 5) {
         $appConfig.editable = true;
-        onEditApps({ closeable: true })
+        onEditApps({ closable: true })
     }
     $: visible = false;
     $: modal = $appConfig.modal;
+    $: dialog = $appConfig.dialog;
     $: mask = $appConfig.mask;
+    $: if($appConfig.refresh) {
+        setTimeout(() => {
+            onComponentClose()
+        }, 300);
+    };
+    const onComponentClose = (e) => {
+        $appConfig.mask = '';
+        $appConfig.modal = '';
+        $appConfig.dialog = '';
+        onEditApps({ closable: true, refresh: $appConfig.refresh })
+        $appConfig.refresh = false
+    }
 </script>
 <style scoped lang="less">
     .indicate, .container {
@@ -175,8 +188,12 @@
             <div class="fixed text-lg bg-white/30 text-black rounded-2xl px-3 left-3 top-1.5"
             role="none"
             on:click={(e) => {
-                componentsVisible = true;
-                mask = true;
+                if ($appConfig.index === 0) componentApps = componentsData.props.apps.filter(el => el.componentName)
+                else componentApps = componentsData.props.apps
+                setTimeout(() => {
+                    $appConfig.componentVisible = true;
+                    mask = true;
+                }, 50);
             }} style="z-index:4;">
                 <Icon name="ri-add-fill" size="20"></Icon>
             </div>
@@ -187,20 +204,25 @@
             pressTime = 0;
             e.preventDefault();
             clearInterval(pressInterval);
-            onEditApps({ closeable: false });
+            onEditApps({ closable: false });
             $appConfig.editable = false;
-        }} style="z-index:4;">完成</div>
+        }} style="z-index:4;">完 成</div>
     {/if}
-    {#if !ssr && (!$appConfig.modal || ($appConfig.modal && !$appConfig.modal.props.visible))}
+    {#if !ssr && (!$appConfig.modal || ($appConfig.modal && !$appConfig.modal.props.visible) && (!$appConfig.dialog || ($appConfig.dialog && !$appConfig.dialog.props.visible)))}
         <div transition:scale={{opacity: 0.3, start: 0.8, duration: 500 }} class="container relative" bind:this={container} style="z-index: 3;" role="none"
             on:click={(e) => {
                 pressTime = 0;
                 e.preventDefault();
                 clearInterval(pressInterval);
-                onEditApps({ closeable: false });
+                onEditApps({ closable: false });
                 $appConfig.editable = false;
             }}
+            on:mousedown={onPointerdown}
             on:pointermove={(e) => {
+                pressTime = 0;
+                clearInterval(pressInterval);
+            }}
+            on:mouseup={(e) => {
                 pressTime = 0;
                 clearInterval(pressInterval);
             }}
@@ -214,31 +236,51 @@
                 {#if $appConfig.index && $appConfig.index !==$appConfig.apps.length - 1}
                     <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-8 left-5 right-5 flex justify-around items-center">
                         <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:6rem;">
-                            <Bars apps={$appConfig.docks.slice(0, cols)} cols={cols} gap={8} injClass="!px-2"></Bars>
+                            <GridList apps={$appConfig.docks.slice(0, cols)} cols={cols} gap={8} injClass="!px-2 !py-4"></GridList>
                         </div>
                     </div>
                 {/if}
             {/if}
         </div>
-        <BottomSheet closeContent="" injClass="!bg-transparent backdrop-blur-2xl" closeHeight={50} showDivider={false} title="slot" stayHeightList={[50, 90]}  maskClosable on:close={() => mask = ''} on:clickMask={() => mask = ''} radius="full" bind:visible={componentsVisible}>
+        <BottomSheet closeContent="" injClass="!bg-transparent backdrop-blur-2xl" closeHeight={50} showDivider={false} title="slot" stayHeightList={[50, 90]}  maskClosable={true} on:close={() => onComponentClose()} on:clickMask={() => onComponentClose()} radius="full" bind:visible={$appConfig.componentVisible}>
             <div slot="title" class="search-box px-4">
-                <Input radius="2xl" value={keyword} placeholder="搜索小组件"></Input>
+                <Input radius="2xl" label4={{ name: 'ri-search-line', size: 16, alpha: 0.5, injClass: 'text-white' }} value={keyword} on:change={(e) => {
+                    componentApps = e.detail ? componentsData?.props?.apps.filter(el => (el.text || el.title).includes(e.detail)) : componentsData?.props?.apps
+                }} placeholder="搜索小组件"></Input>
             </div>
-            <svelte:component this={$appConfig.components.component} {...$appConfig.components.props} injClass='!px-6 !pt-3 !pb-[6rem] rounded-2xl'></svelte:component>
+            <svelte:component this={componentsData.component} {...componentsData.props} apps={componentApps} injClass='!px-6 !pt-3 !pb-[6rem] rounded-2xl'></svelte:component>
         </BottomSheet>
     {/if}
     {#if modal}
     <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
         on:pointermove={(e) => e.stopPropagation()}
         on:pointerup={(e) => e.stopPropagation()}>
-        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" injTitleClass="text-white !text-left text-2xl" on:close={() => $appConfig.modal.props.visible = false} showBtn={modal.props.showBtn ||false} contentSlot popup={{size: 34, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 4, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
+        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: 34, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 4, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
             {#if modal.component}
                 <svelte:component injClass={modal.props.injClass} cols={modal.props.cols} apps={modal.props.apps} gap={modal.props.gap} mx={modal.props.mx}
                 my={modal.props.my} this={modal.component}></svelte:component>
-            {:else}
-                请传入组件！
             {/if}
         </Modal>
+    </div>
+    {/if}
+    {#if dialog}
+    <div class="dialog" on:pointerdown={(e) => e.stopPropagation()}
+        on:pointermove={(e) => e.stopPropagation()}
+        on:pointerup={(e) => e.stopPropagation()}>
+        <Dialog bind:visible={dialog.props.visible} title="{dialog.props.title}" on:close={() => {$appConfig.dialog.props.visible = false;dialog.onCancel && dialog.onCancel()}} on:primary={() => {dialog.onConfirm && dialog.onConfirm()}} on:secondary={() => {$appConfig.dialog.props.visible = false;dialog.onCancel && dialog.onCancel()}} {...dialog.props} popup={{radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'backOut',duration: 300 ,outDuration: 300,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...dialog.props.popup}}>
+            <div class="content" slot="content">
+                {#if dialog.component}
+                    <svelte:component injClass={dialog.props.injClass} cols={dialog.props.cols} apps={dialog.props.apps} gap={dialog.props.gap} mx={dialog.props.mx}
+                    my={dialog.props.my} this={dialog.component}></svelte:component>
+                {/if}
+            </div>
+            <div class="content" slot="primary">
+                {#if dialog.props.primarySlot }
+                    <svelte:component injClass={dialog.props.injClass} cols={dialog.props.cols} apps={dialog.props.apps} gap={dialog.props.gap} mx={dialog.props.mx}
+                    my={dialog.props.my} this={dialog.primarySlot}></svelte:component>
+                {/if}
+            </div>
+        </Dialog>
     </div>
     {/if}
     <Mask visible={true} backdropBlur="{(!$appConfig.index || $appConfig.index == $appConfig.apps.length - 1)&&$appConfig.backdropBlur==='none'?'base':($appConfig.backdropBlur || 'base')}" opacity={0.1} zIndex={mask ? 3 : 2} />

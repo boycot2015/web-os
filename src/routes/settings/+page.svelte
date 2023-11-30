@@ -16,7 +16,9 @@
             component = cell
             return
         }
-        cell.url && goto(`/micro/${cell.url}/${cell.title}/${cell.icon?.name}`);
+        if (!cell.url) return
+        if (cell.url && cell.url.includes('http')) goto(`/micro/${cell.url}/${cell.title||cell.text}/${cell.icon?.name}`);
+        else if (cell.url) goto(`${cell.url}`);
         appConfig.set({app: { ...cell, text: cell.title, icon: cell.icon.name, from: '/settings' }})
     }
 </script>

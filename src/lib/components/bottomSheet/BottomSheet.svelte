@@ -233,7 +233,6 @@
 	//点击关闭图标
 	//click close icon
 	const closeFunc = () => {
-		visible = false;
 		//点击关闭时派发close事件
 		//Dispatch close event when clicking close
 		dispatch('close');

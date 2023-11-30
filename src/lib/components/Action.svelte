@@ -3,7 +3,7 @@
     import Icon from './Icon.svelte';
     import { Popup, Button, Cell } from 'stdf';
     import { appConfig } from '@/store';
-    import Links from '$lib/components/apps/grid.svelte'
+    import {GridList} from '$lib/components'
     export let icon = 'ri-close-circle-line'; // ri-album-line
     export let path = '/';
     export let injClass = '';
@@ -68,7 +68,7 @@
         {#if $appConfig.app.desc}
             <p class="desc text-xl my-3 p-4 py-6 border-b">{$appConfig.app.desc}</p>
         {/if}
-        <Links apps={links} injClass={'!px-0'} cols={$appConfig.cols || 4} mx={2} />
+        <GridList apps={links} injClass={'!px-0'} cols={$appConfig.cols || 4} mx={2} />
     </div>
     <div class="flex fixed w-full bottom-2 border-t flex-col justify-center">
         <Button fill="text" injClass="text-xl" on:click={() => visible = false}>取消</Button>

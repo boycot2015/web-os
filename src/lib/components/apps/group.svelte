@@ -1,6 +1,7 @@
 <script>
     import { Grid, Modal } from 'stdf';
-    import Swiper from '$lib/components/Swiper.svelte'
+    import Swiper from '$lib/components/Swiper.svelte';
+    import { appConfig } from '@/store';
     export let innerInjClass = '';
     export let injClass = '';
     export let notActiveInjClass = '';
@@ -13,13 +14,19 @@
     export let props = '';
     export let modal = '';
     export let apps = [];
+    let initActive = 0;
+    let title = '';
+    $: title = apps[initActive].text || apps[initActive].title
 </script>
-<Grid row={4} col={2}>
+<Grid row={2} col={2}>
     {#if type === 'swiper'}
     <div class="group h-full {injClass}">
         <Swiper {autoplay} translateZ={400}
-        translateX={-200} indicatePosition="none" containerWidth={document.body.clientWidth/2 - 40} initActive={0} {loop} duration={500} aspectRatio={[1, 1]} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass}/>
+        translateX={-200} indicatePosition="none" containerWidth={document.body.clientWidth/($appConfig.cols/2) - 40} bind:initActive={initActive} {loop} duration={500} aspectRatio={[1, 1]} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass} on:change={(e) => initActive = e.detail} />
     </div>
+    {#if title}
+    <p class="text-sm text-white text-center mt-2">{title}</p>
+    {/if}
     {:else if type === 'component'}
         <svelte:component injClass={injClass} {...props} apps={apps} this={component}></svelte:component>
         {#if modal}

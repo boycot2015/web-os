@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import { http } from '$lib/request';
 import config from '@/lib/config';
 import appsConf from '$lib/appConfig';
-const { apps = [], docks = [], components = [] } = appsConf
+const { apps = [], docks = [] } = appsConf
 export const setBgColor = (bgUrl) => {
     document.body.style.backgroundImage = `url(${bgUrl})`;
     document.body.style.backgroundPosition = 'center';
@@ -19,7 +19,7 @@ const sortAppData = (apps, props) => {
                 }
             }
             if (app.props.apps && app.props.apps.length) {
-                app.props.apps = sortAppData(app.props.apps, {...props, index: (props.index||0) + '' + index, closeable: props.closeable && !app.props.modal })
+                app.props.apps = sortAppData(app.props.apps, {...props, index: (props.index||0) + '' + index, closable: props.closable && !app.props.modal })
             }
             for (const key in props) {
                 if (Object.hasOwnProperty.call(app.props, key)) {
@@ -63,7 +63,7 @@ function appData () {
             el.props.apps = sortAppData(el.props.apps, { index })
         }
         return el
-    }), components, docks, ...local  });
+    }), docks, ...local  });
 	return {
 		subscribe,
 		set: async (res) => {

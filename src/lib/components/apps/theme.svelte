@@ -80,7 +80,7 @@
 <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
     on:pointermove={(e) => e.stopPropagation()}
     on:pointerup={(e) => e.stopPropagation()}>
-    <Modal bind:visible={settingVisible} title="主题设置" injTitleClass="text-white text-xl" showBtn={false} contentSlot popup={{size: 40, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'backOut', px: 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}>
+    <Modal bind:visible={settingVisible} title="主题设置" injTitleClass="text-white text-xl" showBtn={false} contentSlot popup={{size: 40, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'backOut', px: $appConfig.cols === 12 ? 20 : 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}>
         <Grids cols={4} mx="0" my="0" gap="4">
             <Grid row={1} col={4}>
                 <div class="flex flex-col justify-between dark:bg-black py-0 h-full text-gray-800 text-lg text-center">
@@ -91,7 +91,7 @@
                             </div>
                         </Cell>
                         <Cell title="模糊程度" detail="slot" right="none" mx="0" my="0" shadow="none" line radius="none">
-                            <div class="w-40" slot="detail">
+                            <div class="w-40" slot="detail" role="none" on:click={(e) => e.stopPropagation()}>
                                 <Slider showTip="never" minRange={0} on:change={changeBlur} step={20} value={blurValue}  />
                             </div>
                         </Cell>

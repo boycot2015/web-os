@@ -1,8 +1,5 @@
 <script>
     import { Grid } from 'stdf';
-    import { day as dayApp } from '$lib/appConfig';
-    import { appConfig } from '@/store';
-    import { goto } from '$app/navigation';
     export let injClass = 'text-purple-600 bg-gray-200';
     export let row = 3;
     export let col = 1;
@@ -16,21 +13,16 @@
     const monthIndex = date.getMonth();
     $: month = monthArr[monthIndex];
     $: weekDay = week[date.getDay()];
-    const handleClick = (e) => {
-        // e.stopPropagation();
-        // e.preventDefault();
-        // $appConfig.app = dayApp;
-        // goto(`/micro/${dayApp.url}/${dayApp.text}/${dayApp.icon}`)
-    }
 </script>
 <Grid {row} {col}>
     <div
         role="none"
-        on:click={handleClick}
-        class="relative flex {injClass} h-full flex-col justify-between dark:bg-black py-5 h-full rounded-xl text-xs text-center shadow dark:shadow-white/10"
+        class="relative flex {row == 3 ?'py-5': 'py-1 mx-1.5'} {injClass} h-full flex-col justify-between dark:bg-black h-full rounded-xl text-xs text-center shadow dark:shadow-white/10"
     >
         <div>{weekDay}</div>
-        <div class="text-5xl py-5">{day}</div>
+        <div class=" {row == 3 ?'text-5xl py-5': 'text-2xl py-1'}">{day}</div>
+        {#if row == 3 }
         <div class="text-md">{month}</div>
+        {/if}
     </div>
 </Grid>

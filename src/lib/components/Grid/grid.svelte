@@ -24,7 +24,7 @@
     let pressTime = 0;
     let pressInterval = null;
     let dragEls = [];
-    let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 32 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 64 : 24
+    let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 64 : 32
     const onClick = (e) => {
         e.preventDefault();
         if (path) {

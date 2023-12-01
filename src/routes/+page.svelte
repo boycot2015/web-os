@@ -5,7 +5,7 @@
 </svelte:head>
 <script>
     import { onMount, onDestroy } from 'svelte';
-    import { Mask, Input, Dialog } from 'stdf';
+    import { Mask, Input, Dialog, Cell, CellGroup, } from 'stdf';
     import * as stdfComs from 'stdf';
     import * as appConf from '$lib/appConfig';
     import { appConfig, setBgColor } from '@/store';
@@ -13,6 +13,7 @@
     import Modal from '$lib/components/Modal.svelte';
     import { fly, scale } from 'svelte/transition';
     import { Icon, BottomSheet, GridList } from '$lib/components';
+    import { Grids, Grid } from '$lib/components'
     import * as coms from '$lib/components/apps';
     export let data;
     const onEditApps = (props = { closable: true, refresh: false }) => {
@@ -24,7 +25,7 @@
             if (el.props) {
                 el.props.apps = sortAppData(el.props.apps, { ...props, index })
                 el.limit = el.props.apps.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
-            }
+            } 
             return el
         })
         $appConfig.docks =  $appConfig.docks.map((el, index) => ({...el, ...props, index}))
@@ -167,6 +168,16 @@
         onEditApps({ closable: true, refresh: $appConfig.refresh })
         $appConfig.refresh = false
     }
+    const onCellClick = (e, item, i) => {
+        console.log(item, i, 'item, i');
+        if (item.action === 'edit') {
+            $appConfig.modal = '';
+            $appConfig.editable = true;
+            onEditApps({ closable: true })
+        } else {
+            item.action instanceof Function &&  item.action(e)
+        }
+    }
 </script>
 <style scoped lang="less">
     .indicate, .container {
@@ -232,9 +243,9 @@
             }}
             on:pointerdown={onPointerdown}>
             {#if clientWidth}
-                <Swiper autoplay={false} innerInjClass={`wrap-content ${md || lg || xl ?'!py-4':''}`} containerWidth={clientWidth} indicatePosition="{$appConfig.index&&$appConfig.index !==$appConfig.apps.length - 1?'inner':'none'}" bind:initActive={$appConfig.index} loop={false} duration={500} aspectRatio={[10, $appConfig.index?16:21.6]} triggerSpeed={0.5} data={$appConfig.apps} on:change={(e) => onChange(e)} height={'100vh'} indicateInjClass={'!bottom-40 !from-black/0 !to-black/0'} />
+                <Swiper autoplay={false} innerInjClass={`wrap-content ${md || lg || xl ?'!py-4':''}`} containerWidth={clientWidth} indicatePosition="{$appConfig.index&&$appConfig.index !==$appConfig.apps.length - 1?'inner':'none'}" bind:initActive={$appConfig.index} loop={false} duration={500} aspectRatio={[10, $appConfig.index?16:21.6]} triggerSpeed={0.5} data={$appConfig.apps} on:change={(e) => onChange(e)} height={'100vh'} indicateInjClass={'!bottom-[7.5rem] !from-black/0 !to-black/0'} />
                 {#if $appConfig.index && $appConfig.index !==$appConfig.apps.length - 1}
-                    <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-8 left-5 right-5 flex justify-around items-center">
+                    <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-4 left-5 right-5 flex justify-around items-center">
                         <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:6rem;">
                             <GridList apps={$appConfig.docks.slice(0, cols)} cols={cols} gap={8} injClass="!px-2 !py-4"></GridList>
                         </div>
@@ -255,10 +266,31 @@
     <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
         on:pointermove={(e) => e.stopPropagation()}
         on:pointerup={(e) => e.stopPropagation()}>
-        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: 34, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 4, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
+        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: 34, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
             {#if modal.component}
                 <svelte:component injClass={modal.props.injClass} cols={modal.props.cols} apps={modal.props.apps} gap={modal.props.gap} mx={modal.props.mx}
                 my={modal.props.my} this={modal.component}></svelte:component>
+            {/if}
+            {#if modal.actions}
+            <div class="my-8">
+                <CellGroup mx="{modal.mx || 0}" my="{modal.my || 0}" radius="{modal.radius || '2xl'}">
+                    {#each modal.actions as cell, i}
+                        {#if cell.component}
+                            <svelte:component {...cell.props} this={cell.component}></svelte:component>
+                        {:else}
+                            <Cell right="{cell.icon}" title="{cell.title}" injClass="{cell.injClass || 'text-lg !bg-black/80 text-white'}" mx="{cell.mx || '0'}" my="{cell.my || '0'}" shadow="{cell.shadow || 'none'}" detail="{cell.detailSlot ? 'slot': ''}" line={i < cell.length - 1} radius="{cell.radius || 'none'}" on:click={(e) => onCellClick(e, cell, i)}>
+                                <span slot="detail">
+                                    {#if cell.detail && cell.detail.component}
+                                    <svelte:component {...cell.detail.props} this={cell.detail.component}></svelte:component>
+                                    {:else}
+                                    <div class="text-black text-xl">请传入组件！</div>
+                                    {/if}
+                                </span>
+                            </Cell>
+                        {/if}
+                    {/each}
+                </CellGroup>
+            </div>
             {/if}
         </Modal>
     </div>

@@ -31,6 +31,7 @@
 	"type": "module",
 	"dependencies": {
 		"less": "^4.2.0",
+		"sortablejs": "^1.15.1",
 		"svelte-preprocess": "^5.0.4",
 		"wujie": "^1.0.21"
 	},

@@ -2527,6 +2527,11 @@
     "minimist" "^1.2.0"
     "sander" "^0.5.0"
 
+"sortablejs@^1.15.1":
+  "integrity" "sha512-P5Cjvb0UG1ZVNiDPj/n4V+DinttXG6K8n7vM/HQf0C25K3YKQTQY6fsr/sEGsJGpQ9exmPxluHxKBc0mLKU1lQ=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/sortablejs/-/sortablejs-1.15.1.tgz"
+  "version" "1.15.1"
+
 "source-map-js@^1.0.1", "source-map-js@^1.0.2":
   "integrity" "sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/source-map-js/-/source-map-js-1.0.2.tgz"

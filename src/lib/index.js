@@ -39,6 +39,9 @@ export function drag (obj,opt={},passive){
         bottom:0,
         left:0,
         right:0,
+        onDragStart: touchStartEvent,
+        onDrag: touchMoveEvent,
+        onDragEnd: touchEndEvent,
         //parent:'warp', // 为页面唯一元素，id 名称，例如 warp ,默认body整个页面
         scroll:false // 拖拽元素是否随 页面滚动 false 不随页面滚动，true 随页面滚动
     }
@@ -49,6 +52,7 @@ export function drag (obj,opt={},passive){
     // let lastY=0;
     let parent_width=0,parent_height=0,parent_left=0,parent_top=0;
     let ele_position='relative'
+    let disX=0,disY=0;
     if(option.scroll){
         ele_position='absolute'
     }else{
@@ -87,7 +91,7 @@ export function drag (obj,opt={},passive){
     {
        const Ev=ev||event; // FF || IE
        const touch = Ev.targetTouches[0];
-       let disX=0,disY=0;
+       disX=0,disY=0;
 
        if(option.direction=='lr'){
                  disX=touch.clientX-parseInt(getStyle(obj,'left'));
@@ -108,76 +112,76 @@ export function drag (obj,opt={},passive){
             obj.addEventListener('touchmove',touchMoveEvent,passive);
                obj.addEventListener('touchend',touchEndEvent,passive);
        }
-           // 鼠标移动
-        function touchMoveEvent(ev)
-        {
-               const Ev=ev||event; // FF || IE
-               const touch = Ev.targetTouches[0];
-
-            let left=0,top=0,move_left=0,move_top=0
-            if(option.direction=='lr'){
-                   // 可移动的最大左边距离
-                   move_left=parent_width-parseInt(getStyle(obj,'width'))-option.right+parent_left
-                      if(left>=move_left){
-                          left=move_left
-                      }else if(left<=option.left+parent_left){
-                          left=option.left+parent_left
-                      }else{
-                          left=touch.clientX-disX;
-                      }
-                    //   lastX=left;
-                      obj.style.left=left+'px';
-
-               }else if(option.direction=='tb'){
-                   // 可以移动的最大上边距
-                   move_top=parent_height-parseInt(getStyle(obj,'height'))-option.top+parent_top
-                   if(top>=move_top){
-                    top=move_top
-                   }else if(top<=option.bottom+parent_top){
-                    top=option.bottom
-                   }else{
-                           top=touch.clientY-disY;
-                   }
-                //    lastY=top;
-                   obj.style.top=top+'px';
-               }else{
-                left=touch.clientX-disX;
-                top=touch.clientY-disY;
-
-                move_left=parent_width-parseInt(getStyle(obj,'width'))-option.right+parent_left
-                move_top=parent_height-parseInt(getStyle(obj,'height'))-option.bottom+parent_top
-
-                if(left>=move_left){
-                          left=move_left
-                      }else if(left<=option.left+parent_left){
-                          left=option.left+parent_left
-                      }
-                      if(top>=move_top){
-                    top=move_top
-                    }else if(top<=option.bottom+parent_top){
-                    top=option.bottom+parent_top
-                    }
-
-                // lastX=left;
-                // lastY=top; // 当前的点赋给一个变量（上一个点）
-                obj.style.left=left+'px';
-                  obj.style.top=top+'px'; //移动物体
-               }
-        }
-        // 鼠标抬起
-        function touchEndEvent()
-          {
-            obj.addEventListener('touchmove',touchMoveEvent,passive);
-               obj.addEventListener('touchend',touchEndEvent,passive);
-            //释放事件捕获
-            if(obj.releaseCapture)
-            { obj.releaseCapture(); }
-
-          }
         // 拖拽元素时，阻止页面跟随滚动问题
         // 由于 {passive: false} ，如果不阻止默认事件，chrome 浏览器会有警告
           Ev.preventDefault()
         return false;
+    }
+    // 鼠标移动
+    function touchMoveEvent(ev)
+    {
+            const Ev=ev||event; // FF || IE
+            const touch = Ev.targetTouches[0];
+
+        let left=0,top=0,move_left=0,move_top=0
+        if(option.direction=='lr'){
+                // 可移动的最大左边距离
+                move_left=parent_width-parseInt(getStyle(obj,'width'))-option.right+parent_left
+                    if(left>=move_left){
+                        left=move_left
+                    }else if(left<=option.left+parent_left){
+                        left=option.left+parent_left
+                    }else{
+                        left=touch.clientX-disX;
+                    }
+                //   lastX=left;
+                    obj.style.left=left+'px';
+
+            }else if(option.direction=='tb'){
+                // 可以移动的最大上边距
+                move_top=parent_height-parseInt(getStyle(obj,'height'))-option.top+parent_top
+                if(top>=move_top){
+                top=move_top
+                }else if(top<=option.bottom+parent_top){
+                top=option.bottom
+                }else{
+                        top=touch.clientY-disY;
+                }
+            //    lastY=top;
+                obj.style.top=top+'px';
+            }else{
+            left=touch.clientX-disX;
+            top=touch.clientY-disY;
+
+            move_left=parent_width-parseInt(getStyle(obj,'width'))-option.right+parent_left
+            move_top=parent_height-parseInt(getStyle(obj,'height'))-option.bottom+parent_top
+
+            if(left>=move_left){
+                        left=move_left
+                    }else if(left<=option.left+parent_left){
+                        left=option.left+parent_left
+                    }
+                    if(top>=move_top){
+                top=move_top
+                }else if(top<=option.bottom+parent_top){
+                top=option.bottom+parent_top
+                }
+
+            // lastX=left;
+            // lastY=top; // 当前的点赋给一个变量（上一个点）
+            obj.style.left=left+'px';
+                obj.style.top=top+'px'; //移动物体
+            }
+    }
+    // 鼠标抬起
+    function touchEndEvent()
+        {
+        obj.addEventListener('touchmove',touchMoveEvent,passive);
+            obj.addEventListener('touchend',touchEndEvent,passive);
+        //释放事件捕获
+        if(obj.releaseCapture)
+        { obj.releaseCapture(); }
+
     }
 }
 export {

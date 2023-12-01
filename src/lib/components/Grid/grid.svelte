@@ -1,12 +1,12 @@
 <script>
 	import { goto } from '$app/navigation';
-    import { Grids, Grid, Mask } from 'stdf';
+    // import { Grids, Grid, Mask } from 'stdf';
     import { createEventDispatcher, onMount } from 'svelte'
     import { appConfig } from '@/store';
-    import { cubicInOut } from 'svelte/easing';
-    
-    import { Icon, GridList } from '$lib/components'
-    import { drag } from '$lib'
+    import { cubicInOut, quintOut } from 'svelte/easing';
+    import { slide, scale } from 'svelte/transition';
+    import { Icon, GridList, Grids, Grid } from '$lib/components'
+    import Sortable from 'sortablejs';
     const dispatch = createEventDispatcher();
     export let apps = [];
     export let injClass = '';
@@ -18,6 +18,8 @@
     export let modal = '';
     export let readOnly = false;
     export let limit = 18;
+    let GridsDom = null;
+    let duration = 3;
     let current = '';
     let dx = -100;
     let dy = 150;
@@ -25,6 +27,7 @@
     let pressInterval = null;
     let dragEls = [];
     let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 64 : 32
+    let datas = apps.slice(0, limit < 100 ? maxCount : limit)
     const onClick = (e) => {
         e.preventDefault();
         if (path) {
@@ -57,23 +60,24 @@
             props: {
                 title: '',
                 popup: {
-                    size: 30,
+                    size: 40,
                 },
                 visible: true,
                 gap: 4,
                 mx: 0,
                 my: 0,
                 cols: 4,
-                injClass: '!p-0 h-full',
+                injClass: '!p-0',
                 apps: [
                     { ...current , row: 1, col: 1, size: 40, injTitleClass: 'text-white text-sm', injClass: '!p-0 !py-3.5 mx-1'},
                 ],
-                list: [{}]
-            }
+            },
+            actions: [...current.actions || [], { title: '编辑主屏幕', action: 'edit', icon: {type: 'icon', name: 'ri-edit-fill', injClass: 'text-white'} }, { title: '移除App', action: (e) => onRemove(e, current), icon: {type: 'icon', name: 'ri-close-fill', injClass: 'bg-black/20 rounded-3xl text-white px-0.5'} }]
         }
         pressTime = 0
     }
-    const touchmoveFun = () => {
+    const touchmoveFun = (e, app) => {
+        // $appConfig.editable && !app.isComponent && e.stopPropagation()
         clearTimer()
     }
     const onPointerdown = (e, app) => {
@@ -171,9 +175,29 @@
     }
     onMount(() => {
         // dragEl && drag(dragEl)
+        if($appConfig.editable && datas.findIndex(curr => curr.isComponent) === -1) {
+            Sortable.create(GridsDom, {
+                delayOnTouchOnly: true,
+                easing: "cubic-bezier(1, 0, 0, 1)",
+                onEnd: (e) => {
+                    console.log(e.newIndex, e.oldIndex,'e');
+                    // datas.splice(datas[e.oldIndex], 1, datas[e.newIndex]);
+                    // $appConfig.apps[$appConfig.index].props.apps = datas;
+                    let newItems = [...datas];
+                    // 删除之前DOM节点
+                    newItems.splice(e.oldIndex, 1);
+                    // 在拖拽结束目标位置增加新的DOM节点
+                    newItems.splice(e.newIndex, 0, datas[e.oldIndex]);
+                    // 每次拖拽结束后，将拖拽处理完成的数据，赋值原数组，使DOM视图更新，页面显示拖拽动画
+                    datas = newItems;
+                    // 每次拖拽结束后调用接口时时保存数据
+                    // saveApi(this.dragArray).then((res) => {})
+                    $appConfig.apps[$appConfig.index].props.apps = datas
+                }
+            });
+        }
     })
     $: pressTime >=3 && onEditApps();
-    // $: $appConfig.editable && dragEls && dragEls.length && dragEls.map(el => drag(el))
 </script>
 <!-- <style lang="less" scoped>
     :global(.wrap-content > div) {
@@ -182,11 +206,20 @@
 </style> -->
 <div class="pb-0 pt-0 {readOnly}" role="none" on:click={(e) => onClick(e)}>
     <div class={` px-8 py-4 pt-10 transition-all duration-500 ${injClass}`}>
-        <Grids cols={cols} mx="{mx}" my="{my}" gap="{gap}">
-            {#each apps.slice(0, limit < 100 ? maxCount : limit) as app, i}
+        <Grids cols={cols} mx="{mx}" my="{my}" gap="{gap}" bind:GridsDom={GridsDom}>
+            {#each datas as app, i}
                 {#if (app.type === 'app' || !app.type) && !app.hidden}
-                <Grid row={app.row || 1} col={app.col || 1}>
-                    <div class="{app.closable ? 'animate-shake': ''} flex flex-col justify-center text-center" bind:this={dragEls[i]} on:pointerdown={(e) => onPointerdown(e, app)} on:pointermove={touchmoveFun} role="none" on:click={(e) => {
+                <Grid
+                row={app.row || 1} col={app.col || 1}
+                >
+                <!-- transition:scale={{ duration: 400, easing: quintOut, start: 0.3 }} -->
+                    <div
+                    class="{app.closable ? 'animate-shake': ''} flex flex-col justify-center text-center" 
+                    data-index={i}
+                    bind:this={dragEls[i]}
+                    on:pointerdown={(e) => onPointerdown(e, app)}
+                    on:pointermove={(e) => touchmoveFun(e, app)}
+                    on:click={(e) => {
                         if (app.isComponent) return onAddComponent(app);
                         if (app.reload) return window.location.reload();
                         pressTime = 0;
@@ -198,8 +231,7 @@
                         modal = '';
                         app.url && ($appConfig.app = app)
                         if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
-                        else if (app.url) goto(`${app.url}`);
-                    }}>
+                        else if (app.url) goto(`${app.url}`); }}  role="none">
                         <div
                             class="relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-xl text-md text-center shadow dark:shadow-white/10"
                         >
@@ -227,6 +259,8 @@
                 {:else if app.type === 'component' && app.component && !app.hidden}
                 <Grid row={app.row || 1} col={app.col || 1}>
                     <div bind:this={dragEls[i]} class="wrap-content h-full relative {(app.closable && !app.props?.apps && !app.fixed) || (app.closable && app.componentName === 'Group') || (app.closable && app.props?.modal) ? 'animate-shake':''}" role="none"
+                    on:pointerdown={(e) => onPointerdown(e, app)}
+                    on:pointermove={(e) => touchmoveFun(e, app)}
                     on:click={(e) => {
                         e.preventDefault();
                         e.stopPropagation();

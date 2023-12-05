@@ -67,7 +67,8 @@
 <Grid {row} {col}>
     <div
     role="none"
-    on:click={(e) => {e.preventDefault();settingVisible = true}}
+    on:pointerdown={(e) => e.stopPropagation()}
+    on:click={(e) => {e.preventDefault();e.stopPropagation();settingVisible = !$appConfig.editable}}
         class="relative py-6 {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
     >
         <div class="location text-xl">主题设置</div>

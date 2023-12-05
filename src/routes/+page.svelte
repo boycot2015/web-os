@@ -5,7 +5,7 @@
 </svelte:head>
 <script>
     import { onMount, onDestroy } from 'svelte';
-    import { Mask, Input, Dialog, Cell, CellGroup, } from 'stdf';
+    import { Mask, Input, Dialog } from 'stdf';
     import * as stdfComs from 'stdf';
     import * as appConf from '$lib/appConfig';
     import { appConfig, setBgColor } from '@/store';
@@ -13,7 +13,7 @@
     import Modal from '$lib/components/Modal.svelte';
     import { fly, scale } from 'svelte/transition';
     import { Icon, BottomSheet, GridList } from '$lib/components';
-    import { Grids, Grid } from '$lib/components'
+    import { Cell, CellGroup } from '$lib/components';
     import * as coms from '$lib/components/apps';
     export let data;
     const onEditApps = (props = { closable: true, refresh: false }) => {
@@ -49,7 +49,7 @@
     let timer = [];
     let clientWidth = 0;
     let container = {
-        clientWidth: $appConfig.clientWidth
+        clientWidth: 0
     };
     let cols = 4;
     let gap = 4;
@@ -101,7 +101,7 @@
             time = getTime()
         }, 1000))
         setTimeout(() => {
-            clientWidth = container?.clientWidth || $appConfig.clientWidth
+            clientWidth = container?.clientWidth || 0
             md = clientWidth >= 640 && clientWidth < 768
             lg = clientWidth >= 768 && clientWidth < 1200
             xl = clientWidth >= 1200
@@ -169,7 +169,6 @@
         $appConfig.refresh = false
     }
     const onCellClick = (e, item, i) => {
-        console.log(item, i, 'item, i');
         if (item.action === 'edit') {
             $appConfig.modal = '';
             $appConfig.editable = true;
@@ -266,19 +265,19 @@
     <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
         on:pointermove={(e) => e.stopPropagation()}
         on:pointerup={(e) => e.stopPropagation()}>
-        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: 34, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
+        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;$appConfig.modal.actions = '';modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: 34, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
             {#if modal.component}
-                <svelte:component injClass={modal.props.injClass} cols={modal.props.cols} apps={modal.props.apps} gap={modal.props.gap} mx={modal.props.mx}
+                <svelte:component injClass={modal.props.injClass} cols={modal.props.cols} apps={modal.props.apps} gap={$appConfig.gap || modal.props.gap} mx={modal.props.mx}
                 my={modal.props.my} this={modal.component}></svelte:component>
             {/if}
             {#if modal.actions}
-            <div class="my-8">
-                <CellGroup mx="{modal.mx || 0}" my="{modal.my || 0}" radius="{modal.radius || '2xl'}">
+            <div class="mt-4 w-60">
+                <CellGroup injClass="!bg-transparent" mx="{modal.mx || 0}" my="{modal.my || 0}" radius="{modal.radius || '2xl'}">
                     {#each modal.actions as cell, i}
                         {#if cell.component}
                             <svelte:component {...cell.props} this={cell.component}></svelte:component>
                         {:else}
-                            <Cell right="{cell.icon}" title="{cell.title}" injClass="{cell.injClass || 'text-lg !bg-black/80 text-white'}" mx="{cell.mx || '0'}" my="{cell.my || '0'}" shadow="{cell.shadow || 'none'}" detail="{cell.detailSlot ? 'slot': ''}" line={i < cell.length - 1} radius="{cell.radius || 'none'}" on:click={(e) => onCellClick(e, cell, i)}>
+                            <Cell right="{cell.icon}" title="{cell.title}" injClass="{cell.injClass || 'text-lg !bg-black/50 text-white'}" mx="{cell.mx || '0'}" my="{cell.my || '0'}" shadow="{cell.shadow || 'none'}" detail="{cell.detailSlot ? 'slot': ''}" line={i < modal.actions.length - 1} radius="{cell.radius || 'none'}" on:click={(e) => onCellClick(e, cell, i)}>
                                 <span slot="detail">
                                     {#if cell.detail && cell.detail.component}
                                     <svelte:component {...cell.detail.props} this={cell.detail.component}></svelte:component>

@@ -14,11 +14,11 @@ const grid = {
     x2: {row: 1, col: 2, size: 36, hideTitle: true, injClass: 'p-4 text-sm'},
     sm2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white text-sm', injClass: '!p-1 text-sm'}
 }
-export const clock = {icon: '', component: 'Clock', text: '时钟', desc: '秒钟', url: '', bgColor: 'bg-white', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none', closable: false, readOnly: true }
+export const clock = {icon: '', component: 'Clock', text: '时钟', desc: '秒钟', url: '', bgColor: '', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none', closable: false, readOnly: true }
 export const taobao = {icon: 'ri-taobao-line', text: '淘宝', desc: '太好逛了吧', url: 'https://m.taobao.com/', bgColor: 'bg-white', color: 'text-orange-500', closable: false}
 export const qzone = {icon: 'ri-star-smile-fill', text: 'QQ空间', desc: '分享喜悦，留住感动', url: 'https://qzone.qq.com/', bgColor: 'bg-white', color: 'text-yellow-500', closable: false}
 export const news = {icon: 'ri-newspaper-line', text: '新闻头条', desc: '看见更大的世界', url: 'http://news.boycot.top/', bgColor: 'bg-red-500', color: 'text-white', closable: false}
-export const weather = {icon: 'ri-sun-cloudy-fill', text: '天气', url: 'https://xw.tianqi.qq.com/', bgColor: 'bg-blue-800', desc: '美好的一天从查看天气开始', color: 'text-white', closable: false}
+export const weather = {icon: 'ri-sun-cloudy-fill', text: '天气', url: 'https://xw.tianqi.qq.com/', bgColor: 'bg-blue-800', desc: '你若安好，便是晴天~', color: 'text-white', closable: false}
 export const shop = {icon: 'ri-shopping-bag-3-fill', text: '品牌推荐', url: '/mall', bgColor: 'bg-white', color: 'text-red-500', closable: false}
 export const appleStore = {icon: 'ri-shopping-bag-fill', text: 'Apple Store', url: 'https://www.apple.com.cn/', bgColor: 'bg-white', color: 'text-blue-500', closable: false}
 export const phone = { icon: 'ri-phone-line', text: '', bgColor: 'bg-white', color: 'text-red-500', closable: false, readOnly: true }
@@ -37,7 +37,7 @@ export const picture = { icon: 'ri-landscape-line', text: '照片', desc: '把�
 export const netease = { icon: 'ri-netease-cloud-music-line', url: 'https://y.music.163.com/', text: '网易云音乐',desc: '耳朵怀孕了', bgColor: 'bg-red-600', color: 'text-white', closable: false }
 export const navigation = { icon: 'ri-navigation-fill', url: 'https://www.amap.com/', text: '高德地图', desc: '缺德导航，出行必备',bgColor: 'bg-blue-300', color: 'text-blue-700', closable: false }
 export const music = { icon: 'ri-headphone-fill', text: '我的音乐', desc: '抖音,记录美好生活', url: 'http://m.music.boycot.top', bgColor: 'bg-black', color: 'text-white', closable: false }
-export const settings = { icon: 'ri-settings-5-fill', text: '设置', url: '/settings', bgColor: 'bg-gray-400', color: 'text-white', closable: false, readOnly: true }
+export const settings = { icon: 'ri-settings-5-fill', text: '设置', url: '/settings', bgColor: 'bg-gray-400', color: 'text-white', closable: false, readOnly: true, actions: [{text: '电池', icon: 'ri-battery-fill'},{text: '蜂窝数据', icon: 'ri-base-station-line'},{text: '蓝牙', icon: 'ri-bluetooth-line'}] }
 export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地铁，钱包最铁', bgColor: 'bg-black', color: 'text-gray-300', closable: false, readOnly: true }
 export const appStore = { icon: 'ri-app-store-line', url: 'http://m.appchina.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', color: 'text-white', closable: false }
 export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', desc: '照亮你的美', bgColor: 'bg-gray-400', color: 'text-black', closable: false, readOnly: true  }

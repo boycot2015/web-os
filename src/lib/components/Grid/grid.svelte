@@ -51,28 +51,31 @@
 	}
     const onEditApps = (props = { closable: true }) => {
         clearInterval(pressInterval);
-        if (pressTime < 3) {
+        if (pressTime < 3 || ($appConfig.modal && $appConfig.modal.props?.visible) || current.fixed || current.props?.modal) {
             pressTime = 0
+            clearInterval(pressInterval);
             return
         }
+        let cols = $appConfig.xl ? 8 : ($appConfig.md || $appConfig.lg) ? 4 : (current.type==='component' ? 2 : 4)
+        console.log(current,cols, 'current');
         $appConfig.modal = {
             component: GridList,
             props: {
                 title: '',
                 popup: {
-                    size: 40,
+                    size: 50,
                 },
                 visible: true,
-                gap: 4,
+                gap: 0,
                 mx: 0,
                 my: 0,
-                cols: 4,
+                cols,
                 injClass: '!p-0',
                 apps: [
-                    { ...current , row: 1, col: 1, size: 40, injTitleClass: 'text-white text-sm', injClass: '!p-0 !py-3.5 mx-1'},
+                    { ...current, cols, row: 1, col: 1, size: 40, injTitleClass: 'text-white text-sm', injClass: '!p-0 !py-3.5 mx-1 !shadow-none'},
                 ],
             },
-            actions: [...current.actions || [], { title: '编辑主屏幕', action: 'edit', icon: {type: 'icon', name: 'ri-edit-fill', injClass: 'text-white'} }, { title: '移除App', action: (e) => onRemove(e, current), icon: {type: 'icon', name: 'ri-close-fill', injClass: 'bg-black/20 rounded-3xl text-white px-0.5'} }]
+            actions: [...current.actions?.map(el => ({title: el.text, icon: {name: el.icon, type: 'icon', injClass: 'text-white'}})) || [], { title: '编辑主屏幕', action: 'edit', icon: {type: 'icon', name: 'ri-edit-fill', injClass: 'text-white'} }, { title: '移除App', action: (e) => onRemove(e, current), icon: {type: 'icon', name: 'ri-close-fill', injClass: 'bg-black/20 rounded-3xl text-white px-0.5'} }]
         }
         pressTime = 0
     }
@@ -264,6 +267,8 @@
                     on:click={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
+                        pressTime = 0;
+                        clearInterval(pressInterval);
                         if (app.isComponent) return onAddComponent(app);
                         var event = event || window.event;  //标准化事件对象
                         dx = (event.pageX > window.screen.width / 2 ? window.screen.width / 2 - event.pageX : event.pageX) || -100;

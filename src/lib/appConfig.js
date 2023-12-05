@@ -42,7 +42,7 @@ export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地
 export const appStore = { icon: 'ri-app-store-line', url: 'http://m.appchina.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', color: 'text-white', closable: false }
 export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', desc: '照亮你的美', bgColor: 'bg-gray-400', color: 'text-black', closable: false, readOnly: true  }
 export const day = { icon: 'ri-calendar-line', text: '日历', url: 'https://m.rili.com.cn/', desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white', closable: false, readOnly: true }
-export const userCenter = { icon: 'ri-user-line', text: '用户中心', url: 'http://user.test.limofang.cn/', desc: '用户中心', color: 'text-gray-500', bgColor: 'bg-white', closable: false }
+// export const userCenter = { icon: 'ri-user-line', text: '用户中心', url: 'http://user.test.limofang.cn/', desc: '用户中心', color: 'text-gray-500', bgColor: 'bg-white', closable: false }
 const editableApps = [
     clock,
     taobao,
@@ -71,7 +71,7 @@ const editableApps = [
     appStore,
     camera,
     day,
-    userCenter,
+    // userCenter,
 ].filter(el => !el.readOnly)
 export default {
     apps: [
@@ -82,11 +82,11 @@ export default {
             component: 'GridList',
             props: {
                 apps: [
-                    { type: 'component', component: 'DeviceInfo', row: 2, col: 4 },
+                    { type: 'component', component: 'DeviceInfo', text: '设备管理', row: 3, col: 4 },
                     { type: 'component', component: 'Day', ...day, closable: true, readOnly: false, row: 2, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]'} },
-                    { type: 'component', component: 'Clock', row: 2, col: 2 },
+                    { type: 'component', component: 'Clock', text: '时钟', row: 2, col: 2 },
                     { type: 'component', component: 'Weather', ...weather, row: 2, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]'}},
-                    { type: 'component', component: 'Theme', row: 2, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]'}},
+                    { type: 'component', component: 'Theme', text: '主题设置', row: 2, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]'}},
                 ]
             }
         },
@@ -175,7 +175,7 @@ export default {
                     qzone,
                     weather,
                     appleStore,
-                    userCenter
+                    // userCenter
                 ]
             }
         },

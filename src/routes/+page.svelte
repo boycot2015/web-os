@@ -25,7 +25,7 @@
             if (el.props) {
                 el.props.apps = sortAppData(el.props.apps, { ...props, index })
                 el.limit = el.props.apps.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
-            } 
+            }
             return el
         })
         $appConfig.docks =  $appConfig.docks.map((el, index) => ({...el, ...props, index}))
@@ -49,7 +49,7 @@
     let timer = [];
     let clientWidth = 0;
     let container = {
-        clientWidth: 0
+        clientWidth: $appConfig.clientWidth
     };
     let cols = 4;
     let gap = 4;
@@ -101,7 +101,7 @@
             time = getTime()
         }, 1000))
         setTimeout(() => {
-            clientWidth = container?.clientWidth || 0
+            clientWidth = container?.clientWidth || $appConfig.clientWidth
             md = clientWidth >= 640 && clientWidth < 768
             lg = clientWidth >= 768 && clientWidth < 1200
             xl = clientWidth >= 1200

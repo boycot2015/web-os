@@ -57,7 +57,7 @@
             return
         }
         let cols = $appConfig.xl ? 8 : ($appConfig.md || $appConfig.lg) ? 4 : (current.type==='component' ? 2 : 4)
-        console.log(current,cols, 'current');
+        // console.log(current,cols, 'current');
         $appConfig.modal = {
             component: GridList,
             props: {
@@ -162,10 +162,11 @@
         let current = $appConfig.apps[$appConfig.index]
         let next = $appConfig.apps[$appConfig.index+1]
         let nextIndex = next && next.limit < maxCount ? $appConfig.index + 1 : 0
-        nextIndex = (nextIndex === $appConfig.apps.length - 1 ? 0 : nextIndex)
+        nextIndex = (nextIndex === $appConfig.apps.length - 1 ? 0 : nextIndex);
+        let nextMaxCount = ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24;
         if ((current.limit + (app.row ? app.row + (app.col || 2) : 1)) <= maxCount) {
             $appConfig.apps[$appConfig.index].props.apps = [...$appConfig.apps[$appConfig.index].props.apps, {...app, isComponent: false, closable: true}]
-        } else if (nextIndex && $appConfig.apps[nextIndex].limit + (app.row ? app.row + (app.col || 2) : 1) <= maxCount) {
+        } else if (nextIndex && $appConfig.apps[nextIndex].limit + (app.row ? app.row + (app.col || 2) : 1) <= nextMaxCount) {
             $appConfig.apps[nextIndex].props.apps = [...$appConfig.apps[nextIndex].props.apps, {...app, isComponent: false, closable: true}]
         } else {
             onExced()

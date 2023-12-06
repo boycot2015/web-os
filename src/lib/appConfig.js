@@ -12,7 +12,8 @@ const grid = {
     1: {row: 1, col: 1, size: 40, injTitleClass: 'text-white text-sm', injClass: '!p-0 !py-3.5 mx-1'},
     2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white'},
     x2: {row: 1, col: 2, size: 36, hideTitle: true, injClass: 'p-4 text-sm'},
-    sm2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white text-sm', injClass: '!p-1 text-sm'}
+    sm2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white text-sm', injClass: '!p-1 text-sm'},
+    xs: {row: 1, col: 1, size: 14, hideTitle: true, injTitleClass: 'text-white text-xs', injClass: '!p-[0.1rem] text-xs !rounded-md'}
 }
 export const clock = {icon: '', component: 'Clock', text: '时钟', desc: '秒钟', url: '', bgColor: '', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none', closable: false, readOnly: true }
 export const taobao = {icon: 'ri-taobao-line', text: '淘宝', desc: '太好逛了吧', url: 'https://m.taobao.com/', bgColor: 'bg-white', color: 'text-orange-500', closable: false}
@@ -37,7 +38,7 @@ export const picture = { icon: 'ri-landscape-line', text: '照片', desc: '把�
 export const netease = { icon: 'ri-netease-cloud-music-line', url: 'https://y.music.163.com/', text: '网易云音乐',desc: '耳朵怀孕了', bgColor: 'bg-red-600', color: 'text-white', closable: false }
 export const navigation = { icon: 'ri-navigation-fill', url: 'https://www.amap.com/', text: '高德地图', desc: '缺德导航，出行必备',bgColor: 'bg-blue-300', color: 'text-blue-700', closable: false }
 export const music = { icon: 'ri-headphone-fill', text: '我的音乐', desc: '抖音,记录美好生活', url: 'http://m.music.boycot.top', bgColor: 'bg-black', color: 'text-white', closable: false }
-export const settings = { icon: 'ri-settings-5-fill', text: '设置', url: '/settings', bgColor: 'bg-gray-400', color: 'text-white', closable: false, readOnly: true, actions: [{text: '电池', icon: 'ri-battery-fill'},{text: '蜂窝数据', icon: 'ri-base-station-line'},{text: '蓝牙', icon: 'ri-bluetooth-line'}] }
+export const settings = { icon: 'ri-settings-5-fill', text: '设置', url: '/settings', bgColor: 'bg-gray-400', color: 'text-white', closable: false, readOnly: true, actions: [{text: '电池', icon: 'ri-battery-fill', url: '/settings'},{text: '蜂窝数据', icon: 'ri-base-station-line', url: '/settings'},{text: '蓝牙', icon: 'ri-bluetooth-line', url: '/settings'}] }
 export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地铁，钱包最铁', bgColor: 'bg-black', color: 'text-gray-300', closable: false, readOnly: true }
 export const appStore = { icon: 'ri-app-store-line', url: 'http://m.appchina.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', color: 'text-white', closable: false }
 export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', desc: '照亮你的美', bgColor: 'bg-gray-400', color: 'text-black', closable: false, readOnly: true  }
@@ -82,11 +83,11 @@ export default {
             component: 'GridList',
             props: {
                 apps: [
-                    { type: 'component', component: 'DeviceInfo', text: '设备管理', row: 3, col: 4 },
-                    { type: 'component', component: 'Day', ...day, closable: true, readOnly: false, row: 2, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]'} },
-                    { type: 'component', component: 'Clock', text: '时钟', row: 2, col: 2 },
-                    { type: 'component', component: 'Weather', ...weather, row: 2, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]'}},
-                    { type: 'component', component: 'Theme', text: '主题设置', row: 2, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]'}},
+                    { type: 'component', component: 'DeviceInfo', text: '', row: 2, col: 4 },
+                    { type: 'component', component: 'Day', ...day, text: '', closable: true, readOnly: false, row: 2, col: 2, props: {injClass: 'text-gray-800 bg-gradient-to-b from-[#ff9900] to-[#ccc]'} },
+                    { type: 'component', component: 'Clock', text: '', row: 2, col: 2 },
+                    { type: 'component', component: 'Weather', ...weather, text: '', row: 2, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]'}},
+                    { type: 'component', component: 'Theme', text: '', row: 2, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]'}},
                 ]
             }
         },
@@ -181,6 +182,110 @@ export default {
         },
         {
             index: 3,
+            name: '自定义页面',
+            type: 'component',
+            component: 'GridList',
+            props: {
+                apps: [
+                    {
+                        type: 'component',
+                        component: 'GridList',
+                        row: 1, col: 1,
+                        title: '理财',
+                        readOnly: true,
+                        cols: 1,
+                        props: {
+                            readOnly: true,
+                            modal: {
+                                component: 'GridList',
+                                props: {
+                                    title: '理财',
+                                    visible: false,
+                                    gap: 4,
+                                    mx: 0,
+                                    my: 0,
+                                    cols: 4,
+                                    injClass: '!p-0 h-full',
+                                    apps: [
+                                        { ...music, ...grid['1'] },
+                                        { ...navigation, ...grid['1'] },
+                                        { ...settings, ...grid['1'] },
+                                        { ...netease, ...grid['1'] },
+                                        { ...wechat, ...grid['1'] },
+                                        { ...alipay, ...grid['1'] },
+                                    ]
+                                }
+                            },
+                            gap: 4,
+                            cols: 3,
+                            injClass: 'text-white bg-white/10 backdrop-blur-xl rounded-xl !p-0.5',
+                            apps: [
+                                { ...music, ...grid['xs'] },
+                                { ...navigation, ...grid['xs'] },
+                                { ...weather, ...grid['xs'] },
+                                { ...qq, ...grid['xs'] },
+                                { ...wechat, ...grid['xs'] },
+                                { ...picture, ...grid['xs'] },
+                                { ...alipay, ...grid['xs'] },
+                                { ...netease, ...grid['xs'] },
+                            ]
+                        }
+                    },
+                    navigation,
+                    music,
+                    settings,
+                    qzone,
+                    weather,
+                    appleStore,
+                    {
+                        type: 'component',
+                        component: 'GridList',
+                        row: 1, col: 1,
+                        title: '社交',
+                        readOnly: true,
+                        cols: 1,
+                        props: {
+                            readOnly: true,
+                            modal: {
+                                component: 'GridList',
+                                props: {
+                                    title: '社交',
+                                    visible: false,
+                                    gap: 4,
+                                    mx: 0,
+                                    my: 0,
+                                    cols: 4,
+                                    injClass: '!p-0 h-full',
+                                    apps: [
+                                        { ...music, ...grid['1'] },
+                                        { ...navigation, ...grid['1'] },
+                                        { ...settings, ...grid['1'] },
+                                        { ...netease, ...grid['1'] },
+                                        { ...wechat, ...grid['1'] },
+                                        { ...alipay, ...grid['1'] },
+                                    ]
+                                }
+                            },
+                            gap: 4,
+                            cols: 3,
+                            injClass: 'text-white bg-white/10 backdrop-blur-xl rounded-xl !p-0.5',
+                            apps: [
+                                { ...music, ...grid['xs'] },
+                                { ...navigation, ...grid['xs'] },
+                                { ...weather, ...grid['xs'] },
+                                { ...qq, ...grid['xs'] },
+                                { ...wechat, ...grid['xs'] },
+                                { ...picture, ...grid['xs'] },
+                                { ...alipay, ...grid['xs'] },
+                                { ...netease, ...grid['xs'] },
+                            ]
+                        }
+                    },
+                ]
+            }
+        },
+        {
+            index: 4,
             name: '应用列表',
             type: 'component',
             component: 'GridList',

@@ -20,9 +20,9 @@
 </script>
 <Grid row={2} col={2}>
     {#if type === 'swiper'}
-    <div class="group h-full {injClass}">
+    <div class="group h-[10.5rem] {injClass}">
         <Swiper {autoplay} translateZ={400}
-        translateX={-200} indicatePosition="none" containerWidth={document.body.clientWidth/($appConfig.cols/2) - 40} bind:initActive={initActive} {loop} duration={500} aspectRatio={[1, 1]} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass} on:change={(e) => initActive = e.detail} />
+        translateX={-200} indicatePosition="none" containerWidth={document.body.clientWidth/($appConfig.cols/2) - 30} bind:initActive={initActive} {loop} duration={500} aspectRatio={[1, 1]} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass} on:change={(e) => initActive = e.detail} />
     </div>
     {#if title}
     <p class="text-sm text-white text-center mt-2">{title}</p>

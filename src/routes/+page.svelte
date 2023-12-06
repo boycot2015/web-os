@@ -4,7 +4,7 @@
     {/if}
 </svelte:head>
 <script>
-    import { onMount, onDestroy } from 'svelte';
+    import { onMount, onDestroy, afterUpdate } from 'svelte';
     import { Mask, Input, Dialog } from 'stdf';
     import * as stdfComs from 'stdf';
     import * as appConf from '$lib/appConfig';
@@ -14,27 +14,11 @@
     import { fly, scale } from 'svelte/transition';
     import { Icon, BottomSheet, GridList } from '$lib/components';
     import { Cell, CellGroup } from '$lib/components';
+    import ContentMenu from '$lib/components/contentMenu/index.svelte';
+    import Theme from '$lib/components/apps/theme.svelte'
     import * as coms from '$lib/components/apps';
+    import { goto } from '$app/navigation';
     export let data;
-    const onEditApps = (props = { closable: true, refresh: false }) => {
-        clearInterval(pressInterval);
-        if (((pressTime < 5 && props.closable) || !$appConfig.editable) && !props.refresh) {
-            return
-        }
-        $appConfig.apps = $appConfig.apps.map((el, index) => {
-            if (el.props) {
-                el.props.apps = sortAppData(el.props.apps, { ...props, index })
-                el.limit = el.props.apps.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
-            }
-            return el
-        })
-        $appConfig.docks =  $appConfig.docks.map((el, index) => ({...el, ...props, index}))
-        $appConfig.editable = props.closable;
-        ssr = true
-        setTimeout(() => {
-            ssr = false
-        }, 600);
-    }
 
     let md = false;
     let lg = false;
@@ -60,8 +44,29 @@
     let componentApps = appConf.default.components?.props?.apps || [];
     let componentsData = appConf.default.components || {}
     const onChange = (e) => {
-        visible = !e.detail
-        appConfig.set({ index: e.detail })
+        $appConfig.index = e.detail
+    }
+    const onEditApps = (props = { closable: true, refresh: false }) => {
+        clearInterval(pressInterval);
+        if (((pressTime < 5 && props.closable) || !$appConfig.editable) && !props.refresh) {
+            return
+        }
+        ssr = true
+        $appConfig.apps = $appConfig.apps.map((el, index) => {
+            if (el.props) {
+                el.props.apps = sortAppData(el.props.apps, { ...props, index })
+                el.totalCount = el.props.apps.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
+                el.totalRows = el.props.apps.reduce((prev, cur) => (cur.row ? cur.col / cur.row : 1/4) + prev, 0)
+            }
+            return el
+        })
+        $appConfig.docks =  $appConfig.docks.map((el, index) => ({...el, ...props, index}))
+        $appConfig.editable = props.closable;
+        ssr = true
+        setTimeout(() => {
+            ssr = false
+        }, 600);
+        // console.log($appConfig.apps, '$appConfig.apps');
     }
     const sortAppData = (apps, props) => {
         return apps.map((app, index) => {
@@ -70,7 +75,7 @@
             if (app.props) {
                 for (const key in props) {
                     if (Object.hasOwnProperty.call(app.props, key)) {
-                        app.props[key] = props[key]
+                        app.props[key] = app.props[key] === 3 ? 3 : props[key]
                     }
                 }
                 if (app.full) {
@@ -82,7 +87,7 @@
                     if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
                         app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, {...props, index: (props.index||0) + '' + index})
                     }
-                    app.props.cols&&(app.props.cols = 4)
+                    app.props.cols&&(app.props.cols === 3 ? 3 : 4)
                     app.props.gap = md || lg || xl ? 2:1
                     app.props.modal.componentName = typeof app.props.modal.component === 'string' ? app.props.modal.component : app.props.modal.componentName
                     app.props.modal.componentName && (app.props.modal.component = coms.default[app.props.modal.componentName] ||stdfComs[app.props.modal.componentName]|| GridList)
@@ -121,12 +126,13 @@
                     el.props.cols = cols
                     el.props.gap = gap
                     el.props.apps = sortAppData(el.props.apps, { cols, gap, index, closable: false })
-                    el.limit = el.props.apps?.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
+                    el.totalCount = el.props.apps?.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
+                    el.totalRows = el.props.apps.reduce((prev, cur) => (cur.row ? cur.col / cur.row : 1/4) + prev, 0)
                 }
                 return el
             })
             $appConfig.docks = $appConfig.docks.map(el => ({...el, componentName: typeof el.component === 'string' ? el.component : el.componentName, component: (el.component||el.componentName)?coms.default[app.component||el.componentName] ||stdfComs[app.component||el.componentName]|| GridList:null, closable: false }));
-            componentsData = {...appConf.default.components, component: GridList, props: {...appConf.default.components.props, apps: sortAppData(appConf.default.components.props.apps, { cols, gap }), cols, limit: 100}}
+            componentsData = {...appConf.default.components, component: GridList, props: {...appConf.default.components.props, apps: sortAppData(appConf.default.components.props.apps, { cols, gap }), cols, totalCount: 100}}
         }, 100);
         $appConfig.bgUrl && setBgColor($appConfig.bgUrl)
         $appConfig.mask = '';
@@ -145,6 +151,10 @@
             pressTime++;
         }, 200)
     }
+    afterUpdate (() => {
+        // console.log($appConfig.apps[$appConfig.index].props.apps, "Updated");
+        // ssr = false
+    })
     onDestroy(() => {
         timer.map(el => clearInterval(el))
     })
@@ -152,7 +162,7 @@
         $appConfig.editable = true;
         onEditApps({ closable: true })
     }
-    $: visible = false;
+    $: themeVisible = false;
     $: modal = $appConfig.modal;
     $: dialog = $appConfig.dialog;
     $: mask = $appConfig.mask;
@@ -161,6 +171,10 @@
             onComponentClose()
         }, 300);
     };
+    const onSearch = (e) => {
+        componentApps = e.detail ? appConf.default.components.props.apps.filter(el => (el.text || el.title).includes(e.detail)) : appConf.default.components.props.apps
+        console.log(componentApps, 'componentApps');
+    }
     const onComponentClose = (e) => {
         $appConfig.mask = '';
         $appConfig.modal = '';
@@ -169,12 +183,29 @@
         $appConfig.refresh = false
     }
     const onCellClick = (e, item, i) => {
+        if (item.url) {
+            if (item.url.includes('http')) goto(`/micro/${item.url}/${item.title||item.text}/${item.icon}`);
+            else goto(`${item.url}`);
+            $appConfig.app = item
+            return
+        }
         if (item.action === 'edit') {
             $appConfig.modal = '';
+            pressTime = 5
             $appConfig.editable = true;
             onEditApps({ closable: true })
         } else {
             item.action instanceof Function &&  item.action(e)
+        }
+    }
+    const onMenuClick = (e) => {
+        if (e.detail === 'edit') {
+            pressTime = 5
+            $appConfig.editable = true;
+            onEditApps({ closable: true })
+        }
+        if (e.detail === 'changeTheme') {
+            themeVisible = true
         }
     }
 </script>
@@ -254,11 +285,13 @@
         </div>
         <BottomSheet closeContent="" injClass="!bg-transparent backdrop-blur-2xl" closeHeight={50} showDivider={false} title="slot" stayHeightList={[50, 90]}  maskClosable={true} on:close={() => onComponentClose()} on:clickMask={() => onComponentClose()} radius="full" bind:visible={$appConfig.componentVisible}>
             <div slot="title" class="search-box px-4">
-                <Input radius="2xl" label4={{ name: 'ri-search-line', size: 16, alpha: 0.5, injClass: 'text-white' }} value={keyword} on:change={(e) => {
-                    componentApps = e.detail ? componentsData?.props?.apps.filter(el => (el.text || el.title).includes(e.detail)) : componentsData?.props?.apps
-                }} placeholder="搜索小组件"></Input>
+                <Input radius="2xl" label4={{ name: 'ri-search-line', size: 16, alpha: 0.5, injClass: 'text-white' }} value={keyword} on:change={onSearch} placeholder="搜索小组件"></Input>
             </div>
+            {#if componentApps.length}
             <svelte:component this={componentsData.component} {...componentsData.props} apps={componentApps} injClass='!px-6 !pt-3 !pb-[6rem] rounded-2xl'></svelte:component>
+            {:else}
+            <p class="p-4 text-center text-white text-xl">暂无筛选结果~</p>
+            {/if}
         </BottomSheet>
     {/if}
     {#if modal}
@@ -315,4 +348,10 @@
     </div>
     {/if}
     <Mask visible={true} backdropBlur="{(!$appConfig.index || $appConfig.index == $appConfig.apps.length - 1)&&$appConfig.backdropBlur==='none'?'base':($appConfig.backdropBlur || 'base')}" opacity={0.1} zIndex={mask ? 3 : 2} />
+    {#if $appConfig.xl}
+    <ContentMenu on:menuClick={onMenuClick} />
+    {/if}
+    {#if !ssr}
+        <Theme contentSlot component="" bind:visible={themeVisible} />
+    {/if}
 </div>

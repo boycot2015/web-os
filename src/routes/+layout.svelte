@@ -13,6 +13,6 @@
         }, 1000))
     })
 </script>
-<div class="layout {$appConfig.bgColor} h-full w-full"  style="background: url({$appConfig.bgUrl}) center/cover no-repeat;">
+<div class="layout {$appConfig.bgColor} h-full w-full"  style="background: url({$appConfig.bgUrl}) center/cover no-repeat fixed;">
     <slot></slot>
 </div>

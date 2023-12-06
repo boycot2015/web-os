@@ -1,13 +1,12 @@
 <script>
 	import { goto } from '$app/navigation';
     // import { Grids, Grid, Mask } from 'stdf';
-    import { createEventDispatcher, onMount } from 'svelte'
+    import { createEventDispatcher, onMount, afterUpdate } from 'svelte'
     import { appConfig } from '@/store';
     import { cubicInOut, quintOut } from 'svelte/easing';
     import { slide, scale } from 'svelte/transition';
     import { Icon, GridList, Grids, Grid } from '$lib/components'
     import Sortable from 'sortablejs';
-    const dispatch = createEventDispatcher();
     export let apps = [];
     export let injClass = '';
     export let gap = 4;
@@ -17,17 +16,17 @@
     export let path = '';
     export let modal = '';
     export let readOnly = false;
-    export let limit = 18;
+    export let totalCount = 18;
     let GridsDom = null;
-    let duration = 3;
     let current = '';
     let dx = -100;
     let dy = 150;
     let pressTime = 0;
     let pressInterval = null;
     let dragEls = [];
+    const dispatch = createEventDispatcher();
     let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 64 : 32
-    let datas = apps.slice(0, limit < 100 ? maxCount : limit)
+    let datas = apps.slice(0, totalCount < 100 ? maxCount : totalCount)
     const onClick = (e) => {
         e.preventDefault();
         if (path) {
@@ -56,14 +55,14 @@
             clearInterval(pressInterval);
             return
         }
-        let cols = $appConfig.xl ? 8 : ($appConfig.md || $appConfig.lg) ? 4 : (current.type==='component' ? 2 : 4)
+        let cols = (current.type==='component' && current.col > 1 ? $appConfig.cols / current.col : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 8 : 4)
         // console.log(current,cols, 'current');
         $appConfig.modal = {
             component: GridList,
             props: {
                 title: '',
                 popup: {
-                    size: 50,
+                    size: 0,
                 },
                 visible: true,
                 gap: 0,
@@ -75,7 +74,7 @@
                     { ...current, cols, row: 1, col: 1, size: 40, injTitleClass: 'text-white text-sm', injClass: '!p-0 !py-3.5 mx-1 !shadow-none'},
                 ],
             },
-            actions: [...current.actions?.map(el => ({title: el.text, icon: {name: el.icon, type: 'icon', injClass: 'text-white'}})) || [], { title: '编辑主屏幕', action: 'edit', icon: {type: 'icon', name: 'ri-edit-fill', injClass: 'text-white'} }, { title: '移除App', action: (e) => onRemove(e, current), icon: {type: 'icon', name: 'ri-close-fill', injClass: 'bg-black/20 rounded-3xl text-white px-0.5'} }]
+            actions: [...current.actions?.map(el => ({title: el.text, url: el.url, icon: {name: el.icon, type: 'icon', injClass: 'text-white' }})) || [], { title: '编辑主屏幕', action: 'edit', icon: {type: 'icon', name: 'ri-edit-fill', injClass: 'text-white'} }, !current.readOnly && { title: `移除${current.type=='component'?'小组件':'App'}`, action: (e) => onRemove(e, current), icon: {type: 'icon', name: 'ri-close-fill', injClass: 'bg-black/20 rounded-3xl text-white px-0.5'} }].filter(_ => _)
         }
         pressTime = 0
     }
@@ -98,7 +97,7 @@
         $appConfig.dialog = {
             onConfirm: () => {
                 app.hidden = true;
-                $appConfig.apps[$appConfig.index].limit -= (app.row ? app.row + (app.col || 2) : 1)
+                $appConfig.apps[$appConfig.index].totalCount -= (app.row ? app.row + (app.col || 2) : 1)
                 const findChild = (apps, app) => {
                     return apps.map(el => {
                         if (el.props && el.props.apps) {
@@ -111,8 +110,9 @@
                         return el
                     }).filter(el => !el.hidden)
                 }
-                $appConfig.apps = findChild($appConfig.apps, app)
+                $appConfig.apps = findChild($appConfig.apps, app).filter(el => el.props.apps?.length)
                 $appConfig.dialog.props.visible = false;
+                $appConfig.modal = '';
             },
             onCancel: () => {
                 // $appConfig.dialog = ''
@@ -160,17 +160,26 @@
     }
     const onAddComponent = (app) => {
         let current = $appConfig.apps[$appConfig.index]
-        let next = $appConfig.apps[$appConfig.index+1]
-        let nextIndex = next && next.limit < maxCount ? $appConfig.index + 1 : 0
-        nextIndex = (nextIndex === $appConfig.apps.length - 1 ? 0 : nextIndex);
         let nextMaxCount = ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24;
-        if ((current.limit + (app.row ? app.row + (app.col || 2) : 1)) <= maxCount) {
+        let nextIndex = $appConfig.apps.findIndex(el => el.totalCount < 24);
+        nextIndex = nextIndex > -1 ? nextIndex : 0;
+        if ((current.totalCount + (app.row ? app.row * (app.col || 1) : 1)) <= maxCount) {
             $appConfig.apps[$appConfig.index].props.apps = [...$appConfig.apps[$appConfig.index].props.apps, {...app, isComponent: false, closable: true}]
-        } else if (nextIndex && $appConfig.apps[nextIndex].limit + (app.row ? app.row + (app.col || 2) : 1) <= nextMaxCount) {
+        } else if ($appConfig.apps[nextIndex].totalRows * 4 + ((app.row ? app.row * (app.col || 1) : 1)) <= nextMaxCount) {
             $appConfig.apps[nextIndex].props.apps = [...$appConfig.apps[nextIndex].props.apps, {...app, isComponent: false, closable: true}]
         } else {
-            onExced()
-            return
+            // onExced()
+            $appConfig.apps = [...$appConfig.apps.slice(0, $appConfig.apps.length - 1), {
+                index: $appConfig.apps.length - 1,
+                name: '自定义页面',
+                type: 'component',
+                component: GridList,
+                componentName: 'GridList',
+                props: {
+                    apps: [{ ...app, isComponent: false, closable: true }]
+                }
+            }, { ...$appConfig.apps.slice(-1)[0], index: $appConfig.apps.length }];
+            $appConfig.index = $appConfig.apps.length - 2
         }
         $appConfig.componentVisible = false
         $appConfig.refresh = true
@@ -178,29 +187,31 @@
         return false
     }
     onMount(() => {
-        // dragEl && drag(dragEl)
-        if($appConfig.editable && datas.findIndex(curr => curr.isComponent) === -1) {
-            Sortable.create(GridsDom, {
-                delayOnTouchOnly: true,
-                easing: "cubic-bezier(1, 0, 0, 1)",
-                onEnd: (e) => {
-                    console.log(e.newIndex, e.oldIndex,'e');
-                    // datas.splice(datas[e.oldIndex], 1, datas[e.newIndex]);
-                    // $appConfig.apps[$appConfig.index].props.apps = datas;
-                    let newItems = [...datas];
-                    // 删除之前DOM节点
-                    newItems.splice(e.oldIndex, 1);
-                    // 在拖拽结束目标位置增加新的DOM节点
-                    newItems.splice(e.newIndex, 0, datas[e.oldIndex]);
-                    // 每次拖拽结束后，将拖拽处理完成的数据，赋值原数组，使DOM视图更新，页面显示拖拽动画
-                    datas = newItems;
-                    // 每次拖拽结束后调用接口时时保存数据
-                    // saveApi(this.dragArray).then((res) => {})
-                    $appConfig.apps[$appConfig.index].props.apps = datas
-                }
-            });
-        }
+        // if($appConfig.editable && datas.findIndex(curr => curr.isComponent) === -1) {
+        //     Sortable.create(GridsDom, {
+        //         delayOnTouchOnly: true,
+        //         easing: "cubic-bezier(1, 0, 0, 1)",
+        //         onEnd: (e) => {
+        //             console.log(e.newIndex, e.oldIndex,'e');
+        //             // datas.splice(datas[e.oldIndex], 1, datas[e.newIndex]);
+        //             // $appConfig.apps[$appConfig.index].props.apps = datas;
+        //             let newItems = [...datas];
+        //             // 删除之前DOM节点
+        //             newItems.splice(e.oldIndex, 1);
+        //             // 在拖拽结束目标位置增加新的DOM节点
+        //             newItems.splice(e.newIndex, 0, datas[e.oldIndex]);
+        //             // 每次拖拽结束后，将拖拽处理完成的数据，赋值原数组，使DOM视图更新，页面显示拖拽动画
+        //             datas = newItems;
+        //             // 每次拖拽结束后调用接口时时保存数据
+        //             // saveApi(this.dragArray).then((res) => {})
+        //             $appConfig.apps[$appConfig.index].props.apps = datas
+        //         }
+        //     });
+        // }
     })
+    afterUpdate(() => {
+        datas = apps || []
+    });
     $: pressTime >=3 && onEditApps();
 </script>
 <!-- <style lang="less" scoped>

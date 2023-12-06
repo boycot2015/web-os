@@ -31,7 +31,7 @@
     <div
         role="none"
         on:click={handleClick}
-        class="py-6 h-full {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
+        class="h-[10.5rem] {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
     >
         <div class="location text-xl">{$weather.location?.name||'深圳'}</div>
         <Icon name="{weatherIcons[$weather.now?.text]||'ri-sun-line'}" size={40} injClass="py-2" />

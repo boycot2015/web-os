@@ -1,5 +1,5 @@
 <script>
-	import { onMount, createEventDispatcher } from 'svelte';
+	import { onMount, afterUpdate, createEventDispatcher } from 'svelte';
 
 	// 事件派发器
 	// event dispatcher
@@ -75,7 +75,7 @@
 	$: movePercent = moveX / width; //滑动距离占总宽度的百分比 touch width percent
     let first = {...data[data.length - 1], props: loop?data[data.length - 1].props:{}}
     let last = {...data[0], props: loop?data[0].props:{}}
-	const dataNew =
+	let dataNew =
 		data.length > 1
 			? [first, ...data, first, last]
 			: data.length === 1
@@ -443,6 +443,13 @@
 			dispatch('change', currentIndicate); //派发Swiper容器change事件，i表示当前容器索引值  Dispatch the Swiper container change event, i indicates the current container index value
 		}
 	};
+    afterUpdate (() => {
+        dataNew = data.length > 1
+        ? [first, ...data, first, last]
+        : data.length === 1
+        ? [first, ...data, last]
+        : data;
+    })
 </script>
 
 <div

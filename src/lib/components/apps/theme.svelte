@@ -12,6 +12,7 @@
     export let row = 4;
     export let injClass = '';
     export let visible = false;
+    export let component = 'Cell';
     let settingVisible = false;
     export let contentSlot = false;
     let toastVisible = false;
@@ -67,15 +68,14 @@
 <Grid {row} {col}>
     <div
     role="none"
-    on:pointerdown={(e) => e.stopPropagation()}
-    on:click={(e) => {e.preventDefault();e.stopPropagation();settingVisible = !$appConfig.editable}}
-        class="relative py-6 {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
+    on:click={(e) => {e.preventDefault();settingVisible = !$appConfig.editable}}
+        class="relative h-[10.5rem] {injClass} dark:bg-black h-full rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
     >
         <div class="location text-xl">主题设置</div>
         <Icon name="ri-paint-brush-line" size={60} injClass="py-3" />
     </div>
 </Grid>
-{:else}
+{:else if component === 'Cell'}
 <Cell left={{ name: 'ri-plant-line', theme: true, size: 24, injClass: 'bg-blue-400 px-1 py-0.5 mr-3 text-white rounded-lg' }} injClass='text-lg' mx="0" my="0" on:click={() => visible = true} title="墙纸"></Cell>
 {/if}
 <div class="modal" on:pointerdown={(e) => e.stopPropagation()}

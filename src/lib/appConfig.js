@@ -191,7 +191,7 @@ export default {
                         type: 'component',
                         component: 'GridList',
                         row: 1, col: 1,
-                        title: '理财',
+                        title: '',
                         readOnly: true,
                         cols: 1,
                         props: {
@@ -205,7 +205,7 @@ export default {
                                     mx: 0,
                                     my: 0,
                                     cols: 4,
-                                    injClass: '!p-0 h-full',
+                                    injClass: '!p-0 h-full !backdrop-blur-xl rounded-xl',
                                     apps: [
                                         { ...music, ...grid['1'] },
                                         { ...navigation, ...grid['1'] },
@@ -216,6 +216,8 @@ export default {
                                     ]
                                 }
                             },
+                            mx: 1,
+                            my: 1,
                             gap: 4,
                             cols: 3,
                             injClass: 'text-white bg-white/10 backdrop-blur-xl rounded-xl !p-0.5',
@@ -241,7 +243,7 @@ export default {
                         type: 'component',
                         component: 'GridList',
                         row: 1, col: 1,
-                        title: '社交',
+                        title: '',
                         readOnly: true,
                         cols: 1,
                         props: {

@@ -4,16 +4,16 @@
 <script>
     // export let data;
     import { appConfig } from '@/store';
-    import { startApp } from 'wujie';
+    // import { startApp } from 'wujie';
     let container = null;
-    let poweredByWuJie = true
-    startApp({ name: $appConfig.app?.text, url: $appConfig.app?.url, el: container, sync: true }).
-    then((data) => {
-        poweredByWuJie = !!container.children.length
-    }).catch((err) => {
-        console.log(err);
-        poweredByWuJie = false
-    });
+    let poweredByWuJie = false
+    // startApp({ name: $appConfig.app?.text, url: $appConfig.app?.url, el: container, sync: true }).
+    // then((data) => {
+    //     poweredByWuJie = !!container.children.length
+    // }).catch((err) => {
+    //     console.log(err);
+    //     poweredByWuJie = false
+    // });
 </script>
 {#if poweredByWuJie}
     <div class="micro-app" bind:this={container}></div>

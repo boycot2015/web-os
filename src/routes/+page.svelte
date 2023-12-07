@@ -73,11 +73,11 @@
             app.componentName = typeof app.component === 'string' ? app.component : app.componentName
             app.componentName && (app.component = coms.default[app.componentName]||stdfComs[app.componentName]||GridList)
             if (app.props) {
-                for (const key in props) {
-                    if (Object.hasOwnProperty.call(app.props, key)) {
-                        app.props[key] = app.props[key] === 3 ? 3 : props[key]
-                    }
-                }
+                // for (const key in props) {
+                //     if (Object.hasOwnProperty.call(app.props, key)) {
+                //         app.props[key] = app.props[key] === 3 ? 3 : props[key]
+                //     }
+                // }
                 if (app.full) {
                     app.col = (md || lg || xl) ? 12 : 4
                 }
@@ -87,13 +87,14 @@
                     if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
                         app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, {...props, index: (props.index||0) + '' + index})
                     }
+                    console.log(app, 'app');
                     app.props.cols&&(app.props.cols === 3 ? 3 : 4)
                     app.props.gap = md || lg || xl ? 2:1
                     app.props.modal.componentName = typeof app.props.modal.component === 'string' ? app.props.modal.component : app.props.modal.componentName
                     app.props.modal.componentName && (app.props.modal.component = coms.default[app.props.modal.componentName] ||stdfComs[app.props.modal.componentName]|| GridList)
                 }
                 if (app.props.apps && app.props.apps.length) {
-                    app.props.apps = sortAppData(app.props.apps, {...props, index: (props.index||0) + '' + index, closable: props.closable && !app.props.modal })
+                    app.props.apps = sortAppData(app.props.apps, {...props, index: (props.index||0) + '' + index, closable: props.closable && !app.props.modal, cols: app.props.modal ? app.props.cols: props.cols })
                 }
             }
             return { ...app, ...props, index: (props.index||0) + '' + index }
@@ -298,7 +299,7 @@
     <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
         on:pointermove={(e) => e.stopPropagation()}
         on:pointerup={(e) => e.stopPropagation()}>
-        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;$appConfig.modal.actions = '';modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: 34, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
+        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;$appConfig.modal.actions = '';modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: 0, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
             {#if modal.component}
                 <svelte:component injClass={modal.props.injClass} cols={modal.props.cols} apps={modal.props.apps} gap={$appConfig.gap || modal.props.gap} mx={modal.props.mx}
                 my={modal.props.my} this={modal.component}></svelte:component>

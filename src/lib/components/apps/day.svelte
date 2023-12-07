@@ -17,7 +17,7 @@
 <Grid {row} {col}>
     <div
         role="none"
-        class="relative flex flex-col {row == 3 ?'h-[10.5rem]': 'h-[3.8rem] mx-1.5'} {injClass} h-full flex-col justify-center dark:bg-black h-full rounded-xl text-xs text-center shadow dark:shadow-white/10"
+        class="relative flex flex-col {row == 3 ?'h-[10.5rem]': 'h-[3.8rem] mx-1.5'} {injClass} flex-col justify-center dark:bg-black rounded-xl text-xs text-center shadow dark:shadow-white/10"
     >
         <div>{weekDay}</div>
         <div class=" {row == 3 ?'text-5xl py-5': 'text-2xl py-1'}">{day}</div>

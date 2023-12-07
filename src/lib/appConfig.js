@@ -266,6 +266,8 @@ export default {
                                     ]
                                 }
                             },
+                            mx: 1,
+                            my: 1,
                             gap: 4,
                             cols: 3,
                             injClass: 'text-white bg-white/10 backdrop-blur-xl rounded-xl !p-0.5',

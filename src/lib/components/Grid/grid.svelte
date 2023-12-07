@@ -6,7 +6,7 @@
     import { cubicInOut, quintOut } from 'svelte/easing';
     import { slide, scale } from 'svelte/transition';
     import { Icon, GridList, Grids, Grid } from '$lib/components'
-    import Sortable from 'sortablejs';
+    // import Sortable from 'sortablejs';
     export let apps = [];
     export let injClass = '';
     export let gap = 4;
@@ -146,7 +146,7 @@
                 btnText: '确定',
                 popup: {
                     px: 12,
-                    size: 20,
+                    size: 0,
                     transparent: false,
                     zIndex: 999,
                     mask: {

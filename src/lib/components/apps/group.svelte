@@ -17,16 +17,16 @@
     export let translateZ = 400;
     export let translateX = -200;
     export let containerWidth = '';
-    export let aspectRatio = [1, 1];
+    export let aspectRatio = [1, 1.1];
     let initActive = 0;
     let title = '';
     $: title = apps[initActive]?.text || apps[initActive]?.title || '';
 </script>
 <Grid row={2} col={2}>
     {#if type === 'swiper'}
-    <div class={`group ${containerWidth === null ? 'h-full !p-4': 'h-[10.5rem]'} ${injClass}`}>
+    <div class={`group ${containerWidth === null ? 'h-full': 'h-[10.5rem]'} ${injClass}`}>
         <Swiper {autoplay} translateZ={translateZ}
-        translateX={translateX} indicatePosition="none" containerWidth={containerWidth === null ? document.body.clientWidth - 100 : document.body.clientWidth/($appConfig.cols/2) - 30} bind:initActive={initActive} {loop} duration={500} aspectRatio={aspectRatio} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass} on:change={(e) => initActive = e.detail} />
+        translateX={translateX} indicatePosition="none" containerWidth={containerWidth === null ? document.body.clientWidth - 80 : document.body.clientWidth/($appConfig.cols/2) - 45} bind:initActive={initActive} {loop} duration={500} aspectRatio={aspectRatio} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass} on:change={(e) => initActive = e.detail} />
     </div>
     {#if title}
     <p class="text-sm text-white text-center mt-2">{title}</p>

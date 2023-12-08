@@ -60,7 +60,7 @@
         </a>
     </div>
 </div>
-<Popup radius={'2xl'} size={50} zIndex={9999} bind:visible={visible}>
+<Popup radius={'2xl'} size={60} zIndex={9999} bind:visible={visible}>
     <Cell left="slot" {title} shadow="none" radius="none" injClass="!m-0 !py-0 px-4 border-b text-xl !bg-gray-100">
         <Icon slot="left" injClass="back text-gray-800 mr-5 p-1 rounded-lg {info.color} {info.bgColor}" name="{info.logo || info.icon ||'ri-product-hunt-line'}" size={26} />
     </Cell>

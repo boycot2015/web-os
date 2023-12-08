@@ -25,7 +25,7 @@
     let pressInterval = null;
     let dragEls = [];
     const dispatch = createEventDispatcher();
-    let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 64 : 32
+    let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 80 : 32
     let datas = apps.slice(0, totalCount < 100 ? maxCount : totalCount)
     const onClick = (e) => {
         e.preventDefault();
@@ -160,13 +160,16 @@
     }
     const onAddComponent = (app) => {
         let current = $appConfig.apps[$appConfig.index]
+        let appSize = app.row ? app.row * (app.col || 1) : 1;
         let nextMaxCount = ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24;
-        let nextIndex = $appConfig.apps.findIndex(el => el.totalCount < 24);
+        appSize = current.totalRows % 5 === 0 ? appSize * 2 : appSize;
+        let nextIndex = $appConfig.apps.findIndex(el => el.totalCount + appSize < 24);
         nextIndex = nextIndex > -1 ? nextIndex : 0;
-        if ((current.totalCount + (app.row ? app.row * (app.col || 1) : 1)) <= maxCount) {
-            $appConfig.apps[$appConfig.index].props.apps = [...$appConfig.apps[$appConfig.index].props.apps, {...app, isComponent: false, closable: true}]
-        } else if ($appConfig.apps[nextIndex].totalRows * 4 + ((app.row ? app.row * (app.col || 1) : 1)) <= nextMaxCount) {
-            $appConfig.apps[nextIndex].props.apps = [...$appConfig.apps[nextIndex].props.apps, {...app, isComponent: false, closable: true}]
+        if ((current.totalCount + appSize) <= maxCount) {
+            $appConfig.apps[$appConfig.index].props.apps = [...$appConfig.apps[$appConfig.index].props.apps, {...app, isComponent: false, closable: true, text: $appConfig.index ? app.text : ''}]
+        } else if ($appConfig.apps[nextIndex].totalRows * 4 + (appSize) <= nextMaxCount) {
+            $appConfig.apps[nextIndex].props.apps = [...$appConfig.apps[nextIndex].props.apps, {...app, isComponent: false, closable: true, text: $appConfig.index ? app.text : ''}]
+            $appConfig.index = nextIndex
         } else {
             // onExced()
             $appConfig.apps = [...$appConfig.apps.slice(0, $appConfig.apps.length - 1), {
@@ -176,7 +179,7 @@
                 component: GridList,
                 componentName: 'GridList',
                 props: {
-                    apps: [{ ...app, isComponent: false, closable: true }]
+                    apps: [{ ...app, isComponent: false, closable: true, text: $appConfig.index ? app.text : '' }]
                 }
             }, { ...$appConfig.apps.slice(-1)[0], index: $appConfig.apps.length }];
             $appConfig.index = $appConfig.apps.length - 2
@@ -210,7 +213,12 @@
         // }
     })
     afterUpdate(() => {
-        datas = apps || []
+        datas = apps.map((el, index) => {
+            !index && (el.totalCount = el.row ? el.row * (el.col || 2) : 1)
+            index && (el.totalCount = (el.row ? el.row * (el.col || 2) : 1) + apps[index - 1].totalCount)
+            return el
+        })
+        datas = datas.filter(el => el.totalCount <= maxCount)
     });
     $: pressTime >=3 && onEditApps();
 </script>
@@ -219,7 +227,7 @@
         height: 100% !important;
     }
 </style> -->
-<div class="pb-0 pt-0 {readOnly}" role="none" on:click={(e) => onClick(e)}>
+<div class="pb-0 pt-0 overflow-hidden {readOnly}" role="none" style="max-height: calc(100vh - 6rem);" on:click={(e) => onClick(e)}>
     <div class={` px-8 py-4 pt-10 transition-all duration-500 ${injClass}`}>
         <Grids cols={cols} mx="{mx}" my="{my}" gap="{gap}" bind:GridsDom={GridsDom}>
             {#each datas as app, i}

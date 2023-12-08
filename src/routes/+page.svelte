@@ -87,7 +87,6 @@
                     if (app.props.modal.props.apps && app.props.modal.props.apps.length) {
                         app.props.modal.props.apps = sortAppData(app.props.modal.props.apps, {...props, index: (props.index||0) + '' + index})
                     }
-                    console.log(app, 'app');
                     app.props.cols&&(app.props.cols === 3 ? 3 : 4)
                     app.props.gap = md || lg || xl ? 2:1
                     app.props.modal.componentName = typeof app.props.modal.component === 'string' ? app.props.modal.component : app.props.modal.componentName
@@ -296,57 +295,49 @@
         </BottomSheet>
     {/if}
     {#if modal}
-    <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
-        on:pointermove={(e) => e.stopPropagation()}
-        on:pointerup={(e) => e.stopPropagation()}>
-        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;$appConfig.modal.actions = '';modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: modal.type == 'swiper' ? 55 : 0, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
-            {#if modal.component}
-                <svelte:component cols={modal.props.cols} apps={modal.props.apps} gap={$appConfig.gap || modal.props.gap} mx={modal.props.mx}
-                my={modal.props.my} this={modal.component} {...(modal.type == 'swiper'? modal.props : {})} injClass={modal.props.injClass + `${modal.type == 'swiper' ? ' backdrop-blur-xl rounded-xl bg-black/10 !p-0': ''}`}></svelte:component>
-            {/if}
-            {#if modal.actions}
-            <div class="mt-4 w-60">
-                <CellGroup injClass="!bg-transparent" mx="{modal.mx || 0}" my="{modal.my || 0}" radius="{modal.radius || '2xl'}">
-                    {#each modal.actions as cell, i}
-                        {#if cell.component}
-                            <svelte:component {...cell.props} this={cell.component}></svelte:component>
-                        {:else}
-                            <Cell right="{cell.icon}" title="{cell.title}" injClass="{cell.injClass || 'text-lg !bg-black/50 text-white'}" mx="{cell.mx || '0'}" my="{cell.my || '0'}" shadow="{cell.shadow || 'none'}" detail="{cell.detailSlot ? 'slot': ''}" line={i < modal.actions.length - 1} radius="{cell.radius || 'none'}" on:click={(e) => onCellClick(e, cell, i)}>
-                                <span slot="detail">
-                                    {#if cell.detail && cell.detail.component}
-                                    <svelte:component {...cell.detail.props} this={cell.detail.component}></svelte:component>
-                                    {:else}
-                                    <div class="text-black text-xl">请传入组件！</div>
-                                    {/if}
-                                </span>
-                            </Cell>
-                        {/if}
-                    {/each}
-                </CellGroup>
-            </div>
-            {/if}
-        </Modal>
-    </div>
+    <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;$appConfig.modal.actions = '';modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: modal.type == 'swiper' ? 55 : 0, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: modal.type == 'swiper'? 10 : 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
+        {#if modal.component}
+            <svelte:component cols={modal.props.cols} apps={modal.props.apps} gap={$appConfig.gap || modal.props.gap} mx={modal.props.mx}
+            my={modal.props.my} this={modal.component} {...(modal.type == 'swiper'? modal.props : {})} injClass={modal.props.injClass + `${modal.type == 'swiper' ? ' backdrop-blur-xl rounded-3xl bg-white/30 !p-0': ''}`}></svelte:component>
+        {/if}
+        {#if modal.actions}
+        <div class="mt-4 w-60">
+            <CellGroup injClass="!bg-transparent" mx="{modal.mx || 0}" my="{modal.my || 0}" radius="{modal.radius || '2xl'}">
+                {#each modal.actions as cell, i}
+                    {#if cell.component}
+                        <svelte:component {...cell.props} this={cell.component}></svelte:component>
+                    {:else}
+                        <Cell right="{cell.icon}" title="{cell.title}" injClass="{cell.injClass || 'text-lg !bg-black/50 text-white'}" mx="{cell.mx || '0'}" my="{cell.my || '0'}" shadow="{cell.shadow || 'none'}" detail="{cell.detailSlot ? 'slot': ''}" line={i < modal.actions.length - 1} radius="{cell.radius || 'none'}" on:click={(e) => onCellClick(e, cell, i)}>
+                            <span slot="detail">
+                                {#if cell.detail && cell.detail.component}
+                                <svelte:component {...cell.detail.props} this={cell.detail.component}></svelte:component>
+                                {:else}
+                                <div class="text-black text-xl">请传入组件！</div>
+                                {/if}
+                            </span>
+                        </Cell>
+                    {/if}
+                {/each}
+            </CellGroup>
+        </div>
+        {/if}
+    </Modal>
     {/if}
     {#if dialog}
-    <div class="dialog" on:pointerdown={(e) => e.stopPropagation()}
-        on:pointermove={(e) => e.stopPropagation()}
-        on:pointerup={(e) => e.stopPropagation()}>
-        <Dialog bind:visible={dialog.props.visible} title="{dialog.props.title}" on:close={() => {$appConfig.dialog.props.visible = false;dialog.onCancel && dialog.onCancel()}} on:primary={() => {dialog.onConfirm && dialog.onConfirm()}} on:secondary={() => {$appConfig.dialog.props.visible = false;dialog.onCancel && dialog.onCancel()}} {...dialog.props} popup={{radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'backOut',duration: 300 ,outDuration: 300,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...dialog.props.popup}}>
-            <div class="content" slot="content">
-                {#if dialog.component}
-                    <svelte:component injClass={dialog.props.injClass} cols={dialog.props.cols} apps={dialog.props.apps} gap={dialog.props.gap} mx={dialog.props.mx}
-                    my={dialog.props.my} this={dialog.component}></svelte:component>
-                {/if}
-            </div>
-            <div class="content" slot="primary">
-                {#if dialog.props.primarySlot }
-                    <svelte:component injClass={dialog.props.injClass} cols={dialog.props.cols} apps={dialog.props.apps} gap={dialog.props.gap} mx={dialog.props.mx}
-                    my={dialog.props.my} this={dialog.primarySlot}></svelte:component>
-                {/if}
-            </div>
-        </Dialog>
-    </div>
+    <Dialog bind:visible={dialog.props.visible} title="{dialog.props.title}" on:close={() => {$appConfig.dialog.props.visible = false;dialog.onCancel && dialog.onCancel()}} on:primary={() => {dialog.onConfirm && dialog.onConfirm()}} on:secondary={() => {$appConfig.dialog.props.visible = false;dialog.onCancel && dialog.onCancel()}} {...dialog.props} popup={{radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'backOut',duration: 300 ,outDuration: 300,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...dialog.props.popup}}>
+        <div class="content" slot="content">
+            {#if dialog.component}
+                <svelte:component injClass={dialog.props.injClass} cols={dialog.props.cols} apps={dialog.props.apps} gap={dialog.props.gap} mx={dialog.props.mx}
+                my={dialog.props.my} this={dialog.component}></svelte:component>
+            {/if}
+        </div>
+        <div class="content" slot="primary">
+            {#if dialog.props.primarySlot }
+                <svelte:component injClass={dialog.props.injClass} cols={dialog.props.cols} apps={dialog.props.apps} gap={dialog.props.gap} mx={dialog.props.mx}
+                my={dialog.props.my} this={dialog.primarySlot}></svelte:component>
+            {/if}
+        </div>
+    </Dialog>
     {/if}
     <Mask visible={true} backdropBlur="{(!$appConfig.index || $appConfig.index == $appConfig.apps.length - 1)&&$appConfig.backdropBlur==='none'?'base':($appConfig.backdropBlur || 'base')}" opacity={0.1} zIndex={mask ? 3 : 2} />
     {#if $appConfig.xl}

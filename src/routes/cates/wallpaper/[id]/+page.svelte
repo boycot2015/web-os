@@ -66,7 +66,7 @@
     }
 </script>
 <div class="wallpaper list {injClass}">
-    <div class="nav flex-row">
+    <div class="nav flex-row {isComponent?'w-[100%] h-[6rem] overflow-hidden overflow-y-auto':''}">
         {#each data.cates as cate}
             <div class="nav-item {cate.id == current.id ? 'active': ''}" role={'button'} on:click={() => onNavClick(cate)}>{cate.name}</div>
         {/each}
@@ -77,7 +77,7 @@
         <div class="list flex-row just-b">
             {#each result.datas.list as item}
                 {#if item.img}
-                    <div class="list-item flex-column">
+                    <div class="list-item flex-column {isComponent?'!w-[25%]':''}">
                         <img src="{item.img}" loading="lazy" role="{item.img}" on:click={() => onPreviewImages(item.img)} alt="{item.img_title || item.name}" title="{item.img_title || item.name}">
                     </div>
                 {/if}

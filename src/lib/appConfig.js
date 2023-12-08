@@ -192,7 +192,7 @@ export default {
                         type: 'component',
                         component: 'GridList',
                         row: 1, col: 1,
-                        title: '理财',
+                        title: '',
                         readOnly: true,
                         cols: 1,
                         props: {
@@ -220,7 +220,7 @@ export default {
                                                 mx: 0,
                                                 my: 0,
                                                 cols: 3,
-                                                injClass: '!p-0',
+                                                injClass: '!p-6 !px-4',
                                                 apps: [
                                                     { ...music, ...grid['1'] },
                                                     { ...navigation, ...grid['1'] },
@@ -231,22 +231,6 @@ export default {
                                                     { ...qq, ...grid['1'] },
                                                     { ...weather, ...grid['1'] },
                                                     { ...wallet, ...grid['1'] },
-                                                ]
-                                            }
-                                        },
-                                        {
-                                            type: 'component',
-                                            component: 'GridList',
-                                            props: {
-                                                gap: 8,
-                                                mx: 0,
-                                                my: 0,
-                                                cols: 3,
-                                                injClass: '!p-0',
-                                                apps: [
-                                                    { ...day, ...grid['1'] },
-                                                    { ...qqMap, ...grid['1'] },
-                                                    { ...qqMusic, ...grid['1'] },
                                                 ]
                                             }
                                         }
@@ -308,16 +292,16 @@ export default {
                                                 mx: 0,
                                                 my: 0,
                                                 cols: 3,
-                                                injClass: '!p-0',
+                                                injClass: '!p-6 !px-4',
                                                 apps: [
-                                                    { ...music, ...grid['1'] },
                                                     { ...navigation, ...grid['1'] },
-                                                    { ...settings, ...grid['1'] },
-                                                    { ...netease, ...grid['1'] },
+                                                    { ...music, ...grid['1'] },
                                                     { ...wechat, ...grid['1'] },
+                                                    { ...netease, ...grid['1'] },
                                                     { ...alipay, ...grid['1'] },
-                                                    { ...qq, ...grid['1'] },
                                                     { ...weather, ...grid['1'] },
+                                                    { ...settings, ...grid['1'] },
+                                                    { ...qq, ...grid['1'] },
                                                     { ...wallet, ...grid['1'] },
                                                 ]
                                             }
@@ -330,9 +314,9 @@ export default {
                                                 mx: 0,
                                                 my: 0,
                                                 cols: 3,
-                                                injClass: '!p-0',
+                                                injClass: '!p-6 !px-4',
                                                 apps: [
-                                                    { ...day, ...grid['1'] },
+                                                    { ...weather, ...grid['1'] },
                                                     { ...qqMap, ...grid['1'] },
                                                     { ...qqMusic, ...grid['1'] },
                                                 ]
@@ -406,7 +390,7 @@ export default {
                         row: 2, col: 2,
                         props: {
                             gap: 4,
-                            injClass: 'text-white bg-trnsparent backdrop-blur-xl !p-3 rounded-xl',
+                            injClass: 'text-white bg-white/30 backdrop-blur-xl !p-3 rounded-2xl',
                             apps: [
                                 { ...wechat, ...grid['x2'] },
                                 { ...officeWechat, ...grid['x2'] },
@@ -423,7 +407,7 @@ export default {
                         readOnly: true,
                         props: {
                             gap: 4,
-                            injClass: 'text-white bg-transparent !p-3 backdrop-blur-xl rounded-xl',
+                            injClass: 'text-white bg-white/30 !p-3 backdrop-blur-xl rounded-2xl',
                             apps: [
                                 { ...music, ...grid['x2'] },
                                 { ...navigation, ...grid['x2'] },
@@ -476,7 +460,7 @@ export default {
                         readOnly: true,
                         props: {
                             gap: 4,
-                            injClass: 'text-white bg-transparent !p-3 backdrop-blur-xl rounded-xl',
+                            injClass: 'text-white bg-white/30 !p-3 backdrop-blur-xl rounded-2xl',
                             apps: [
                                 { ...clock, ...grid['x2'], injClass: '!p-0 text-gray-500 text-sm' },
                                 { ...qqMap, ...grid['x2'] },
@@ -529,7 +513,7 @@ export default {
                         row: 2, col: 2,
                         props: {
                             gap: 4,
-                            injClass: 'text-white bg-trnsparent backdrop-blur-xl !p-3 rounded-xl',
+                            injClass: 'text-white bg-white/30 backdrop-blur-xl !p-3 rounded-2xl',
                             apps: [
                                 { ...taobao, ...grid['x2'] },
                                 { ...alipay, ...grid['x2'] },

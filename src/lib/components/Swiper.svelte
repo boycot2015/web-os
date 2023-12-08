@@ -79,7 +79,7 @@
 		data.length > 1
 			? [first, ...data, first, last]
 			: data.length === 1
-			? [first, ...data, last]
+			? [first, {...data[0]}, last]
 			: data; //实现无限轮播，复制一个新数组，防止改变原数组 implement infinite loop, copy a new array to prevent change original array
 	const indicateAlignObj = {
 		left: 'justify-start',
@@ -340,7 +340,7 @@
 	// slide end
 	const touchendFun = () => {
         // 非无限轮播边界处理
-        if (!loop && (active === 1 && moveX > 0 || (active === dataNew.length - 3 && moveX < 0))) {
+        if (!loop && (active === 1 && moveX > 0 || (active === dataNew.length - 3 && moveX < 0) || data.length === 1)) {
             moveX =  moveX > 0 ? 10 : -10
         }
 		endTime = new Date().getTime();
@@ -447,8 +447,9 @@
         dataNew = data.length > 1
         ? [first, ...data, first, last]
         : data.length === 1
-        ? [first, ...data, last]
+        ? [first, {...data[0]}, last]
         : data;
+        console.log(dataNew, 'dataNew');
     })
 </script>
 

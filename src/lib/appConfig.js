@@ -191,28 +191,64 @@ export default {
                         type: 'component',
                         component: 'GridList',
                         row: 1, col: 1,
-                        title: '',
+                        title: '理财',
                         readOnly: true,
                         cols: 1,
                         props: {
                             readOnly: true,
                             modal: {
-                                component: 'GridList',
+                                component: 'Group',
+                                type: 'swiper',
                                 props: {
                                     title: '理财',
                                     visible: false,
-                                    gap: 4,
-                                    mx: 0,
-                                    my: 0,
-                                    cols: 4,
-                                    injClass: '!p-0 h-full !backdrop-blur-xl rounded-xl',
+                                    translateZ: 0,
+                                    translateX: 0,
+                                    loop: false,
+                                    autoplay: false,
+                                    titleAlign: 'center',
+                                    containerWidth: null,
+                                    aspectRatio: [1, 1.15],
+                                    injClass: '!p-0 h-full',
                                     apps: [
-                                        { ...music, ...grid['1'] },
-                                        { ...navigation, ...grid['1'] },
-                                        { ...settings, ...grid['1'] },
-                                        { ...netease, ...grid['1'] },
-                                        { ...wechat, ...grid['1'] },
-                                        { ...alipay, ...grid['1'] },
+                                        {
+                                            type: 'component',
+                                            component: 'GridList',
+                                            props: {
+                                                gap: 8,
+                                                mx: 0,
+                                                my: 0,
+                                                cols: 3,
+                                                injClass: '!p-0',
+                                                apps: [
+                                                    { ...music, ...grid['1'] },
+                                                    { ...navigation, ...grid['1'] },
+                                                    { ...settings, ...grid['1'] },
+                                                    { ...netease, ...grid['1'] },
+                                                    { ...wechat, ...grid['1'] },
+                                                    { ...alipay, ...grid['1'] },
+                                                    { ...qq, ...grid['1'] },
+                                                    { ...weather, ...grid['1'] },
+                                                    { ...wallet, ...grid['1'] },
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            type: 'component',
+                                            component: 'GridList',
+                                            props: {
+                                                gap: 8,
+                                                mx: 0,
+                                                my: 0,
+                                                cols: 3,
+                                                injClass: '!p-0',
+                                                apps: [
+                                                    { ...day, ...grid['1'] },
+                                                    { ...qqMap, ...grid['1'] },
+                                                    { ...qqMusic, ...grid['1'] },
+                                                ]
+                                            }
+                                        }
                                     ]
                                 }
                             },
@@ -249,22 +285,58 @@ export default {
                         props: {
                             readOnly: true,
                             modal: {
-                                component: 'GridList',
+                                component: 'Group',
+                                type: 'swiper',
                                 props: {
                                     title: '社交',
                                     visible: false,
-                                    gap: 4,
-                                    mx: 0,
-                                    my: 0,
-                                    cols: 4,
+                                    translateZ: 0,
+                                    translateX: 0,
+                                    loop: false,
+                                    autoplay: false,
+                                    titleAlign: 'center',
+                                    containerWidth: null,
+                                    aspectRatio: [1, 1.15],
                                     injClass: '!p-0 h-full',
                                     apps: [
-                                        { ...music, ...grid['1'] },
-                                        { ...navigation, ...grid['1'] },
-                                        { ...settings, ...grid['1'] },
-                                        { ...netease, ...grid['1'] },
-                                        { ...wechat, ...grid['1'] },
-                                        { ...alipay, ...grid['1'] },
+                                        {
+                                            type: 'component',
+                                            component: 'GridList',
+                                            props: {
+                                                gap: 8,
+                                                mx: 0,
+                                                my: 0,
+                                                cols: 3,
+                                                injClass: '!p-0',
+                                                apps: [
+                                                    { ...music, ...grid['1'] },
+                                                    { ...navigation, ...grid['1'] },
+                                                    { ...settings, ...grid['1'] },
+                                                    { ...netease, ...grid['1'] },
+                                                    { ...wechat, ...grid['1'] },
+                                                    { ...alipay, ...grid['1'] },
+                                                    { ...qq, ...grid['1'] },
+                                                    { ...weather, ...grid['1'] },
+                                                    { ...wallet, ...grid['1'] },
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            type: 'component',
+                                            component: 'GridList',
+                                            props: {
+                                                gap: 8,
+                                                mx: 0,
+                                                my: 0,
+                                                cols: 3,
+                                                injClass: '!p-0',
+                                                apps: [
+                                                    { ...day, ...grid['1'] },
+                                                    { ...qqMap, ...grid['1'] },
+                                                    { ...qqMusic, ...grid['1'] },
+                                                ]
+                                            }
+                                        }
                                     ]
                                 }
                             },

@@ -299,10 +299,10 @@
     <div class="modal" on:pointerdown={(e) => e.stopPropagation()}
         on:pointermove={(e) => e.stopPropagation()}
         on:pointerup={(e) => e.stopPropagation()}>
-        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;$appConfig.modal.actions = '';modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: 0, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
+        <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;$appConfig.modal.actions = '';modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: modal.type == 'swiper' ? 55 : 0, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
             {#if modal.component}
-                <svelte:component injClass={modal.props.injClass} cols={modal.props.cols} apps={modal.props.apps} gap={$appConfig.gap || modal.props.gap} mx={modal.props.mx}
-                my={modal.props.my} this={modal.component}></svelte:component>
+                <svelte:component cols={modal.props.cols} apps={modal.props.apps} gap={$appConfig.gap || modal.props.gap} mx={modal.props.mx}
+                my={modal.props.my} this={modal.component} {...(modal.type == 'swiper'? modal.props : {})} injClass={modal.props.injClass + `${modal.type == 'swiper' ? ' backdrop-blur-xl rounded-xl bg-black/10 !p-0': ''}`}></svelte:component>
             {/if}
             {#if modal.actions}
             <div class="mt-4 w-60">

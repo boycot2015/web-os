@@ -43,7 +43,8 @@ export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地
 export const appStore = { icon: 'ri-app-store-line', url: 'http://m.appchina.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', color: 'text-white', closable: false }
 export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', desc: '照亮你的美', bgColor: 'bg-gray-400', color: 'text-black', closable: false, readOnly: true  }
 export const day = { icon: 'ri-calendar-line', text: '日历', url: 'https://m.rili.com.cn/', desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white', closable: false, readOnly: true }
-// export const userCenter = { icon: 'ri-user-line', text: '用户中心', url: 'http://user.test.limofang.cn/', desc: '用户中心', color: 'text-gray-500', bgColor: 'bg-white', closable: false }
+export const userCenter = { icon: 'ri-user-line', text: '用户中心', url: 'http://user.test.limofang.cn/', desc: '用户中心', color: 'text-gray-500', bgColor: 'bg-white', closable: false }
+export const movie = {icon: 'ri-movie-line', text: '神马影视', color: 'text-red-500', bgColor: 'bg-gray-500', url: 'https://www.9shenma.com/', closable: false, readOnly: true }
 const editableApps = [
     clock,
     taobao,
@@ -172,7 +173,7 @@ export default {
                     { type: 'component', component: 'Day', ...day, closable: false, readOnly: true, props: { row: 1, col: 1 }},
                     navigation,
                     music,
-                    settings,
+                    movie,
                     qzone,
                     weather,
                     appleStore,

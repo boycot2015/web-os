@@ -449,7 +449,6 @@
         : data.length === 1
         ? [first, {...data[0]}, last]
         : data;
-        console.log(dataNew, 'dataNew');
     })
 </script>
 

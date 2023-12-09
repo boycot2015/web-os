@@ -24,7 +24,7 @@
 </script>
 <Grid row={2} col={2}>
     {#if type === 'swiper'}
-    <div class={`group ${containerWidth === null ? 'h-full': 'h-[10.5rem]'} ${injClass}`}>
+    <div class={`flex flex-col items-center justify-center group ${containerWidth === null ? 'h-full': 'h-[10.5rem]'} ${injClass}`}>
         <Swiper {autoplay} translateZ={translateZ}
         translateX={translateX} indicatePosition="none" containerWidth={containerWidth === null ? document.body.clientWidth - 80 : document.body.clientWidth/($appConfig.cols/2) - 45} bind:initActive={initActive} {loop} duration={500} aspectRatio={aspectRatio} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass} on:change={(e) => initActive = e.detail} />
     </div>

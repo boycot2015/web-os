@@ -5,6 +5,7 @@ import DeviceInfo from './deviceInfo.svelte'
 import Group from './group.svelte'
 import Theme from './theme.svelte'
 import Weather from './weather.svelte'
+import CrossFade from './CrossFade/index.svelte'
 export default {
     Clock,
     Day,
@@ -12,5 +13,6 @@ export default {
     // GridList,
     Group,
     Theme,
-    Weather
+    Weather,
+    CrossFade
 }

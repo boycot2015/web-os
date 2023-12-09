@@ -185,14 +185,18 @@ export default {
             index: 3,
             name: '自定义页面',
             type: 'component',
-            component: 'GridList',
+            component: 'CrossFade',
             props: {
+                row: 1, col: 1,
+                readOnly: true,
+                cols: 4,
+                injClass: '!bg-transparent px-8 py-4 pt-10',
                 apps: [
                     {
                         type: 'component',
-                        component: 'GridList',
+                        component: 'CrossFade',
                         row: 1, col: 1,
-                        title: '',
+                        title: '理财',
                         readOnly: true,
                         cols: 1,
                         props: {
@@ -209,7 +213,7 @@ export default {
                                     autoplay: false,
                                     titleAlign: 'center',
                                     containerWidth: null,
-                                    aspectRatio: [1, 1.15],
+                                    aspectRatio: [1, 1.2],
                                     injClass: '!p-0 h-full',
                                     apps: [
                                         {
@@ -241,7 +245,7 @@ export default {
                             my: 1,
                             gap: 4,
                             cols: 3,
-                            injClass: 'text-white bg-white/10 backdrop-blur-xl rounded-xl !p-0.5',
+                            injClass: 'text-white bg-white/10  rounded-xl !p-1',
                             apps: [
                                 { ...music, ...grid['xs'] },
                                 { ...navigation, ...grid['xs'] },
@@ -262,9 +266,9 @@ export default {
                     appleStore,
                     {
                         type: 'component',
-                        component: 'GridList',
+                        component: 'CrossFade',
                         row: 1, col: 1,
-                        title: '',
+                        title: '社交',
                         readOnly: true,
                         cols: 1,
                         props: {
@@ -281,7 +285,7 @@ export default {
                                     autoplay: false,
                                     titleAlign: 'center',
                                     containerWidth: null,
-                                    aspectRatio: [1, 1.15],
+                                    aspectRatio: [1, 1.2],
                                     injClass: '!p-0 h-full',
                                     apps: [
                                         {
@@ -329,7 +333,7 @@ export default {
                             my: 1,
                             gap: 4,
                             cols: 3,
-                            injClass: 'text-white bg-white/10 backdrop-blur-xl rounded-xl !p-0.5',
+                            injClass: 'text-white bg-white/10 rounded-xl !p-1',
                             apps: [
                                 { ...music, ...grid['xs'] },
                                 { ...navigation, ...grid['xs'] },
@@ -401,13 +405,13 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: 'GridList',
+                        component: 'CrossFade',
                         row: 2, col: 2,
                         title: '理财',
                         readOnly: true,
                         props: {
                             gap: 4,
-                            injClass: 'text-white bg-white/30 !p-3 backdrop-blur-xl rounded-2xl',
+                            injClass: 'text-white bg-white/30 !p-3  rounded-2xl',
                             apps: [
                                 { ...music, ...grid['x2'] },
                                 { ...navigation, ...grid['x2'] },
@@ -454,13 +458,13 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: 'GridList',
+                        component: 'CrossFade',
                         row: 2, col: 2,
                         title: '娱乐',
                         readOnly: true,
                         props: {
                             gap: 4,
-                            injClass: 'text-white bg-white/30 !p-3 backdrop-blur-xl rounded-2xl',
+                            injClass: 'text-white bg-white/30 !p-3  rounded-2xl',
                             apps: [
                                 { ...clock, ...grid['x2'], injClass: '!p-0 text-gray-500 text-sm' },
                                 { ...qqMap, ...grid['x2'] },

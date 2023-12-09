@@ -318,10 +318,24 @@
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/@types/normalize-package-data/-/normalize-package-data-2.4.4.tgz"
   "version" "2.4.4"
 
+"@types/prop-types@*":
+  "integrity" "sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/@types/prop-types/-/prop-types-15.7.11.tgz"
+  "version" "15.7.11"
+
 "@types/pug@^2.0.6":
   "integrity" "sha512-QzhsZ1dMGyJbn/D9V80zp4GIA4J4rfAjCCxc3MP+new0E8dyVdSkR735Lx+n3LIaHNFcjHL5+TbziccuT+fdoQ=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/@types/pug/-/pug-2.0.8.tgz"
   "version" "2.0.8"
+
+"@types/react@^17.0.11":
+  "integrity" "sha512-lfqOu9mp16nmaGRrS8deS2Taqhd5Ih0o92Te5Ws6I1py4ytHBcXLqh0YIqVsViqwVI5f+haiFM6hju814BzcmA=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/@types/react/-/react-17.0.71.tgz"
+  "version" "17.0.71"
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    "csstype" "^3.0.2"
 
 "@types/resolve@1.17.1":
   "integrity" "sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw=="
@@ -329,6 +343,11 @@
   "version" "1.17.1"
   dependencies:
     "@types/node" "*"
+
+"@types/scheduler@*":
+  "integrity" "sha512-WZLiwShhwLRmeV6zH+GkbOFT6Z6VklCItrDioxUnv+u4Ll+8vKeFySoFyK/0ctcRpOmwAicELfmys1sDc/Rw+A=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/@types/scheduler/-/scheduler-0.16.8.tgz"
+  "version" "0.16.8"
 
 "@types/semver@^7.5.0":
   "integrity" "sha512-dn1l8LaMea/IjDoHNd9J52uBbInB796CDffS6VdIxvqYCPSG0V0DzHp76GpaWnlhg88uYyPbXCDIowa86ybd5A=="
@@ -862,6 +881,11 @@
   dependencies:
     "css-tree" "^1.1.2"
 
+"csstype@^3.0.2":
+  "integrity" "sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/csstype/-/csstype-3.1.2.tgz"
+  "version" "3.1.2"
+
 "debug@^3.2.6":
   "integrity" "sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/debug/-/debug-3.2.7.tgz"
@@ -1323,6 +1347,13 @@
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/fraction.js/-/fraction.js-4.3.7.tgz"
   "version" "4.3.7"
 
+"framesync@^6.1.2", "framesync@6.1.2":
+  "integrity" "sha512-jBTqhX6KaQVDyus8muwZbBeGGP0XgujBRbQ7gM7BRdS3CadCZIHiawyzYLnafYcvZIh5j8WE7cxZKFn7dXhu9g=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/framesync/-/framesync-6.1.2.tgz"
+  "version" "6.1.2"
+  dependencies:
+    "tslib" "2.4.0"
+
 "fs.realpath@^1.0.0":
   "integrity" "sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/fs.realpath/-/fs.realpath-1.0.0.tgz"
@@ -1426,6 +1457,11 @@
   "version" "2.0.0"
   dependencies:
     "function-bind" "^1.1.2"
+
+"hey-listen@^1.0.8":
+  "integrity" "sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/hey-listen/-/hey-listen-1.0.8.tgz"
+  "version" "1.0.8"
 
 "hosted-git-info@^2.1.4":
   "integrity" "sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw=="
@@ -2043,6 +2079,16 @@
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/pluralize/-/pluralize-8.0.0.tgz"
   "version" "8.0.0"
 
+"popmotion@^11.0.5":
+  "integrity" "sha512-la8gPM1WYeFznb/JqF4GiTkRRPZsfaj2+kCxqQgr2MJylMmIKUwBfWW8Wa5fml/8gmtlD5yI01MP1QCZPWmppA=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/popmotion/-/popmotion-11.0.5.tgz"
+  "version" "11.0.5"
+  dependencies:
+    "framesync" "6.1.2"
+    "hey-listen" "^1.0.8"
+    "style-value-types" "5.1.2"
+    "tslib" "2.4.0"
+
 "postcss-calc@^8.2.3":
   "integrity" "sha512-SmWMSJmB8MRnnULldx0lQIyhSNvuDl9HfrZkaqqE/WHAhToYsAvDq+yAsA/kIyINDszOp3Rh0GFoNuH5Ypsm3Q=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/postcss-calc/-/postcss-calc-8.2.4.tgz"
@@ -2607,6 +2653,14 @@
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/strip-json-comments/-/strip-json-comments-3.1.1.tgz"
   "version" "3.1.1"
 
+"style-value-types@5.1.2":
+  "integrity" "sha512-Vs9fNreYF9j6W2VvuDTP7kepALi7sk0xtk2Tu8Yxi9UoajJdEVpNpCov0HsLTqXvNGKX+Uv09pkozVITi1jf3Q=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/style-value-types/-/style-value-types-5.1.2.tgz"
+  "version" "5.1.2"
+  dependencies:
+    "hey-listen" "^1.0.8"
+    "tslib" "2.4.0"
+
 "stylehacks@^5.1.1":
   "integrity" "sha512-sBpcd5Hx7G6seo7b1LkpttvTz7ikD0LlH5RmdcBNb6fFR0Fl7LQwHDFr300q4cwUqi+IYrFGmsIHieMBfnN/Bw=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/stylehacks/-/stylehacks-5.1.1.tgz"
@@ -2677,6 +2731,17 @@
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/svelte-hmr/-/svelte-hmr-0.15.3.tgz"
   "version" "0.15.3"
 
+"svelte-motion@^0.11.5":
+  "integrity" "sha512-xTfh7xHL2E8CsqbjU88PpiXPzexQs8s12eb2KEmW2pX9b5tD4REZiaA4hcmF/NwttbrGD7C0h3ZoRUTI5hA50A=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/svelte-motion/-/svelte-motion-0.11.5.tgz"
+  "version" "0.11.5"
+  dependencies:
+    "@types/react" "^17.0.11"
+    "framesync" "^6.1.2"
+    "popmotion" "^11.0.5"
+    "style-value-types" "5.1.2"
+    "tslib" "^2.2.0"
+
 "svelte-preprocess@^5.0.4":
   "integrity" "sha512-ABia2QegosxOGsVlsSBJvoWeXy1wUKSfF7SWJdTjLAbx/Y3SrVevvvbFNQqrSJw89+lNSsM58SipmZJ5SRi5iw=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/svelte-preprocess/-/svelte-preprocess-5.0.4.tgz"
@@ -2688,7 +2753,7 @@
     "sorcery" "^0.11.0"
     "strip-indent" "^3.0.0"
 
-"svelte@^3.19.0 || ^4.0.0", "svelte@^3.23.0 || ^4.0.0-next.0 || ^4.0.0", "svelte@^3.37.0 || ^4.0.0", "svelte@^3.54.0 || ^4.0.0", "svelte@^3.54.0 || ^4.0.0-next.0", "svelte@^3.55.0 || ^4.0.0-next.0 || ^4.0.0", "svelte@^4.0.5":
+"svelte@^3.19.0 || ^4.0.0", "svelte@^3.23.0 || ^4.0.0-next.0 || ^4.0.0", "svelte@^3.35.0", "svelte@^3.37.0 || ^4.0.0", "svelte@^3.54.0 || ^4.0.0", "svelte@^3.54.0 || ^4.0.0-next.0", "svelte@^3.55.0 || ^4.0.0-next.0 || ^4.0.0", "svelte@^4.0.5":
   "integrity" "sha512-My2tytF2e2NnHSpn2M7/3VdXT4JdTglYVUuSuK/mXL2XtulPYbeBfl8Dm1QiaKRn0zoULRnL+EtfZHHP0k4H3A=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/svelte/-/svelte-4.2.2.tgz"
   "version" "4.2.2"
@@ -2802,10 +2867,15 @@
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/ts-interface-checker/-/ts-interface-checker-0.1.13.tgz"
   "version" "0.1.13"
 
-"tslib@^2.3.0":
+"tslib@^2.2.0", "tslib@^2.3.0":
   "integrity" "sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/tslib/-/tslib-2.6.2.tgz"
   "version" "2.6.2"
+
+"tslib@2.4.0":
+  "integrity" "sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/tslib/-/tslib-2.4.0.tgz"
+  "version" "2.4.0"
 
 "type-check@^0.4.0", "type-check@~0.4.0":
   "integrity" "sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew=="

@@ -295,11 +295,11 @@
                         dy = (event.pageY > window.screen.height / 2 ? window.screen.height / 2 - event.pageY : event.pageY) || 150;
                         $appConfig.modal = ''
                         modal = ''
-                        if (app.props && app.props.modal) {
-                            modal = app.props.modal
-                            modal.props.visible = true
-                            $appConfig.modal = modal
-                        }
+                        // if (app.props && app.props.modal) {
+                        //     modal = app.props.modal
+                        //     modal.props.visible = true
+                        //     $appConfig.modal = modal
+                        // }
                         if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
                         else if (app.url) goto(`${app.url}`);
                         app.url && ($appConfig.app = app)

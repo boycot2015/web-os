@@ -8,6 +8,7 @@ export default {
     modal: '',
     dialog: '',
     mask: '',
+    ssr: true,
     editable: false,
     refresh: false,
     componentVisible: false,

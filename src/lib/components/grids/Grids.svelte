@@ -2,6 +2,7 @@
 	//列数
 	// Number of columns
 	export let cols = '6';
+	export let injClass = '';
 
 	//间距
 	// Spacing
@@ -65,6 +66,6 @@
 	};
 </script>
 
-<div bind:this={GridsDom} on:touchstart on:touchmove on:touchend role="none" class={`grid${colsObj[cols] || colsObj['6']}${mxObj[mx] || mxObj['2']}${myObj[my] || myObj['2']}${gapObj[gap] || gapObj['2']}`}>
+<div bind:this={GridsDom} on:touchstart on:touchmove on:touchend role="none" class={`grid${colsObj[cols] || colsObj['6']}${mxObj[mx] || mxObj['2']}${myObj[my] || myObj['2']}${gapObj[gap] || gapObj['2']} ${injClass||''}`}>
 	<slot />
 </div>

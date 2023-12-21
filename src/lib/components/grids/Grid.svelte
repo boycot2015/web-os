@@ -36,7 +36,6 @@
 		'11': ' cols-span-11',
 		'12': ' cols-span-12',
 	};
-    const dispatch = createEventDispatcher();
 </script>
 
 <div draggable={true} role="none" class={`${rowObj[row] || rowObj['1']}${colObj[col] || colObj['1']} ${injClass}`}><slot /></div>

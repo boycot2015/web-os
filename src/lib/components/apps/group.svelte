@@ -13,23 +13,29 @@
     export let component = '';
     export let props = '';
     export let modal = '';
+    export let col = '';
+    export let row = '';
+    export let gap = '';
+    export let cols = '';
+    export let titleAlign = '';
+    export let title = '';
+    export let visible = false;
     export let apps = [];
     export let translateZ = 400;
     export let translateX = -200;
     export let containerWidth = '';
     export let aspectRatio = [1, 1.1];
     let initActive = 0;
-    let title = '';
     $: title = apps[initActive]?.text || apps[initActive]?.title || '';
 </script>
-<Grid row={2} col={2}>
+<Grid row={col||2} col={row||2}>
     {#if type === 'swiper'}
-    <div class={`flex flex-col items-center justify-center group ${containerWidth === null ? 'h-full': 'h-[10.5rem]'} ${injClass}`}>
+    <div class={`flex flex-col overflow-hidden ${cols} ${gap} ${visible} items-center justify-center group ${containerWidth === null ? 'h-full': 'h-[auto]'} ${injClass}`}>
         <Swiper {autoplay} translateZ={translateZ}
-        translateX={translateX} indicatePosition="none" containerWidth={containerWidth === null ? document.body.clientWidth - 80 : document.body.clientWidth/($appConfig.cols/2) - 45} bind:initActive={initActive} {loop} duration={500} aspectRatio={aspectRatio} triggerSpeed={0.5} data={apps} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass} on:change={(e) => initActive = e.detail} />
+        translateX={translateX} indicatePosition="none" containerWidth={containerWidth === null ? document.body.clientWidth - 80 : document.body.clientWidth/($appConfig.cols/2) - 45} bind:initActive={initActive} {loop} duration={500} aspectRatio={aspectRatio} triggerSpeed={0.5} data={apps.map(el => ({...el, props: el.props && {...el.props, cols: ($appConfig.md || $appConfig.xl || $appConfig.lg) ? $appConfig.xl ? 8 : 6 : el.props.cols}}))} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass} on:change={(e) => initActive = e.detail} />
     </div>
     {#if title}
-    <p class="text-sm text-white text-center mt-2">{title}</p>
+    <p class="text-sm text-white text-center mt-2 {titleAlign}">{title}</p>
     {/if}
     {:else if type === 'component'}
         <svelte:component injClass={injClass} {...props} apps={apps} this={component}></svelte:component>

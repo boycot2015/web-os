@@ -14,6 +14,8 @@
     export let mx = 0;
     export let my = 0;
     export let path = '';
+    export let title = '';
+    export let visible = '';
     export let modal = '';
     export let readOnly = false;
     export let totalCount = 18;
@@ -26,6 +28,7 @@
     let dragEls = [];
     const dispatch = createEventDispatcher();
     let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 80 : 32
+    maxCount = $appConfig.index === $appConfig.apps.length - 1 ? 100 : maxCount
     let datas = apps.slice(0, totalCount < 100 ? maxCount : totalCount)
     const onClick = (e) => {
         e.preventDefault();
@@ -55,7 +58,7 @@
             clearInterval(pressInterval);
             return
         }
-        let cols = (current.type==='component' && current.col > 1 ? $appConfig.cols / current.col : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 8 : 4)
+        let cols = ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 8 :(current.type==='component' && current.col > 1 ? $appConfig.cols / current.col : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 8 : 4)
         // console.log(current,cols, 'current');
         $appConfig.modal = {
             component: GridList,
@@ -84,7 +87,7 @@
     }
     const onPointerdown = (e, app) => {
         clearTimer()
-        e.preventDefault();
+        // e.preventDefault()
         pressInterval = setInterval(() => {
             pressTime++;
         }, 200)
@@ -227,7 +230,7 @@
         height: 100% !important;
     }
 </style> -->
-<div class="pb-0 pt-0 overflow-hidden {readOnly}" role="none" style="max-height: calc(100vh - 6rem);" on:click={(e) => onClick(e)}>
+<div class="pb-0 pt-0 {visible} {readOnly}" role="none" style="max-height: calc(100vh - 6rem);" on:click={(e) => onClick(e)}>
     <div class={` px-8 py-4 pt-10 transition-all duration-500 ${injClass}`}>
         <Grids cols={cols} mx="{mx}" my="{my}" gap="{gap}" bind:GridsDom={GridsDom}>
             {#each datas as app, i}
@@ -295,11 +298,11 @@
                         dy = (event.pageY > window.screen.height / 2 ? window.screen.height / 2 - event.pageY : event.pageY) || 150;
                         $appConfig.modal = ''
                         modal = ''
-                        // if (app.props && app.props.modal) {
-                        //     modal = app.props.modal
-                        //     modal.props.visible = true
-                        //     $appConfig.modal = modal
-                        // }
+                        if (app.props && app.props.modal) {
+                            modal = app.props.modal
+                            modal.props.visible = true
+                            $appConfig.modal = modal
+                        }
                         if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
                         else if (app.url) goto(`${app.url}`);
                         app.url && ($appConfig.app = app)
@@ -311,7 +314,7 @@
                         {/if}
                         <svelte:component {...app.props || {}} this={app.component}></svelte:component>
                         {#if (app.title || app.text) && !app.hideTitle}
-                        <div class="text-sm text-white text-center mt-2 {app.injTitleClass}">{app.title||app.text}</div>
+                        <div class="text-sm text-white text-center mt-2 {app.injTitleClass}">{app.title||app.text || title}</div>
                         {/if}
                     </div>
                 </Grid>

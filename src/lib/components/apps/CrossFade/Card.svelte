@@ -7,16 +7,18 @@
     export let item;
     const textscale = {
         initial: {
-            scale: 0,
+            transformX: 0,
         },
         animate: {
-            scale: 1,
+            transformX: 50,
             transition: { duration: 0.3, delay: 0 },
         },
         exit: {
-            scale: 0,
+            transformX: 0,
         },
     };
+    let cols = ($appConfig.md || $appConfig.lg || $appConfig.xl) ? $appConfig.xl ? 12 : 8 : item.props.modal.props.cols
+    let col = ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 2 : item.props.modal.props.col
     let clientHeight = 0;
     let offsetHeight = 0;
     $: offsetTop = clientHeight/2-offsetHeight;
@@ -53,9 +55,9 @@
                             <svelte:component this={item.props.modal.component} {...item.props.modal.props}></svelte:component>
                         </div>
                     {:else}
-                    <Grids cols={item.props.modal.props.cols} gap={item.props.modal.props.gap} mx={item.props.modal.props.mx} my={item.props.modal.props.my}>
+                    <Grids {cols} gap={item.props.modal.props.gap} mx={item.props.modal.props.mx} my={item.props.modal.props.my}>
                         {#each item.props.modal.props.apps as app}
-                            <Grid col={item.props.modal.props.col||4} row={item.props.modal.props.row}>
+                            <Grid col={col||4} row={item.props.modal.props.row}>
                                 <div on:click|stopPropagation>
                                     {#if app.component}
                                     <div class="w-full h-full flex flex-col items-center justify-center">

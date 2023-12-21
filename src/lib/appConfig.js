@@ -185,7 +185,7 @@ export default {
             index: 3,
             name: '自定义页面',
             type: 'component',
-            component: 'CrossFade',
+            component: 'GridList', // CrossFade
             props: {
                 row: 1, col: 1,
                 readOnly: true,
@@ -194,7 +194,7 @@ export default {
                 apps: [
                     {
                         type: 'component',
-                        component: 'CrossFade',
+                        component: 'GridList', // CrossFade
                         row: 1, col: 1,
                         title: '理财',
                         readOnly: true,
@@ -241,8 +241,8 @@ export default {
                                     ]
                                 }
                             },
-                            mx: 1,
-                            my: 1,
+                            mx: 0,
+                            my: 0,
                             gap: 4,
                             cols: 3,
                             injClass: 'text-white bg-white/10  rounded-xl !p-1',
@@ -266,7 +266,7 @@ export default {
                     appleStore,
                     {
                         type: 'component',
-                        component: 'CrossFade',
+                        component: 'GridList', // CrossFade
                         row: 1, col: 1,
                         title: '社交',
                         readOnly: true,
@@ -329,8 +329,8 @@ export default {
                                     ]
                                 }
                             },
-                            mx: 1,
-                            my: 1,
+                            mx: 0,
+                            my: 0,
                             gap: 4,
                             cols: 3,
                             injClass: 'text-white bg-white/10 rounded-xl !p-1',
@@ -405,7 +405,7 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: 'CrossFade',
+                        component: 'GridList', // CrossFade
                         row: 2, col: 2,
                         title: '理财',
                         readOnly: true,
@@ -458,7 +458,7 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: 'CrossFade',
+                        component: 'GridList', // CrossFade
                         row: 2, col: 2,
                         title: '娱乐',
                         readOnly: true,

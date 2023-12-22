@@ -9,20 +9,19 @@
     import * as stdfComs from 'stdf';
     import * as appConf from '$lib/appConfig';
     import { appConfig, setBgColor } from '@/store';
-    import Swiper from '$lib/components/Swiper.svelte';
     import Modal from '$lib/components/Modal.svelte';
     import { fly, scale } from 'svelte/transition';
-    import { Icon, BottomSheet, GridList } from '$lib/components';
+    import { Icon, BottomSheet, GridList, Swiper } from '$lib/components';
     import { Cell, CellGroup } from '$lib/components';
     import ContentMenu from '$lib/components/contentMenu/index.svelte';
     import Theme from '$lib/components/apps/theme.svelte'
     import * as coms from '$lib/components/apps';
     import { goto } from '$app/navigation';
-    export let data;
-
     let md = false;
+    let ssr = false;
     let lg = false;
     let xl = false;
+    let initialSlide = $appConfig.index;
     const getTime = () => {
         const date = new Date();
         const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
@@ -37,15 +36,11 @@
     };
     let cols = 4;
     let gap = 4;
-    let ssr = data.ssr;
     let pressTime = 0;
     let pressInterval = null;
     let keyword = '';
     let componentApps = appConf.default.components?.props?.apps || [];
     let componentsData = appConf.default.components || {}
-    const onChange = (e) => {
-        $appConfig.index = e.detail
-    }
     const onEditApps = (props = { closable: true, refresh: false }) => {
         clearInterval(pressInterval);
         if (((pressTime < 5 && props.closable) || !$appConfig.editable) && !props.refresh) {
@@ -105,35 +100,33 @@
         timer.push(setInterval(() => {
             time = getTime()
         }, 1000))
-        setTimeout(() => {
-            clientWidth = container?.clientWidth || $appConfig.clientWidth
-            md = clientWidth >= 640 && clientWidth < 768
-            lg = clientWidth >= 768 && clientWidth < 1200
-            xl = clientWidth >= 1200 || window.innerWidth >= 1200
-            cols = xl ? 12 : lg ? 8 : 4
-            gap = xl ? 8 : lg ? 6 : md ? 4 : 4
-            $appConfig.md = md
-            $appConfig.lg = lg
-            $appConfig.xl = xl
-            $appConfig.cols = cols
-            $appConfig.gap = gap
-            $appConfig.clientWidth = clientWidth
-            $appConfig.apps = $appConfig.apps.map((el, index) => {
-                el.componentName = typeof el.component === 'string' ? el.component : el.componentName
-                el.componentName && (el.component = coms.default[el.componentName] ||stdfComs[el.componentName]|| GridList)
-                if (el.props) {
-                    // el.props.apps = el.props.apps.map(app => ({...app, hidden: (md || lg || xl) && (app.type==='component'&&index && index !== $appConfig.apps.length - 1)}))
-                    el.props.cols = cols
-                    el.props.gap = gap
-                    el.props.apps = sortAppData(el.props.apps, { cols, gap, index, closable: false })
-                    el.totalCount = el.props.apps?.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
-                    el.totalRows = el.props.apps.reduce((prev, cur) => (cur.row ? cur.col / cur.row : 1/4) + prev, 0)
-                }
-                return el
-            })
-            $appConfig.docks = $appConfig.docks.map(el => ({...el, componentName: typeof el.component === 'string' ? el.component : el.componentName, component: (el.component||el.componentName)?coms.default[app.component||el.componentName] ||stdfComs[app.component||el.componentName]|| GridList:null, closable: false }));
-            componentsData = {...appConf.default.components, component: GridList, props: {...appConf.default.components.props, apps: sortAppData(appConf.default.components.props.apps, { cols, gap }), cols, totalCount: 100}}
-        }, 100);
+        clientWidth = container?.clientWidth || $appConfig.clientWidth
+        md = clientWidth >= 640 && clientWidth < 768
+        lg = clientWidth >= 768 && clientWidth < 1200
+        xl = clientWidth >= 1200 || window.innerWidth >= 1200
+        cols = xl ? 12 : lg ? 8 : 4
+        gap = xl ? 8 : lg ? 6 : md ? 4 : 4
+        $appConfig.md = md
+        $appConfig.lg = lg
+        $appConfig.xl = xl
+        $appConfig.cols = cols
+        $appConfig.gap = gap
+        $appConfig.clientWidth = clientWidth
+        $appConfig.apps = $appConfig.apps.map((el, index) => {
+            el.componentName = typeof el.component === 'string' ? el.component : el.componentName
+            el.componentName && (el.component = coms.default[el.componentName] ||stdfComs[el.componentName]|| GridList)
+            if (el.props) {
+                // el.props.apps = el.props.apps.map(app => ({...app, hidden: (md || lg || xl) && (app.type==='component'&&index && index !== $appConfig.apps.length - 1)}))
+                el.props.cols = cols
+                el.props.gap = gap
+                el.props.apps = sortAppData(el.props.apps, { cols, gap, index, closable: false })
+                el.totalCount = el.props.apps?.reduce((prev, cur) => (cur.row ? cur.row * (cur.col || 2) : 1) + prev, 0)
+                el.totalRows = el.props.apps.reduce((prev, cur) => (cur.row ? cur.col / cur.row : 1/4) + prev, 0)
+            }
+            return el
+        })
+        $appConfig.docks = $appConfig.docks.map(el => ({...el, componentName: typeof el.component === 'string' ? el.component : el.componentName, component: (el.component||el.componentName)?coms.default[app.component||el.componentName] ||stdfComs[app.component||el.componentName]|| GridList:null, closable: false }));
+        componentsData = {...appConf.default.components, component: GridList, props: {...appConf.default.components.props, apps: sortAppData(appConf.default.components.props.apps, { cols, gap }), cols, totalCount: 100}}
         $appConfig.bgUrl && setBgColor($appConfig.bgUrl)
         $appConfig.mask = '';
         $appConfig.modal = '';
@@ -173,7 +166,6 @@
     };
     const onSearch = (e) => {
         componentApps = e.detail ? appConf.default.components.props.apps.filter(el => (el.text || el.title).includes(e.detail)) : appConf.default.components.props.apps
-        console.log(componentApps, 'componentApps');
     }
     const onComponentClose = (e) => {
         $appConfig.mask = '';
@@ -273,7 +265,11 @@
             }}
             on:pointerdown={onPointerdown}>
             {#if clientWidth}
-                <Swiper autoplay={false} innerInjClass={`wrap-content md:!py-4 2xl:px-[20rem] xl:px-[8rem] md:px-[2rem]`} containerWidth={clientWidth} indicatePosition="{$appConfig.index&&$appConfig.index !==$appConfig.apps.length - 1?'inner':'none'}" bind:initActive={$appConfig.index} loop={false} duration={500} aspectRatio={[10, $appConfig.index?21.6:21.6]} triggerSpeed={0.5} data={$appConfig.apps} on:change={(e) => onChange(e)} height={'100vh'} indicateInjClass={'!bottom-[7.5rem] !from-black/0 !to-black/0'} />
+                <!-- Slider main container -->
+                <Swiper thumbs-swiper=".group-swiper" data={$appConfig.apps} {initialSlide} on:change={(e) => {
+                    $appConfig.index = e.detail.swiper.activeIndex
+                }} />
+                <!-- <Swiper autoplay={false} innerInjClass={`wrap-content md:!py-4 2xl:px-[20rem] xl:px-[8rem] md:px-[2rem]`} containerWidth={clientWidth} indicatePosition="{$appConfig.index&&$appConfig.index !==$appConfig.apps.length - 1?'inner':'none'}" bind:initActive={$appConfig.index} loop={false} duration={500} aspectRatio={[10, $appConfig.index?21.6:21.6]} triggerSpeed={0.5} data={$appConfig.apps} on:change={(e) => onChange(e)} height={'100vh'} indicateInjClass={'!bottom-[7.5rem] !from-black/0 !to-black/0'} /> -->
                 {#if $appConfig.index && $appConfig.index !==$appConfig.apps.length - 1}
                     <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-4 left-5 right-5 flex justify-around items-center">
                         <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:6rem;">
@@ -298,7 +294,7 @@
     <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;$appConfig.modal.actions = '';modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: modal.type == 'swiper' ? 55 : 0, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: modal.type == 'swiper'? 10 : 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
         {#if modal.component}
             <svelte:component cols={modal.props.cols} apps={modal.props.apps} gap={$appConfig.gap || modal.props.gap} mx={modal.props.mx}
-            my={modal.props.my} this={modal.component} {...(modal.type == 'swiper'? modal.props : {})} injClass={modal.props.injClass + `${modal.type == 'swiper' ? ' md:w-[50%] md:mx-[auto] md:!h-[25rem] backdrop-blur-xl rounded-3xl bg-white/30 !p-0': ''}`} innerInjClass={'md:w-[50%] md:mx-[auto] md:!h-[25rem]'}></svelte:component>
+            my={modal.props.my} this={modal.component} {...(modal.type == 'swiper'? modal.props : {})} injClass={modal.props.injClass + `${modal.type == 'swiper' ? ' md:mx-[auto] md:!h-[25rem] backdrop-blur-xl rounded-3xl bg-white/30 !p-0': ''}`} innerInjClass={'md:w-[50%] md:mx-[auto] md:!h-[25rem]'}></svelte:component>
         {/if}
         {#if modal.actions}
         <div class="mt-4 w-60">

@@ -167,5 +167,11 @@
     //     40%, 60% { transform: translate3d(+4px, 0, 0); }
     //     50% { transform: translate3d(-4px, 0, 0); }
     // }
-
+    swiper-container::part(pagination) {
+        top: auto;
+        bottom: 10rem;
+    }
+    swiper-container::part(bullet-active) {
+        background-color: var(--primary-color);
+    }
 }

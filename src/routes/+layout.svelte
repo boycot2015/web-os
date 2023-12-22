@@ -10,7 +10,7 @@
     onMount(() => {
         window.addEventListener('resize', debounce(() => {
             window.location.reload()
-        }, 1000))
+        }, 500))
     })
 </script>
 <div class="layout {$appConfig.bgColor} h-full w-full"  style="background: url({$appConfig.bgUrl}) center/cover no-repeat fixed;">

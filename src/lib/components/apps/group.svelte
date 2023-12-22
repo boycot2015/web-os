@@ -1,14 +1,15 @@
 <script>
     import { Grid, Modal } from 'stdf';
-    import Swiper from '$lib/components/Swiper.svelte';
+    // import Swiper from '$lib/components/Swiper.svelte';
+    import { Swiper } from '$lib/components';
     import { appConfig } from '@/store';
-    export let innerInjClass = '';
+    // export let innerInjClass = '';
     export let injClass = '';
-    export let notActiveInjClass = '';
-    export let indicateInjClass = '';
-    export let indicateStyle = 'pointLine';
-    export let loop = true;
-    export let autoplay = true;
+    // export let notActiveInjClass = '';
+    // export let indicateInjClass = '';
+    // export let indicateStyle = 'pointLine';
+    // export let loop = true;
+    // export let autoplay = true;
     export let type = 'swiper';
     export let component = '';
     export let props = '';
@@ -21,18 +22,13 @@
     export let title = '';
     export let visible = false;
     export let apps = [];
-    export let translateZ = 400;
-    export let translateX = -200;
-    export let containerWidth = '';
-    export let aspectRatio = [1, 1.1];
     let initActive = 0;
     $: title = apps[initActive]?.text || apps[initActive]?.title || '';
 </script>
 <Grid row={col||2} col={row||2}>
     {#if type === 'swiper'}
-    <div class={`flex flex-col overflow-hidden ${cols} ${gap} ${visible} items-center justify-center group ${containerWidth === null ? 'h-full': 'h-[auto]'} ${injClass}`}>
-        <Swiper {autoplay} translateZ={translateZ}
-        translateX={translateX} indicatePosition="none" containerWidth={containerWidth === null ? document.body.clientWidth - 80 : document.body.clientWidth/($appConfig.cols/2) - 45} bind:initActive={initActive} {loop} duration={500} aspectRatio={aspectRatio} triggerSpeed={0.5} data={apps.map(el => ({...el, props: el.props && {...el.props, cols: ($appConfig.md || $appConfig.xl || $appConfig.lg) ? $appConfig.xl ? 8 : 6 : el.props.cols}}))} {innerInjClass} {notActiveInjClass} {indicateStyle} {indicateInjClass} on:change={(e) => initActive = e.detail} />
+    <div class={`flex flex-col overflow-hidden ${cols} ${gap} ${visible} items-center justify-center group h-[auto] ${injClass}`}>
+        <Swiper config={{direction: 'vertical', init: true, loop: true, autoplay: true}} injClass='{injClass ? injClass + ' w-full h-full' : 'w-[10rem] h-[10rem]'} group-swiper' data={apps.map(el => ({...el, props: el.props && {...el.props, cols: ($appConfig.md || $appConfig.xl || $appConfig.lg) ? $appConfig.xl ? 8 : 6 : el.props.cols}}))} on:change={(e) => initActive = e.detail.swiper.activeIndex} />
     </div>
     {#if title}
     <p class="text-sm text-white text-center mt-2 {titleAlign}">{title}</p>

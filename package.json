@@ -34,6 +34,7 @@
 		"sortablejs": "^1.15.1",
 		"svelte-motion": "^0.11.5",
 		"svelte-preprocess": "^5.0.4",
+		"swiper": "^11.0.5",
 		"wujie": "^1.0.21"
 	},
 	"eslintConfig": {

@@ -2790,6 +2790,11 @@
     "picocolors" "^1.0.0"
     "stable" "^0.1.8"
 
+"swiper@^11.0.5":
+  "integrity" "sha512-rhCwupqSyRnWrtNzWzemnBLMoyYuoDgGgspAm/8iBD3jCvAWycPLH4Z3TB0O5520DHLzMx94yUMH/B9Efpa48w=="
+  "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/swiper/-/swiper-11.0.5.tgz"
+  "version" "11.0.5"
+
 "tailwindcss@^3.3.5":
   "integrity" "sha512-5SEZU4J7pxZgSkv7FP1zY8i2TIAOooNZ1e/OGtxIEv6GltpoiXUqWvLy89+a10qYTB1N5Ifkuw9lqQkN9sscvA=="
   "resolved" "http://192.168.1.182:9091/nexus/repository/npm-group/tailwindcss/-/tailwindcss-3.3.5.tgz"

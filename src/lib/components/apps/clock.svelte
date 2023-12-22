@@ -140,7 +140,7 @@
 </style>
 <Grid {row} {col}>
     <div
-        class="{injClass} h-full bg-white dark:bg-black py-0 h-full rounded-xl text-xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
+        class="{injClass} bg-white dark:bg-black py-0 rounded-xl text-xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
     >
         <canvas width="300" height="300" bind:this={canvas} id="canvas"></canvas>
     </div>

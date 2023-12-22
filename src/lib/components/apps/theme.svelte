@@ -69,7 +69,7 @@
     <div
     role="none"
     on:click={(e) => {e.preventDefault();settingVisible = !$appConfig.editable}}
-        class="relative h-[10.5rem] {injClass} dark:bg-black rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
+        class="relative h-[10rem]  {injClass} dark:bg-black rounded-xl text-xs text-center flex flex-col justify-around items-center shadow dark:shadow-white/10"
     >
         <div class="location text-xl">主题设置</div>
         <Icon name="ri-paint-brush-line" size={60} injClass="py-3" />

@@ -8,9 +8,11 @@
     // export let notActiveInjClass = '';
     // export let indicateInjClass = '';
     // export let indicateStyle = 'pointLine';
-    // export let loop = true;
-    // export let autoplay = true;
+    export let direction = 'vertical';
+    export let loop = true;
+    export let autoplay = true;
     export let type = 'swiper';
+    export let swiperRef = 'groupSwiper';
     export let component = '';
     export let props = '';
     export let modal = '';
@@ -28,7 +30,12 @@
 <Grid row={col||2} col={row||2}>
     {#if type === 'swiper'}
     <div class={`flex flex-col overflow-hidden ${cols} ${gap} ${visible} items-center justify-center group h-[auto] ${injClass}`}>
-        <Swiper config={{direction: 'vertical', init: true, loop: true, autoplay: true}} injClass='{injClass ? injClass + ' w-full h-full' : 'w-[10rem] h-[10rem]'} group-swiper' data={apps.map(el => ({...el, props: el.props && {...el.props, cols: ($appConfig.md || $appConfig.xl || $appConfig.lg) ? $appConfig.xl ? 8 : 6 : el.props.cols}}))} on:change={(e) => initActive = e.detail.swiper.activeIndex} />
+        <Swiper swiperRef={swiperRef} initialSlide={0} config={{direction, init: true, loop, autoplay}} injClass='{injClass ? injClass + ' w-full h-full' : 'w-[10rem] h-[10rem]'} group-swiper' data={apps.map(el => ({...el, props: el.props && {...el.props, cols: ($appConfig.md || $appConfig.xl || $appConfig.lg) ? $appConfig.xl ? 8 : 6 : el.props.cols}}))} on:swiperslidechange={(e) => {
+            const [swiper] = e.detail
+            if (!isNaN(swiper.activeIndex)) {
+                initActive = swiper.activeIndex
+            }
+        }} />
     </div>
     {#if title}
     <p class="text-sm text-white text-center mt-2 {titleAlign}">{title}</p>

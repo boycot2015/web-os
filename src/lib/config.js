@@ -8,6 +8,7 @@ export default {
     modal: '',
     dialog: '',
     mask: '',
+    swipers: [],
     ssr: true,
     editable: false,
     refresh: false,

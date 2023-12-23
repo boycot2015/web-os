@@ -174,4 +174,11 @@
     swiper-container::part(bullet-active) {
         background-color: var(--primary-color);
     }
+    .swiper-slide {
+        -webkit-backface-visibility: hidden;
+        -webkit-transform: translate3d(0,0,0);
+    }
+    .swiper-wrapper {
+        -webkit-transform-style: preserve-3d;
+    }
 }

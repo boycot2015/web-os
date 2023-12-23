@@ -133,6 +133,7 @@ export default {
                         row: 2,
                         col: 2,
                         props: {
+                            swiperRef: 'groupSwiper2',
                             injClass: '',
                             apps: [
                                 {
@@ -207,13 +208,11 @@ export default {
                                 props: {
                                     title: '理财',
                                     visible: false,
-                                    translateZ: 0,
-                                    translateX: 0,
                                     loop: false,
                                     autoplay: false,
+                                    swiperRef: 'swiperRef31',
+                                    direction: 'horizontal',
                                     titleAlign: 'center',
-                                    containerWidth: null,
-                                    aspectRatio: [1, 1.2],
                                     injClass: '!p-0 h-full',
                                     apps: [
                                         {
@@ -279,13 +278,11 @@ export default {
                                 props: {
                                     title: '社交',
                                     visible: false,
-                                    translateZ: 0,
-                                    translateX: 0,
                                     loop: false,
                                     autoplay: false,
+                                    swiperRef: 'swiperRef32',
+                                    direction: 'horizontal',
                                     titleAlign: 'center',
-                                    containerWidth: null,
-                                    aspectRatio: [1, 1.2],
                                     injClass: '!p-0 h-full',
                                     apps: [
                                         {

@@ -3,11 +3,10 @@
     import { appConfig } from '@/store';
     import { createEventDispatcher, onMount, onDestroy } from 'svelte'
     export let data = $appConfig.apps;
-    export let initialSlide = 0;
     export let injClass = 'w-screen h-screen !p-0';
     export let swiperRef = '';
-    export let pagination = true;
-    let swiperInstance = null
+    let swiperInstance = null;
+    let currentSwiper = null;
     // init Swiper
     export let config = {
         speed: 500,
@@ -18,9 +17,8 @@
         mousewheel: true,
         'space-between': 0,
         'centered-slides': true,
-        pagination: pagination ? {
-            hideOnClick: false,
-        }: false
+        'initial-slide': 0,
+        pagination: false
     }
     const dispatch = createEventDispatcher();
     const onInitSwiper = () => {
@@ -41,6 +39,9 @@
         swiperEl && Object.assign(swiperEl, params);
         swiperEl?.initialize && swiperEl.initialize();
     }
+    const swiperslidechange = (e) => {
+        dispatch('swiperslidechange', [...e.detail, swiperRef])
+    }
     onMount(() => {
         swiperInstance?.destroy()
         onInitSwiper()
@@ -48,24 +49,23 @@
     onDestroy(() => {
         swiperInstance?.destroy()
     })
+    $: isEdge = config['initial-slide'] === 0 || config['initial-slide'] === data.length - 1
 </script>
 <!-- Slider main container -->
 <swiper-container
 {...config}
-initial-slide={initialSlide}
-on:swiperslidechange|stopPropagation
+bind:this={currentSwiper}
+on:swiperslidechange|stopPropagation={swiperslidechange}
 on:swiperinit|stopPropagation
 on:swiperdestroy|stopPropagation
 style="transform:translate3d(0,0,0);overflow:hidden;"
-class="{injClass}">
+class="{injClass} {isEdge ?'is-edge':''}">
     <!-- Slides -->
     {#each data as item }
         <swiper-slide style="transform:translate3d(0,0,0)" >
-            {#if item.type === 'component'}
-                <div class={`w-full h-full swiper-slide-transform`} style="transform:translate3d(0,0,0);overflow:hidden;">
-                    <svelte:component {...item.props || {}} this={item.component} />
-                </div>
-            {/if}
+            <div class={`w-full h-full swiper-slide-transform`} style="transform:translate3d(0,0,0);overflow:hidden;">
+                <slot {item}></slot>
+            </div>
         </swiper-slide>
     {/each}
 </swiper-container>

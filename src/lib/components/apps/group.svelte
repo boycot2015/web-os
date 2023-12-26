@@ -9,7 +9,9 @@
     // export let indicateInjClass = '';
     // export let indicateStyle = 'pointLine';
     export let direction = 'vertical';
-    export let loop = true;
+    export let mx = true;
+    export let my = true;
+    export let loop = false;
     export let autoplay = true;
     export let type = 'swiper';
     export let swiperRef = 'groupSwiper';
@@ -29,13 +31,26 @@
 </script>
 <Grid row={col||2} col={row||2}>
     {#if type === 'swiper'}
-    <div class={`flex flex-col overflow-hidden ${cols} ${gap} ${visible} items-center justify-center group h-[auto] ${injClass}`}>
-        <Swiper swiperRef={swiperRef} initialSlide={0} config={{direction, init: true, loop, autoplay}} injClass='{injClass ? injClass + ' w-full h-full' : 'w-[10rem] h-[10rem]'} group-swiper' data={apps.map(el => ({...el, props: el.props && {...el.props, cols: ($appConfig.md || $appConfig.xl || $appConfig.lg) ? $appConfig.xl ? 8 : 6 : el.props.cols}}))} on:swiperslidechange={(e) => {
-            const [swiper] = e.detail
-            if (!isNaN(swiper.activeIndex)) {
+    <div class={`flex flex-col overflow-hidden ${mx} ${my} ${cols} ${gap} ${visible} items-center justify-center group h-[auto] ${injClass}`}>
+        <Swiper swiperRef={swiperRef} config={{
+            direction,
+            init: true,
+            loop,
+            autoplay,
+            // effect:"cube",
+            // 'cube-effect-shadow':true,
+            // 'cube-effect-slide-shadows':true,
+            // 'cube-effect-shadow-offset':20,
+            // 'cube-effect-shadow-scale':0.94,
+            'initial-slide': initActive
+        }} injClass='{injClass ? injClass + ' w-full h-full' : 'w-[10rem] h-[10rem]'} group-swiper' data={apps.map(el => ({...el, props: el.props && {...el.props, cols: ($appConfig.md || $appConfig.xl || $appConfig.lg) ? $appConfig.xl ? 8 : 6 : el.props.cols}}))} on:swiperslidechange={(e) => {
+            const [swiper, ref] = e.detail
+            if (!isNaN(swiper.activeIndex) && ref === swiperRef) {
                 initActive = swiper.activeIndex
             }
-        }} />
+        }}  let:item>
+            <svelte:component {...item.props || {}} this={item.component} />
+        </Swiper>
     </div>
     {#if title}
     <p class="text-sm text-white text-center mt-2 {titleAlign}">{title}</p>

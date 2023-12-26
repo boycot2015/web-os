@@ -169,10 +169,13 @@
     // }
     swiper-container::part(pagination) {
         top: auto;
-        bottom: 10rem;
+        bottom: 8rem;
     }
     swiper-container::part(bullet-active) {
         background-color: var(--primary-color);
+    }
+    swiper-container.is-edge::part(pagination) {
+        display: none;
     }
     .swiper-slide {
         -webkit-backface-visibility: hidden;

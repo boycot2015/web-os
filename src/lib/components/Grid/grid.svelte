@@ -1,16 +1,19 @@
 <script>
 	import { goto } from '$app/navigation';
-    // import { Grids, Grid, Mask } from 'stdf';
+    import { Toast } from 'stdf';
     import { createEventDispatcher, onMount, afterUpdate } from 'svelte'
     import { appConfig } from '@/store';
     import { cubicInOut, quintOut } from 'svelte/easing';
     import { slide, scale } from 'svelte/transition';
+    import { copy } from '$lib'
     import { Icon, GridList, Grids, Grid } from '$lib/components'
     // import Sortable from 'sortablejs';
     export let apps = [];
     export let injClass = '';
     export let gap = 4;
     export let cols = 4;
+    export let col = 1;
+    export let row = 1;
     export let mx = 0;
     export let my = 0;
     export let path = '';
@@ -26,8 +29,9 @@
     let pressTime = 0;
     let pressInterval = null;
     let dragEls = [];
+    let toastVisible = false;
     const dispatch = createEventDispatcher();
-    let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 80 : 32
+    let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 80 : 100
     maxCount = $appConfig.index === $appConfig.apps.length - 1 ? 100 : maxCount
     let datas = apps.slice(0, totalCount < 100 ? maxCount : totalCount)
     const onClick = (e) => {
@@ -77,7 +81,7 @@
                     { ...current, cols, row: 1, col: 1, size: 40, injTitleClass: 'text-white text-sm', injClass: '!p-0 !py-3.5 mx-1 !shadow-none'},
                 ],
             },
-            actions: [...current.actions?.map(el => ({title: el.text, url: el.url, icon: {name: el.icon, type: 'icon', injClass: 'text-white' }})) || [], { title: '编辑主屏幕', action: 'edit', icon: {type: 'icon', name: 'ri-edit-fill', injClass: 'text-white'} }, !current.readOnly && { title: `移除${current.type=='component'?'小组件':'App'}`, action: (e) => onRemove(e, current), icon: {type: 'icon', name: 'ri-close-fill', injClass: 'bg-black/20 rounded-3xl text-white px-0.5'} }].filter(_ => _)
+            actions: [...current.actions?.map(el => ({title: el.text, url: el.url, icon: {name: el.icon, type: 'icon', injClass: 'text-white' }})) || [], { title: '编辑主屏幕', action: 'edit', icon: {type: 'icon', name: 'ri-edit-fill', injClass: 'text-white'} }, !current.readOnly && { title: `移除${current.type=='component'?'小组件':'App'}`, action: (e) => onRemove(e, current), icon: {type: 'icon', name: 'ri-close-fill', injClass: 'rounded-3xl !text-red px-0.5'}, injClass: '!text-red-600 text-lg !bg-black/50' }].filter(_ => _)
         }
         pressTime = 0
     }
@@ -216,12 +220,15 @@
         // }
     })
     afterUpdate(() => {
+        maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 80 : 100
+        maxCount = $appConfig.index === $appConfig.apps.length - 1 ? 100 : maxCount
         datas = apps.map((el, index) => {
             !index && (el.totalCount = el.row ? el.row * (el.col || 2) : 1)
             index && (el.totalCount = (el.row ? el.row * (el.col || 2) : 1) + apps[index - 1].totalCount)
             return el
         })
-        datas = datas.filter(el => el.totalCount <= maxCount)
+        datas = datas.filter(el => el.totalCount <= maxCount || el.isComponent)
+        // console.log(datas, 'datas');
     });
     $: pressTime >=3 && onEditApps();
 </script>
@@ -230,7 +237,7 @@
         height: 100% !important;
     }
 </style> -->
-<div class="pb-0 pt-0 {visible} {readOnly}" role="none" style="max-height: calc(100vh - 6rem);" on:click={(e) => onClick(e)}>
+<div class="pb-0 pt-0 {col} {row} {visible} {readOnly}" role="none" style="max-height: 100vh;overflow-y:{$appConfig.index?'hidden':'auto'};" on:click={(e) => onClick(e)}>
     <div class={` px-8 py-4 pt-10 transition-all duration-500 ${injClass}`}>
         <Grids cols={cols} mx="{mx}" my="{my}" gap="{gap}" bind:GridsDom={GridsDom}>
             {#each datas as app, i}
@@ -255,9 +262,20 @@
                         if (modal) return
                         if (!app.url) return
                         modal = '';
-                        app.url && ($appConfig.app = app)
                         if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
-                        else if (app.url) goto(`${app.url}`); }}  role="none">
+                        else if (app.url && app.url.includes('weixin')) {
+                            if ($appConfig.app && $appConfig.app.url) {
+                                toastVisible = true
+                                copy($appConfig.app.url)
+                                setTimeout(() => {
+                                    window.location.href = app.url
+                                }, 1000);
+                            }
+                            return
+                        }
+                        else if (app.url) goto(`${app.url}`);
+                        app.url && ($appConfig.app = app)
+                        }}  role="none">
                         <div
                             class="relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-xl text-md text-center shadow dark:shadow-white/10"
                         >
@@ -322,4 +340,5 @@
             {/each}
         </Grids>
     </div>
+    <Toast message="复制成功！{/MicroMessenger/i.test(navigator.userAgent) ?'': '即将打开微信客户端'}" bind:visible={toastVisible}></Toast>
 </div>

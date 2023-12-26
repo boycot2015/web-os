@@ -17,7 +17,7 @@
     import Theme from '$lib/components/apps/theme.svelte'
     import * as coms from '$lib/components/apps';
     import { goto } from '$app/navigation';
-    import { register } from 'swiper/element/bundle';
+    import { debounce } from 'stdf/components/utils';
     let md = false;
     let ssr = false;
     let lg = false;
@@ -57,10 +57,10 @@
         })
         $appConfig.docks =  $appConfig.docks.map((el, index) => ({...el, ...props, index}))
         $appConfig.editable = props.closable;
-        ssr = true
+        // ssr = false
         setTimeout(() => {
             ssr = false
-        }, 600);
+        }, 600)
         // console.log($appConfig.apps, '$appConfig.apps');
     }
     const sortAppData = (apps, props) => {
@@ -133,6 +133,9 @@
         $appConfig.dialog = '';
         $appConfig.editable = false
         $appConfig.componentVisible = false
+        window.addEventListener('resize', debounce(() => {
+            window.location.reload()
+        }, 500))
     })
     const onPointerdown = (e) => {
         pressTime = 0;
@@ -147,6 +150,7 @@
     afterUpdate (() => {
         // console.log($appConfig.apps[$appConfig.index].props.apps, "Updated");
         // ssr = false
+        $appConfig.apps = [...$appConfig.apps]
     })
     onDestroy(() => {
         timer.map(el => clearInterval(el))
@@ -162,7 +166,7 @@
     $: if($appConfig.refresh) {
         setTimeout(() => {
             onComponentClose()
-        }, 300);
+        }, 50);
     };
     const onSearch = (e) => {
         componentApps = e.detail ? appConf.default.components.props.apps.filter(el => (el.text || el.title).includes(e.detail)) : appConf.default.components.props.apps
@@ -266,11 +270,20 @@
             on:pointerdown={onPointerdown}>
             {#if clientWidth}
                 <!-- Slider main container -->
-                <Swiper pagination={$appConfig.index && $appConfig.index < $appConfig.apps.length - 1} swiperRef={'topSwiperRef'} data={$appConfig.apps} initialSlide={$appConfig.index} on:swiperslidechange={(e) => {
+                <Swiper
+                config={{pagination:true,
+                    'pagination-dynamic-bullets': true,
+                    'initial-slide': $appConfig.index
+                }}
+                injClass="w-screen h-screen overflow-hidden"
+                swiperRef={'topSwiperRef'}
+                data={$appConfig.apps}
+                on:swiperslidechange={(e) => {
                     const [swiper] = e.detail
                     $appConfig.index = swiper.activeIndex
-                }} />
-                <!-- <Swiper autoplay={false} innerInjClass={`wrap-content md:!py-4 2xl:px-[20rem] xl:px-[8rem] md:px-[2rem]`} containerWidth={clientWidth} indicatePosition="{$appConfig.index&&$appConfig.index !==$appConfig.apps.length - 1?'inner':'none'}" bind:initActive={$appConfig.index} loop={false} duration={500} aspectRatio={[10, $appConfig.index?21.6:21.6]} triggerSpeed={0.5} data={$appConfig.apps} on:change={(e) => onChange(e)} height={'100vh'} indicateInjClass={'!bottom-[7.5rem] !from-black/0 !to-black/0'} /> -->
+                }} let:item>
+                    <svelte:component {...item.props || {}} this={item.component} />
+                </Swiper>
                 {#if $appConfig.index && $appConfig.index !==$appConfig.apps.length - 1}
                     <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-4 left-5 right-5 flex justify-around items-center">
                         <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:6rem;">
@@ -295,7 +308,7 @@
     <Modal bind:visible={modal.props.visible} title="{modal.props.title}" on:close={() => {$appConfig.modal.props.visible = false;$appConfig.modal.actions = '';modal.onConfirm && modal.onConfirm()}} injTitleClass="text-white text-2xl {modal.props.injTitleClass}" injClass="{modal.props.injClass}" showBtn={modal.props.showBtn || false} titleAlign={modal.props.titleAlign||'left'} content={modal.props.content} contentSlot={!!modal.component} btnText={modal.props.btnText} popup={{size: modal.type == 'swiper' ? 55 : 0, radiusPosition: 'all',radius: 'xl', transparent: true, position: 'center', easeType: 'cubicInOut',duration: 500 ,outDuration: 500,px: modal.type == 'swiper'? 10 : 8, py: 0, mask: {opacity: 0.3, backdropBlur: '2xl'}, ...modal.props.popup}}>
         {#if modal.component}
             <svelte:component cols={modal.props.cols} apps={modal.props.apps} gap={$appConfig.gap || modal.props.gap} mx={modal.props.mx}
-            my={modal.props.my} this={modal.component} {...(modal.type == 'swiper'? modal.props : {})} injClass={modal.props.injClass + `${modal.type == 'swiper' ? ' md:mx-[auto] md:!h-[25rem] backdrop-blur-xl rounded-3xl bg-white/30 !p-0': ''}`}></svelte:component>
+            my={modal.props.my} this={modal.component} {...(modal.type == 'swiper'? modal.props : {})} injClass={modal.props.injClass + `${modal.type == 'swiper' ? ' md:mx-[auto] md:!h-[25rem] backdrop-blur-xl rounded-3xl bg-white/10 !p-0': ''}`}></svelte:component>
         {/if}
         {#if modal.actions}
         <div class="mt-4 w-60">

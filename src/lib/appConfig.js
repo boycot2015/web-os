@@ -199,6 +199,7 @@ export default {
                         row: 1, col: 1,
                         title: '理财',
                         readOnly: true,
+                        hideTitle: true,
                         cols: 1,
                         props: {
                             readOnly: true,
@@ -268,6 +269,7 @@ export default {
                         component: 'GridList', // CrossFade
                         row: 1, col: 1,
                         title: '社交',
+                        hideTitle: true,
                         readOnly: true,
                         cols: 1,
                         props: {
@@ -402,7 +404,7 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: 'GridList', // CrossFade
+                        component: 'CrossFade', // GridList
                         row: 2, col: 2,
                         title: '理财',
                         readOnly: true,
@@ -455,7 +457,7 @@ export default {
                     },
                     {
                         type: 'component',
-                        component: 'GridList', // CrossFade
+                        component: 'CrossFade', // GridList 
                         row: 2, col: 2,
                         title: '娱乐',
                         readOnly: true,
@@ -555,40 +557,7 @@ export default {
                 { type: 'component', isComponent: true, text: '时钟', component: 'Clock', row: 2, col: 2, props: { } },
                 { type: 'component',isComponent: true, text: '天气', component: 'Weather', row: 2, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#CE9FFC] to-[#7367F0]'}},
                 { type: 'component', isComponent: true, text: '主题设置', component: 'Theme', row: 2, col: 2, props: {injClass: 'text-white bg-gradient-to-b from-[#00f] to-[#7367F0]'}},
-                ...editableApps.map(el => ({...el, isComponent: true})),
-                // {
-                //     type: 'component',
-                //     name: taobao.text || '',
-                //     component: 'Cell', row: 4, col: 4, cols: 1,
-                //     isComponent: true,
-                //     props: {
-                //         title: taobao.text || '',
-                //         injClass: 'text-xl !m-0',
-                //         left: { name: taobao.icon, size: grid['x2'].size, injClass: `rounded-lg !mr-3 ${taobao.color} ${taobao.bgColor}` },
-                //     }
-                // },
-                // {
-                //     type: 'component',
-                //     name: alipay.text || '',
-                //     isComponent: true,
-                //     component: 'Cell', row: 4, col: 4, cols: 1,
-                //     props: {
-                //         title: alipay.text || '',
-                //         injClass: 'text-xl !m-0',
-                //         left: { name: alipay.icon, size: grid['x2'].size, injClass: `rounded-lg !mr-3 ${alipay.color} ${alipay.bgColor}` },
-                //     }
-                // },
-                // {
-                //     type: 'component',
-                //     isComponent: true,
-                //     name: wallet.text || '',
-                //     component: 'Cell', row: 4, col: 4, cols: 1,
-                //     props: {
-                //         title: wallet.text || '',
-                //         injClass: 'text-xl !m-0',
-                //         left: { name: wallet.icon, size: grid['x2'].size, injClass: `rounded-lg !mr-3 ${wallet.color} ${wallet.bgColor}` },
-                //     }
-                // }
+                ...editableApps.map(el => ({...el, isComponent: true}))
             ]
         }
     },

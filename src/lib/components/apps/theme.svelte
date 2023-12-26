@@ -37,7 +37,9 @@
         }
     }
     const changeIndex = (e) => {
-        appConfig.set({ showPanel: e.detail })
+        // if (e.detail) $appConfig.index-=1
+        // else $appConfig.index+=1
+        $appConfig.showPanel = e.detail
     }
     const clickActionFunc = e => {
 		let index = e.detail.index;
@@ -96,10 +98,12 @@
                                 <Slider showTip="never" minRange={0} on:change={changeBlur} step={20} value={blurValue}  />
                             </div>
                         </Cell>
+                        {#if $appConfig.index}
                         <Cell title="负一屏" detail="slot" right="none" mx="0" my="0" shadow="none" line radius="none">
                             <Switch slot="detail" inside="slot" radius="full" check={$appConfig.showPanel} on:change={changeIndex}>
                             </Switch>
                         </Cell>
+                        {/if}
                     </CellGroup>
                 </div>
             </Grid>

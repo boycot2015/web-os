@@ -3,6 +3,8 @@
     import { onMount, onDestroy } from 'svelte';
     export let row = 2;
     export let col = 1;
+    export let cols = 1;
+    export let rows = 1;
     export let injClass = 'text-purple-600 !bg-gray-800';
     $: canvas = {};
     let timer = null;
@@ -140,7 +142,7 @@
 </style>
 <Grid {row} {col}>
     <div
-        class="{injClass} bg-white dark:bg-black py-0 rounded-xl text-xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
+        class="{injClass} {cols} {rows} bg-white dark:bg-black py-0 rounded-xl text-xl font-bold text-center flex flex-col justify-center shadow dark:shadow-white/10"
     >
         <canvas width="300" height="300" bind:this={canvas} id="canvas"></canvas>
     </div>

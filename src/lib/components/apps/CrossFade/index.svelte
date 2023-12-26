@@ -8,6 +8,7 @@
     import Card from "./Card.svelte";
     import { Grids, Grid } from '$lib/components'
     import { appConfig } from '@/store'
+    import { afterUpdate } from 'svelte'
     export let injClass = '';
     export let gap = 4;
     export let cols = 4;
@@ -22,7 +23,6 @@
     let selected;
     let maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 80 : 32
     let list = apps.slice(0, totalCount < 100 ? maxCount : totalCount).map((v, i) => ({ ...v, i: i + 1 }))
-    console.log(readOnly, 'injClass');
     const onRemove = (e, app) => {
         e.preventDefault();
         e.stopPropagation();
@@ -64,12 +64,15 @@
             }
         }
     }
+    afterUpdate(() => {
+        list = apps.slice(0, totalCount < 100 ? maxCount : totalCount).map((v, i) => ({ ...v, i: i + 1 }))
+    });
 </script>
 
 <style>
 </style>
 
-<div class="w-full bg-white/30 rounded-2xl {injClass}">
+<div class="w-full bg-white/30 rounded-2xl {readOnly} {injClass}">
     <AnimateSharedLayout type="crossfade">
         <Grids cols={ ($appConfig.md || $appConfig.lg || $appConfig.xl) ? cols >= 8 ? $appConfig.xl ? 12 : 8 : cols : cols} {gap} mx={mx} my={my}>
             {#each list as item}

@@ -135,7 +135,7 @@
         $appConfig.componentVisible = false
         window.addEventListener('resize', debounce(() => {
             window.location.reload()
-        }, 500))
+        }, 200))
     })
     const onPointerdown = (e) => {
         pressTime = 0;

@@ -3,7 +3,7 @@
 	import  { createEventDispatcher } from 'svelte';
     import { appConfig } from '@/store'
     import { Icon } from '$lib/components'
-    import { goto } from '$app/navigation';
+    import { openUrl } from '$lib'
 	export let item;
 	export let modal;
 	export let selected;
@@ -13,9 +13,7 @@
         if (modal) {
             return
         }
-        item.url && ($appConfig.app = item)
-        if (item.url && item.url.includes('http')) goto(`/micro/${item.url}/${item.title||item.text}/${item.icon}`)
-        else if (item.url) goto(`${item.url}`)
+        openUrl($appConfig, item)
     }
     const onRemove = (e, app) => {
         e.preventDefault();

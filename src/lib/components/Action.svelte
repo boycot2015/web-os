@@ -16,6 +16,7 @@
     let links = []
     onMount(() => {
         links = [
+            // {icon: 'ri-share-forward-line',text: '在APP中打开', color: '!mx-4 text-white', size: 30, bgColor: '!bg-green-600', injTitleClass: '!text-black !text-xs', url: info.appLink || `weixin://send?text=${title}&link=${path}`},
             {icon: 'ri-share-forward-line',text: '转发给朋友', color: '!mx-4 text-white', size: 30, bgColor: '!bg-green-600', injTitleClass: '!text-black !text-xs', url: `weixin://send?text=${title}&link=${path}`},
             {icon: 'ri-camera-lens-fill', color: '!mx-4 !text-green-600', size: 30, bgColor: '!bg-transparent',text: '分享到朋友圈', injTitleClass: '!text-black !text-xs', url: `weixin://send?text=${title}&link=${path}`},
             {icon: 'ri-restart-line', color: '!mx-4 text-white', size: 30, bgColor: '!bg-gray-600',text: '重新进入小程序', reload: true, injTitleClass: '!text-black !text-xs'},

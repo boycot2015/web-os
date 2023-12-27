@@ -3,6 +3,7 @@
     // import Swiper from '$lib/components/Swiper.svelte';
     import { Swiper } from '$lib/components';
     import { appConfig } from '@/store';
+    import { openUrl } from '$lib';
     // export let innerInjClass = '';
     export let injClass = '';
     // export let notActiveInjClass = '';
@@ -49,7 +50,12 @@
                 initActive = swiper.activeIndex
             }
         }}  let:item>
+        <div role="none" on:click={() => {
+            openUrl($appConfig, item)
+            item.url && ($appConfig.app = item)
+        }}>
             <svelte:component {...item.props || {}} this={item.component} />
+        </div>
         </Swiper>
     </div>
     {#if title}

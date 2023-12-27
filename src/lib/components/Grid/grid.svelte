@@ -5,7 +5,7 @@
     import { appConfig } from '@/store';
     import { cubicInOut, quintOut } from 'svelte/easing';
     import { slide, scale } from 'svelte/transition';
-    import { copy } from '$lib'
+    import { openUrl } from '$lib'
     import { Icon, GridList, Grids, Grid } from '$lib/components'
     // import Sortable from 'sortablejs';
     export let apps = [];
@@ -262,18 +262,8 @@
                         if (modal) return
                         if (!app.url) return
                         modal = '';
-                        if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
-                        else if (app.url && app.url.includes('weixin')) {
-                            if ($appConfig.app && $appConfig.app.url) {
-                                toastVisible = true
-                                copy($appConfig.app.url)
-                                setTimeout(() => {
-                                    window.location.href = app.url
-                                }, 1000);
-                            }
-                            return
-                        }
-                        else if (app.url) goto(`${app.url}`);
+                        toastVisible = openUrl($appConfig, app)
+                        if (toastVisible) return
                         app.url && ($appConfig.app = app)
                         }}  role="none">
                         <div
@@ -305,7 +295,7 @@
                     <div bind:this={dragEls[i]} class="wrap-content h-full relative {(app.closable && !app.props?.apps && !app.fixed) || (app.closable && app.componentName === 'Group') || (app.closable && app.props?.modal) ? 'animate-shake':''}" role="none"
                     on:pointerdown={(e) => onPointerdown(e, app)}
                     on:pointermove={(e) => touchmoveFun(e, app)}
-                    on:click={(e) => {
+                    on:click|stopPropagation={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         pressTime = 0;
@@ -315,14 +305,13 @@
                         dx = (event.pageX > window.screen.width / 2 ? window.screen.width / 2 - event.pageX : event.pageX) || -100;
                         dy = (event.pageY > window.screen.height / 2 ? window.screen.height / 2 - event.pageY : event.pageY) || 150;
                         $appConfig.modal = ''
-                        modal = ''
+                        modal = ''                        
                         if (app.props && app.props.modal) {
                             modal = app.props.modal
                             modal.props.visible = true
                             $appConfig.modal = modal
                         }
-                        if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
-                        else if (app.url) goto(`${app.url}`);
+                        openUrl($appConfig, app)
                         app.url && ($appConfig.app = app)
                     }}>
                         {#if (app.closable && !app.props?.apps && !app.readOnly) || (app.closable && app.componentName === 'Group')}
@@ -340,5 +329,5 @@
             {/each}
         </Grids>
     </div>
-    <Toast message="复制成功！{/MicroMessenger/i.test(navigator.userAgent) ?'': '即将打开微信客户端'}" bind:visible={toastVisible}></Toast>
+    <Toast message="复制成功！{/MicroMessenger/i.test(navigator.userAgent) ?'': `即将打开${$appConfig.app.text}客户端`}" bind:visible={toastVisible}></Toast>
 </div>

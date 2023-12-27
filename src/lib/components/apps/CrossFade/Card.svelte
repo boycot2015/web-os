@@ -36,7 +36,7 @@
 {#if item.props && item.props.modal }
 <Motion let:motion initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div class="overlay fixed z-[9] w-screen h-screen backdrop-blur-xl" use:motion on:click|preventDefault={_=>{selected=undefined}} bind:clientHeight={clientHeight} />
+    <div class="overlay fixed z-[9] w-full h-full backdrop-blur-xl" use:motion on:click|preventDefault={_=>{selected=undefined}} bind:clientHeight={clientHeight} />
 </Motion>
 <Motion layoutId={item.i} let:motion initial={{borderRadius:"30px"}} animate={{borderRadius:"30px"}} exit={{borderRadius:"30px"}}>
     <!-- svelte-ignore a11y-no-static-element-interactions -->

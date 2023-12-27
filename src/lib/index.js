@@ -1,5 +1,6 @@
 // place files you want to import through the `$lib` alias in this folder.
 import { baseApiUrl } from './request/base'
+import { goto } from '$app/navigation';
 const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 /**
  * 对一个对象进行深拷贝
@@ -201,6 +202,23 @@ export const copy = (content) => {
     //this.$message.success('复制成功');
     // 复制后移除输入框
     input.remove();
+}
+export const openUrl = ($appConfig, app) => {
+    if (app.appLink) {
+        window.location.href = app.appLink
+        return
+    }
+    if (app.url && app.url.includes('weixin')) {
+        if ($appConfig.app && $appConfig.app.url) {
+            copy($appConfig.app.url)
+            setTimeout(() => {
+                window.location.href = app.url
+            }, 1000);
+        }
+        return true
+    }
+    else if (app.url && app.url.includes('http')) goto(`/micro/${app.url}/${app.title||app.text}/${app.icon}`);
+    else if (app.url) goto(`${app.url}`);
 }
 export {
     week,

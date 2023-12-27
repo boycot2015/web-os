@@ -63,7 +63,7 @@ class="{injClass} {isEdge ?'is-edge':''}">
     <!-- Slides -->
     {#each data as item }
         <swiper-slide style="transform:translate3d(0,0,0)" >
-            <div class={`w-full h-full swiper-slide-transform`} style="transform:translate3d(0,0,0);overflow:hidden;">
+            <div class={`w-full h-full swiper-slide-transform`} role="none" on:click style="transform:translate3d(0,0,0);overflow:hidden;max-width: 1280px;margin:auto;">
                 <slot {item}></slot>
             </div>
         </swiper-slide>

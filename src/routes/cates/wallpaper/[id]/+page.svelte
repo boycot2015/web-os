@@ -52,9 +52,11 @@
         location.href = '/cates/wallpaper/' + item.id
     };
     $: promise = new Promise((call) => {
-        setTimeout(() => {
-            call(data)
-        }, 500);
+        if (!data.loading) {
+            setTimeout(() => {
+                call(data)
+            }, 500);
+        }
     })
     const onPreviewImages = (/** @type {string} */ src) => {
         if (isComponent) {
@@ -75,7 +77,7 @@
     <Loading text={'加载中...'} />
     {:then result}
         <div class="list flex-row just-b">
-            {#each result.datas.list as item}
+            {#each (result.datas.list || []) as item}
                 {#if item.img}
                     <div class="list-item flex-column md:!w-[24%]">
                         <img src="{item.img}" loading="lazy" role="{item.img}" on:click={() => onPreviewImages(item.img)} alt="{item.img_title || item.name}" title="{item.img_title || item.name}">

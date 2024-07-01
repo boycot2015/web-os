@@ -30,6 +30,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-vercel": "^5.4.0",
 		"less": "^4.2.0",
 		"sortablejs": "^1.15.1",
 		"svelte-motion": "^0.11.5",

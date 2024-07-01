@@ -4,7 +4,7 @@
     import appList from './grid.svelte'
     import Swiper from '$lib/components/Swiper.svelte'
     import Day from './day.svelte'
-    
+    import { baseApiUrl } from '$lib';
     let devices = ['iOS', 'Android', 'Windows', 'macOS', 'Ubuntu'];
     let curentIndex = 0;
     $: currentDevice = devices[curentIndex];
@@ -35,7 +35,7 @@
     $: weekDay = week[date.getDay()];
     let weather = {};
     let weatherIcons = {'晴': 'ri-sun-line','多云': 'ri-sun-cloudy-line', '阴': 'ri-cloud-line', '雨': 'ri-rainy-line'};
-    fetch('http://api.boycot.top/api/weather?location=深圳').then(async res => {
+    fetch(baseApiUrl + '/weather?location=深圳').then(async res => {
         weather = await res.json()
         weather = weather.data
     })
@@ -43,7 +43,7 @@
     onMount(() => {
         timer.map(el => el && clearInterval(el))
         timer.push(setInterval(() => {
-            fetch('http://api.boycot.top/api/weather?location=深圳').then(async res => {
+            fetch(baseApiUrl + '/weather?location=深圳').then(async res => {
                 weather = await res.json()
                 weather = weather.data
             })
@@ -67,7 +67,7 @@
                     { type: 'component', component: Day },
                     { icon: 'ri-wechat-fill', type: 'app', text: '微信', bgColor: 'bg-green-600', color: 'text-white' },
                     { icon: 'ri-alipay-line', text: '支付宝', bgColor: 'bg-blue-800', color: 'text-white' },
-                    { icon: 'ri-netease-cloud-music-line', url: 'http://m.music.boycot.top', text: '网易云音乐', bgColor: 'bg-red-600', color: 'text-white' },
+                    { icon: 'ri-netease-cloud-music-line', url: 'https://m.music.boycot.top', text: '网易云音乐', bgColor: 'bg-red-600', color: 'text-white' },
                     { icon: 'ri-landscape-line', text: '照片', bgColor: 'bg-gray-300', color: 'text-purple-500' },
                     { icon: '', text: '日历', subText: week[date.getDay()], render: () => date.getDate(), bgColor: 'bg-white' },
                     { icon: 'ri-navigation-fill', text: '高德地图', bgColor: 'bg-blue-300', color: 'text-blue-700' },
@@ -89,7 +89,7 @@
                 apps: [
                     { icon: 'ri-wechat-fill', text: '微信', bgColor: 'bg-green-600', color: 'text-white' },
                     { icon: 'ri-alipay-line', text: '支付宝', bgColor: 'bg-blue-800', color: 'text-white' },
-                    { icon: 'ri-netease-cloud-music-line', url: 'http://m.music.boycot.top', text: '网易云音乐', bgColor: 'bg-red-600', color: 'text-white' },
+                    { icon: 'ri-netease-cloud-music-line', url: 'https://m.music.boycot.top', text: '网易云音乐', bgColor: 'bg-red-600', color: 'text-white' },
                     { icon: 'ri-landscape-line', text: '照片', bgColor: 'bg-gray-300', color: 'text-purple-500' },
                     { icon: '', text: '日历', subText: week[date.getDay()], render: () => date.getDate(), bgColor: 'bg-white' },
                     { icon: 'ri-navigation-fill', text: '高德地图', bgColor: 'bg-blue-300', color: 'text-blue-700' },

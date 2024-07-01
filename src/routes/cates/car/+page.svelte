@@ -29,7 +29,7 @@
     import Loading from '$lib/components/Loading.svelte'
     import { baseApiUrl } from '$lib'
     export async function load () {
-        const response = await fetch(baseApiUrl+'/news?type=teleplay');
+        const response = await fetch(baseApiUrl+'/news?type=car');
         const { data } = await response.json();
         return { ...data }
     }
@@ -48,7 +48,8 @@
             <img src="{list.img}" alt="{list.title}" title="{list.title}">
             <div class="text">
                 <span class="title line-clamp2">{list.title}</span>
-                <div class="desc line-clamp4">{list.desc}</div>
+                <div class="desc line-clamp4">价格：{list.price}</div>
+                <div class="points desc line-clamp">热度指数：{list.points}</div>
             </div>
         </div>
         {/each}

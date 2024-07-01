@@ -29,7 +29,7 @@
     import Loading from '$lib/components/Loading.svelte'
     import { baseApiUrl } from '$lib'
     export async function load () {
-        const response = await fetch(baseApiUrl+'/news?type=teleplay');
+        const response = await fetch(baseApiUrl+'/news?type=novel');
         const { data } = await response.json();
         return { ...data }
     }

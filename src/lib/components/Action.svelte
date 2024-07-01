@@ -40,7 +40,8 @@
         font-size: var(--font-size-18);
         :global(.back) {
             position: relative;
-            top: -2px !important;
+            top: -1px !important;
+            right: -4px!important;
         }
     }
 </style>

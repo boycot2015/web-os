@@ -48,7 +48,7 @@
 	};
     async function load (params = {}) {
         const res = await fetch(`${baseApiUrl}/wallpaper?id=${params.id || 83}`);
-        const item = await res.json();
+        const { data: item } = await res.json();
         wallpaperData = {
             ...item,
             id: 83,

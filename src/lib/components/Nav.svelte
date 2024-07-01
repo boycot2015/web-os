@@ -5,8 +5,14 @@
         left: 0;
         width: 100%;
         line-height: var(--gap-60);
-        background-color: var(--bg-color);;
+        background-color: var(--bg-color);
+        .wrap {
+            overflow-x: auto;
+            display: block;
+            white-space: nowrap;
+        }
         &-item {
+            display: inline-block;
             font-size: var(--font-size-20);
             padding: 0 var(--padding-gap);
             color: var(--color-333);
@@ -38,7 +44,7 @@
 </script>
 <div class="nav" {style} bind:offsetHeight={offsetHeight}>
     <div class="wrap">
-        { #each navs.slice(0,4) as item }
+        { #each navs as item }
             <div class="nav-item {current.value === item.value ? 'active': ''}"  role={'button'} on:click={() => onNavClick(item)}>{item.label}</div>
         {/each}
     </div>

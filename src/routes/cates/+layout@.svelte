@@ -8,6 +8,9 @@
         padding: var(--padding-gap) !important;
         flex-wrap: wrap;
     }
+    .mian {
+        min-height: calc(100vh - var(--gap-60) * 2);
+    }
 }
 </style>
 <script>
@@ -24,5 +27,7 @@
 <div transition:scale="{{ duration: 800, opacity: 0.3, start: 0, easing: quintOut }}" class="wrap w-full h-full bg-gray-100 flex-column pt-14 just-b container" style="padding-top: {offsetHeight+navHeight}px;">
     <Nav navs={tabs} route={data.route||[]} style="top:{offsetHeight}px" bind:offsetHeight={navHeight}></Nav>
     <Action bind:offsetHeight={offsetHeight} title="新闻动态" opacity={1} path="/" />
-    <slot></slot>
+    <div class="mian">
+        <slot></slot>
+    </div>
 </div>

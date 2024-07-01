@@ -29,8 +29,8 @@
     import Loading from '$lib/components/Loading.svelte'
     import { baseApiUrl } from '$lib'
     export async function load () {
-        const response = await fetch(baseApiUrl+'?tab=movie');
-        const data = await response.json();
+        const response = await fetch(baseApiUrl+'/news?type=movie');
+        const { data } = await response.json();
         return { ...data }
     }
     const promise = new Promise((call) => {

@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import { http } from '$lib/request';
 import config from '@/lib/config';
 import appsConf from '$lib/appConfig';
+import { baseApiUrl } from '$lib';
 const { apps = [], docks = [] } = appsConf
 export const setBgColor = (bgUrl) => {
     document.body.style.backgroundImage = `url(${bgUrl})`;
@@ -34,7 +35,7 @@ function weatherData () {
     let requestTimes = 0
 	const { subscribe, set } = writable({});
     const fetchData = async () => {
-        const res = await http('http://api.boycot.top/api/weather', { location: '深圳' })
+        const res = await http(baseApiUrl + '/weather', { location: '深圳' })
         set(res.data || {})
         requestTimes = 0
     }

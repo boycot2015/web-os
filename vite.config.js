@@ -6,7 +6,7 @@ export default defineConfig(() => ({
         sveltekit(),
         viteMockServe({
             mockPath: '/src/mock',  // mock文件存放的位置
-            localEnabled: true, //在开发环境中启用 mock
+            localEnabled: false, //在开发环境中启用 mock
         }),
     ]
 }));

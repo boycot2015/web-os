@@ -1,6 +1,6 @@
-// import adapter from '@sveltejs/adapter-auto';
+// import adapterAuto from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
-// import adapter from '@sveltejs/adapter-static';
+// import adapterStatic from '@sveltejs/adapter-static';
 import adapter from '@sveltejs/adapter-vercel';
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -21,6 +21,7 @@ const config = {
         //     runtime: 'nodejs18.x',
 		// 	fallback: '200.html' // may differ from host to host
 		// })
+        // adapter: process.env.MODE === 'development' ? adapterAuto() : adapter()
         adapter: adapter()
 	},
     preprocess: preprocess({

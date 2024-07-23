@@ -1,6 +1,6 @@
 {
-	"name": "my-notice",
-	"version": "0.0.1",
+	"name": "web-os",
+	"version": "1.0.1",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --host 0.0.0.0",
@@ -10,12 +10,12 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch"
 	},
 	"devDependencies": {
-        "@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-static": "^2.0.3",
+		"@sveltejs/adapter-vercel": "^5.4.0",
 		"@sveltejs/eslint-config": "github:sveltejs/eslint-config",
-        "@sveltejs/vite-plugin-svelte": "^3.1.1",
-        "@sveltejs/adapter-vercel": "^5.4.0",
 		"@sveltejs/kit": "^2.5.18",
+		"@sveltejs/vite-plugin-svelte": "^3.1.1",
 		"autoprefixer": "^10.4.16",
 		"eslint": "^8.54.0",
 		"mockjs": "^1.1.0",
@@ -28,15 +28,16 @@
 	},
 	"type": "module",
 	"dependencies": {
-        "@brewer/beerui": "^1.1.17",
-        "axios": "^1.6.0",
-        "less": "^4.2.0",
-        "svelte": "^4.0.5",
+		"@brewer/beerui": "^1.1.17",
+		"@neodrag/svelte": "^2.0.6",
+		"axios": "^1.6.0",
+		"less": "^4.2.0",
 		"sortablejs": "^1.15.1",
+		"svelte": "^4.0.5",
 		"svelte-motion": "^0.11.5",
 		"svelte-preprocess": "^5.0.4",
 		"swiper": "^11.0.5",
-        "tailwindcss": "^3.3.5",
+		"tailwindcss": "^3.3.5",
 		"wujie": "^1.0.21"
 	},
 	"eslintConfig": {

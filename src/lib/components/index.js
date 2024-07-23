@@ -7,6 +7,9 @@ import Grid from './grids/Grid.svelte';
 import Cell from './cell/Cell.svelte';
 import CellGroup from './cell/CellGroup.svelte';
 import Swiper from './Swiper.svelte';
+import Dock from './Dock/index.svelte';
+import Desktop from './Desktop/Desktop.svelte';
+
 export {
     IndexBar,
     Icon,
@@ -16,5 +19,7 @@ export {
     Grid,
     Cell,
     CellGroup,
-    Swiper
+    Swiper,
+    Dock,
+    Desktop
 }

@@ -22,6 +22,7 @@
     export let modal = '';
     export let readOnly = false;
     export let totalCount = 18;
+    $: isLarge = false;
     let GridsDom = null;
     let current = '';
     let dx = -100;
@@ -232,13 +233,15 @@
     });
     $: pressTime >=3 && onEditApps();
 </script>
-<!-- <style lang="less" scoped>
-    :global(.wrap-content > div) {
-        height: 100% !important;
-    }
-</style> -->
 <div class="pb-0 pt-0 {col} {row} {visible} {readOnly}" role="none" style="max-height: 100vh;overflow-y:{$appConfig.index?'hidden':'auto'};" on:click={(e) => onClick(e)}>
-    <div class={` px-8 py-4 pt-10 transition-all duration-500 ${injClass}`}>
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div class={`grid-wrap px-8 py-4 pt-10 transition-all duration-500  ${injClass} ${readOnly&&isLarge?'large':''}`}
+    on:mouseleave={(e) => {
+        isLarge = false;
+    }}
+    on:mouseover={(e) => {
+        isLarge = true;
+    }}>
         <Grids cols={cols} mx="{mx}" my="{my}" gap="{gap}" bind:GridsDom={GridsDom}>
             {#each datas as app, i}
                 {#if (app.type === 'app' || !app.type) && !app.hidden}
@@ -247,11 +250,17 @@
                 >
                 <!-- transition:scale={{ duration: 400, easing: quintOut, start: 0.3 }} -->
                     <div
-                    class="{app.closable ? 'animate-shake': ''} flex flex-col justify-center text-center" 
+                    class="{app.closable ? 'animate-shake': ''} {readOnly&&app.isLarge?'large':''} grid-item flex flex-col justify-center text-center" 
                     data-index={i}
                     bind:this={dragEls[i]}
                     on:pointerdown={(e) => onPointerdown(e, app)}
                     on:pointermove={(e) => touchmoveFun(e, app)}
+                    on:mouseleave={(e) => {
+                        app.isLarge = false;
+                    }}
+                    on:mouseover={(e) => {
+                        app.isLarge = true;
+                    }}
                     on:click={(e) => {
                         if (app.isComponent) return onAddComponent(app);
                         if (app.reload) return window.location.reload();

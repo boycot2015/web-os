@@ -12,7 +12,7 @@
     import Modal from '$lib/components/Modal.svelte';
     import { fly, scale } from 'svelte/transition';
     import { Icon, BottomSheet, GridList, Swiper } from '$lib/components';
-    import { Cell, CellGroup } from '$lib/components';
+    import { Cell, CellGroup, Dock, Desktop } from '$lib/components';
     import ContentMenu from '$lib/components/contentMenu/index.svelte';
     import Theme from '$lib/components/apps/theme.svelte'
     import * as coms from '$lib/components/apps';
@@ -22,6 +22,7 @@
     let ssr = false;
     let lg = false;
     let xl = false;
+    $: isPc = clientWidth > 800;
     const getTime = () => {
         const date = new Date();
         const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
@@ -134,7 +135,7 @@
         $appConfig.editable = false
         $appConfig.componentVisible = false
         window.addEventListener('resize', debounce(() => {
-            window.location.reload()
+            !isPc && window.location.reload()
         }, 200))
     })
     const onPointerdown = (e) => {
@@ -150,6 +151,7 @@
     afterUpdate (() => {
         // console.log($appConfig.apps[$appConfig.index].props.apps, "Updated");
         // ssr = false
+        if (clientWidth > 800) $appConfig.index = 0
         $appConfig.apps = [...$appConfig.apps]
     })
     onDestroy(() => {
@@ -219,6 +221,7 @@
     }
 </style>
 <!-- style="background: url({$appConfig.bgUrl}) center/cover no-repeat;" -->
+{#if !isPc}
 <div class="indicate pb-0 pt-0 {$appConfig.bgColor}" style="background: url({$appConfig.bgUrl}) center/cover no-repeat;">
     {#if $appConfig.editable}
         {#if $appConfig.index !==$appConfig.apps.length - 1}
@@ -285,8 +288,8 @@
                     <svelte:component {...item.props || {}} this={item.component} />
                 </Swiper>
                 {#if $appConfig.index && $appConfig.index !==$appConfig.apps.length - 1}
-                    <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-4 left-5 right-5 flex justify-around items-center">
-                        <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:6rem;">
+                    <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-4 left-5 right-5 flex justify-around items-center" style="z-index:999!important;">
+                        <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:6rem;z-index:999!important;">
                             <GridList apps={$appConfig.docks.slice(0, cols)} cols={cols} gap={8} injClass="!px-2 !py-4"></GridList>
                         </div>
                     </div>
@@ -350,10 +353,12 @@
     </Dialog>
     {/if}
     <Mask visible={true} backdropBlur="{(!$appConfig.index || $appConfig.index == $appConfig.apps.length - 1)&&$appConfig.backdropBlur==='none'?'base':($appConfig.backdropBlur || 'base')}" opacity={0.1} zIndex={mask ? 3 : 2} />
-    {#if $appConfig.xl}
-    <ContentMenu on:menuClick={onMenuClick} />
-    {/if}
+</div>
+{:else}
     {#if !ssr}
         <Theme contentSlot component="" bind:visible={themeVisible} />
     {/if}
-</div>
+    <!-- <Dock datas={$appConfig.docks.slice(0, 8)} /> -->
+    <Desktop datas={$appConfig.docks.slice(0, 8)} />
+    <ContentMenu on:menuClick={onMenuClick} />
+{/if}

@@ -530,17 +530,17 @@ export default {
         }
     ],
     docks: [
-        { ...grid['1'], ...phone, size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
+        { ...grid['1'], ...appStore, size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
         { ...grid['1'], ...guid, size: 48, injClass: '!py-1.5 !px-0 bg-white !text-blue-500' },
         { ...grid['1'], ...wechat, size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
         { ...grid['1'], ...qq, size: 48, injClass: '!py-1.5 !px-0'},
-        { ...grid['1'], ...account, size: 48, injClass: '!py-1.5 !px-0 !text-gray-400 !bg-gray-300'},
-        { ...grid['1'], ...picture, size: 48, injClass: '!py-1.5 !px-0'},
-        {...grid['1'], ...netease, size: 48, injClass: '!py-1.5 !px-0'},
-        {...grid['1'], ...camera, size: 48, injClass: '!py-1.5 !px-0'},
         {...grid['1'], ...music, size: 48, injClass: '!py-1.5 !px-0'},
-        {...grid['1'], ...navigation, size: 48, injClass: '!py-1.5 !px-0'},
+        // { ...grid['1'], ...navigation, size: 48, injClass: '!py-1.5 !px-0 !text-gray-400 !bg-gray-300'},
+        { ...grid['1'], ...picture, size: 48, injClass: '!py-1.5 !px-0'},
         {...grid['1'], ...weather, size: 48, injClass: '!py-1.5 !px-0'},
+        {...grid['1'], ...day, subText: '', size: 48, injClass: '!py-1.5 !px-0'},
+        {...grid['1'], ...camera, size: 48, injClass: '!py-1.5 !px-0'},
+        {...grid['1'], ...navigation, size: 48, injClass: '!py-1.5 !px-0'},
         {...grid['1'], ...wallet, size: 48, injClass: '!py-1.5 !px-0'},
     ],
     components: {

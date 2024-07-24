@@ -22,7 +22,6 @@
     let ssr = false;
     let lg = false;
     let xl = false;
-    $: isPc = clientWidth > 800;
     const getTime = () => {
         const date = new Date();
         const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
@@ -31,7 +30,8 @@
     }
     $: time = getTime();
     let timer = [];
-    let clientWidth = 0;
+    $: clientWidth = 0;
+    $: isPc = clientWidth > 800;
     let container = {
         clientWidth: $appConfig.clientWidth
     };
@@ -134,6 +134,7 @@
         $appConfig.dialog = '';
         $appConfig.editable = false
         $appConfig.componentVisible = false
+        isPc = clientWidth > 800
         window.addEventListener('resize', debounce(() => {
             !isPc && window.location.reload()
         }, 200))
@@ -290,7 +291,7 @@
                 {#if $appConfig.index && $appConfig.index !==$appConfig.apps.length - 1}
                     <div transition:fly="{{ y: 100, duration: 300 }}" class="fixed bottom-4 left-5 right-5 flex justify-around items-center" style="z-index:999!important;">
                         <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} px-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:6rem;z-index:999!important;">
-                            <GridList apps={$appConfig.docks.slice(0, cols)} cols={cols} gap={8} injClass="!px-2 !py-4"></GridList>
+                            <GridList apps={$appConfig.docks.slice(0, cols).map(el => ({...el,text: ''}))} cols={cols} gap={8} injClass="!px-2 !py-4"></GridList>
                         </div>
                     </div>
                 {/if}

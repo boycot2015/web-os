@@ -82,7 +82,8 @@
     transition: transform 100ms ease-in;
     color: #fff;
     :global(.operate-icon) {
-        top: -7px !important;
+        left: 1px !important;
+        top: -5px !important;
     }
   }
 

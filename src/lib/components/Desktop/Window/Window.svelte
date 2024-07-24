@@ -148,7 +148,7 @@
 
     will-change: width, height;
 
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     box-shadow: var(--elevated-shadow);
     background-color: rgba(255, 255, 255, 0.56);
     cursor: var(--system-cursor-default), auto;

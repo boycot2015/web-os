@@ -22,7 +22,7 @@ export const createAppConfig = (et: AppConfig) => ({
   resizable: true,
   expandable: false,
 
-  width: 800,
-  height: 500,
+  width: 1000,
+  height: 600,
   ...et,
 });

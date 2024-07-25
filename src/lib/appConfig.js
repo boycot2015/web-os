@@ -15,6 +15,7 @@ const grid = {
     sm2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white text-sm', injClass: '!p-1 text-sm'},
     xs: {row: 1, col: 1, size: 14, hideTitle: true, injTitleClass: 'text-white text-xs', injClass: '!p-[0.1rem] text-xs !rounded-md'}
 }
+export const webOs = {icon: 'ri-apple-fill', text: 'webOs', desc: 'os', url: 'https://os.boycot.top/', bgColor: 'bg-white', color: 'text-black', closable: false }
 export const clock = {icon: '', component: 'Clock', text: '时钟', desc: '秒钟', url: '', bgColor: '', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none', closable: false, readOnly: true }
 export const taobao = {icon: 'ri-taobao-line', text: '淘宝', desc: '太好逛了吧', url: 'https://m.taobao.com/', appLink: 'taobao://', bgColor: 'bg-white', color: 'text-orange-500', closable: false}
 export const qzone = {icon: 'ri-star-smile-fill', text: 'QQ空间', desc: '分享喜悦，留住感动', url: 'https://qzone.qq.com/', bgColor: 'bg-white', color: 'text-yellow-500', closable: false}
@@ -27,12 +28,12 @@ export const compass = { icon: 'ri-compass-3-line', text: '', bgColor: 'bg-white
 export const chat = { icon: 'ri-chat-3-line', text: '', bgColor: 'bg-white', color: 'text-red-500', closable: false, readOnly: true }
 export const chatFill = { icon: 'ri-chat-3-fill', text: '', bgColor: 'bg-white', color: 'text-red-500', closable: false, readOnly: true }
 export const account = { icon: 'ri-account-circle-line', text: '', bgColor: 'bg-white', color: 'text-red-500', readOnly: true }
-export const guid = { icon: 'ri-compass-3-fill', url: 'https://www.baidu.com/', text: '', bgColor: 'bg-white', color: 'text-red-500', opacity: 0, closable: false, readOnly: true }
+export const guid = { icon: 'ri-compass-3-fill', url: 'https://www.baidu.com/', text: '', bgColor: 'bg-white', color: 'text-red-500', width: 1200, height: 600, opacity: 0, closable: false, readOnly: true }
 export const qq = { icon: 'ri-qq-fill', text: 'QQ', url: 'https://im.qq.com/', bgColor: 'bg-white', color: 'text-red-500', closable: false }
 export const qqMusic = { icon: 'ri-disc-line', text: 'QQ音乐', url: 'https://music.qq.com/', bgColor: 'bg-white', color: 'text-green-500', closable: false }
 export const officeWechat = {icon: 'ri-wechat-line', text: '企业微信', desc: '兢兢业业，碌碌无为', url: 'https://work.weixin.qq.com/', bgColor: 'bg-white', color: 'text-blue-700', closable: false}
 export const qqMap = { icon: 'ri-compass-fill', text: '腾讯地图', url: 'https://map.qq.com/m/index/map', bgColor: 'bg-blue-200', color: 'text-blue-500', closable: false }
-export const wechat = { icon: 'ri-wechat-fill', text: '微信', desc: '发生什么事了，让我先发个朋友圈', url: 'https://wx.qq.com', appLink: 'weixin://send', bgColor: 'bg-green-600', color: 'text-white', closable: false }
+export const wechat = { icon: 'ri-wechat-fill', text: '微信', desc: '发生什么事了，让我先发个朋友圈', url: 'https://wx.qq.com', width: 1200, height: 600, appLink: 'weixin://send', bgColor: 'bg-green-600', color: 'text-white', closable: false }
 export const alipay = { icon: 'ri-alipay-line', text: '支付宝', desc: '马爸爸的钱袋子', url: 'https://www.alipay.com/', bgColor: 'bg-blue-800', color: 'text-white', closable: false }
 export const picture = { icon: 'ri-landscape-line', text: '照片', desc: '把记忆留在这里', url: '/cates/wallpaper/83', bgColor: 'bg-gray-300', color: 'text-purple-500', closable: false, readOnly: true }
 export const netease = { icon: 'ri-netease-cloud-music-line', url: 'https://y.music.163.com/m', text: '网易云音乐',desc: '耳朵怀孕了', bgColor: 'bg-red-600', color: 'text-white', closable: false }
@@ -45,7 +46,7 @@ export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', 
 export const day = { icon: 'ri-calendar-line', text: '日历', url: 'https://m.rili.com.cn/', desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white', closable: false, readOnly: true }
 export const userCenter = { icon: 'ri-user-line', text: '用户中心', url: 'https://user.test.limofang.cn/', desc: '用户中心', color: 'text-gray-500', bgColor: 'bg-white', closable: false }
 export const movie = {icon: 'ri-movie-line', text: '神马影视', color: 'text-red-500', bgColor: 'bg-gray-500', url: 'https://www.9shenma.com/', closable: false, readOnly: true }
-const editableApps = [
+export const editableApps = [
     clock,
     taobao,
     qzone,
@@ -538,6 +539,7 @@ export default {
         // { ...grid['1'], ...navigation, size: 48, injClass: '!py-1.5 !px-0 !text-gray-400 !bg-gray-300'},
         {...grid['1'], ...weather, size: 48, injClass: '!py-1.5 !px-0'},
         {...grid['1'], ...day, subText: '', size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...webOs, size: 48, injClass: '!py-1.5 !px-0'},
         { ...grid['1'], ...settings, size: 48, injClass: '!py-1.5 !px-0'},
         {...grid['1'], ...camera, size: 48, injClass: '!py-1.5 !px-0'},
         {...grid['1'], ...navigation, size: 48, injClass: '!py-1.5 !px-0'},

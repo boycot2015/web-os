@@ -19,7 +19,6 @@
   import TrafficLights from './TrafficLights.svelte';
 
   export let appID: AppID;
-  export let app;
 
   let draggingEnabled = true;
 
@@ -28,7 +27,7 @@
 
   let windowEl: HTMLElement;
 
-  const { height = 800, width = 800 } = $openApps[appID];
+  const { height, width } = $openApps[appID];
 
   const remModifier = +height * 1.2 >= window.innerHeight ? 24 : 16;
 
@@ -37,7 +36,7 @@
 
   let defaultPosition = {
     x: (document.body.clientWidth / 2 + randX) / 2,
-    y: (100 + randY) / 2,
+    y: (100 + randY) / 2 + 32,
   };
 
   $: $activeApp === appID && ($appZIndices[appID] = $activeAppZIndex);
@@ -72,8 +71,7 @@
     //   windowEl.style.height = '100vh';
     } else {
       draggingEnabled = true;
-      windowEl.style.transform = minimizedTransform;
-
+      windowEl.style.transform = minimizedTransform;      
       windowEl.style.width = `${+width / remModifier}rem`;
       windowEl.style.height = `${+height / remModifier}rem`;
     }
@@ -117,7 +115,7 @@
     defaultPosition,
     handle: '.app-window-drag-handle',
     // bounds: { bottom: 0, top: 27.2, left: 0, right: 0 },
-    bounds: { bottom: 0, top: 0, left: 0, right: 0 },
+    bounds: { bottom: 0, top: 32, left: 0, right: 0 },
     disabled: !draggingEnabled,
     gpuAcceleration: false,
 
@@ -147,7 +145,6 @@
     grid-template-rows: 1fr;
 
     position: absolute;
-
     will-change: width, height;
 
     border-radius: 0.75rem;

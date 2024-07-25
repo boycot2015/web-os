@@ -2,7 +2,8 @@
   import { appConfig } from '@/store';
   import Loading from '$lib/components/Loading.svelte'
   import { activeApp, activeAppZIndex, appZIndices, openApps } from '@/store/apps.store';
-
+  import { Icon, GridList } from '$lib/components';
+  import { editableApps } from '$lib/appConfig'
   $: $activeApp, ($activeAppZIndex += 2);
 
   // Keeps all the app z indices under 50 so they don't go above the UI elements
@@ -38,17 +39,25 @@
       {/await}
     {/if}
   {/each}
+  <div class="custom-grid">
+      <!-- <GridList apps={editableApps||[]} cols={$appConfig.cols||12} gap={6} injClass="!px-2 !py-4"></GridList> -->
+  </div>
 </div>
 
 <style lang="less">
   #windows-area {
     display: block;
-
     // 1.7 rem is the heigh of the header
     // 5.25 rem is the height of dock
     // top: 1.75rem;
     height: 100vw;
     width: 100vw;
     justify-self: center;
+  }
+  .custom-grid {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -20%;
   }
 </style>

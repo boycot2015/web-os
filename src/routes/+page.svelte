@@ -134,8 +134,9 @@
         $appConfig.dialog = '';
         $appConfig.editable = false
         $appConfig.componentVisible = false
-        isPc = clientWidth > 800
+        isPc = document.documentElement.clientWidth > 800
         window.addEventListener('resize', debounce(() => {
+            isPc = document.documentElement.clientWidth > 800
             !isPc && window.location.reload()
         }, 200))
     })

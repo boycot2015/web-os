@@ -6,8 +6,9 @@
   import { elevation } from '$lib/actions';
   import { fadeOut } from '$lib/helpers/fade';
   import { waitFor } from '$lib/helpers/wait-for';
+  import { appConfig } from '@/store';
 //   import AppleIcon from '~icons/mdi/apple';
-  let isWin = Math.random() < 0.5
+  $appConfig.isWin = Math.random() < 0.5
   let hiddenSplashScreen = false;
   let progressVal = tweened(100, { duration: 3000, easing: quintInOut });
 
@@ -21,8 +22,8 @@
 {#if !(hiddenSplashScreen)}
   <div out:fadeOut={{ duration: 500 }} class="splash-screen" use:elevation={'bootup-screen'}>
     <!-- <AppleIcon /> -->
-    <Icon name="ri-{isWin?'windows':'apple'}-fill" size={100} />
-    {#if isWin}
+    <Icon name="ri-{$appConfig.isWin?'windows':'apple'}-fill" size={100} />
+    {#if $appConfig.isWin}
     <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
     {:else}
     <div
@@ -37,11 +38,6 @@
     </div>
     {/if}
   </div>
-{/if}
-
-<!-- iframe => firefox support: will always make sound available on start or F5 -->
-{#if import.meta.env.PROD}
-  <iframe id="audio" src="/sounds/mac-startup-sound.mp3" allow="autoplay" title="hello" />
 {/if}
 
 <style lang="less">
@@ -91,13 +87,6 @@
     height: 100%;
 
     transform: translateX(-0%);
-  }
-
-  #audio {
-    position: absolute;
-    z-index: -9999;
-
-    display: none;
   }
   .lds-ring {
   /* change color here */

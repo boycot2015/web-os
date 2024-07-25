@@ -2,7 +2,7 @@ export default {
     app: {},
     index: 1,
     showPanel: true,
-    name: '超级app',
+    name: 'web os',
     // type: 'component',
     bgColor: '',
     modal: '',

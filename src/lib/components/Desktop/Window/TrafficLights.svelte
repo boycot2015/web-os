@@ -29,10 +29,10 @@
     <Icon injClass="operate-icon" size="{12}" name="{'ri-close-fill'}"></Icon>
 </button>
   <button class="minimize-light" on:click={closeApp}>
-    <Icon injClass="operate-icon" size="{12}" name="{'ri-file-reduce-line'}"></Icon>
+    <Icon injClass="operate-icon" size="{12}" name="{'ri-subtract-line'}"></Icon>
 </button>
   <button class="stretch-light" on:click={greenLightAction}>
-    <Icon injClass="operate-icon" size="{12}" name="{!$appsInFullscreen[appID]?'ri-expand-left-right-line':'ri-expand-up-down-line'}"></Icon>
+    <Icon injClass="operate-icon" size="{12}" name="{!$appsInFullscreen[appID]?'ri-expand-diagonal-line':'ri-collapse-diagonal-line'}"></Icon>
   </button>
 </div>
 
@@ -82,8 +82,8 @@
     transition: transform 100ms ease-in;
     color: #fff;
     :global(.operate-icon) {
-        left: 1px !important;
-        top: -5px !important;
+        // left: -1px !important;
+        top: -6px !important;
     }
   }
 
@@ -97,7 +97,7 @@
     --border-color: #1aab29;
 
     :global(svg) {
-      transform: rotate(90deg);
+      transform: rotate(180deg);
     }
   }
 

@@ -43,7 +43,6 @@ $: isActive = false;
     if (!shouldOpenWindow) return externalAction?.(e);
     // For the bounce animation
     const isAppAlreadyOpen = !!$openApps[appID];
-    console.log(isAppAlreadyOpen,  $openApps, 'isAppAlreadyOpen');
     
     $activeApp = appID;
     if (isAppAlreadyOpen) return;
@@ -99,7 +98,7 @@ class="fixed bottom-4 nav-bar-wrap flex justify-around items-center {!!isActive?
                 <Grid row={app.row || 1} col={app.col || 1}>
                     <div
                     title="{app.text||app.desc}"
-                    class="grid-item relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-xl text-md text-center shadow dark:shadow-white/10 {!!app.active?'active':''}"
+                    class="grid-item relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-2xl text-md text-center shadow dark:shadow-white/10 {!!app.active?'active':''}"
                     on:mouseleave={(e) => {
                         app.active = false;
                     }}

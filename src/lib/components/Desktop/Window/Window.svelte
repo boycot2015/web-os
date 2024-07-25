@@ -28,7 +28,7 @@
 
   let windowEl: HTMLElement;
 
-  const { height = 400, width = 400 } = $openApps[appID];
+  const { height = 800, width = 800 } = $openApps[appID];
 
   const remModifier = +height * 1.2 >= window.innerHeight ? 24 : 16;
 
@@ -67,9 +67,9 @@
       minimizedTransform = windowEl.style.transform;
       windowEl.style.transform = `translate(0px, 0px)`;
 
-      windowEl.style.width = `100%`;
-      // windowEl.style.height = 'calc(100vh - 1.7rem - 5.25rem)';
-      windowEl.style.height = 'calc(100vh - 1.7rem)';
+      windowEl.style.width = `100vw`;
+      windowEl.style.height = 'calc(100vh - 1.7rem - 5.25rem)';
+    //   windowEl.style.height = '100vh';
     } else {
       draggingEnabled = true;
       windowEl.style.transform = minimizedTransform;
@@ -99,12 +99,13 @@
   function onAppDragEnd() {
     $isAppBeingDragged = false;
   }
-
-  onMount(() => windowEl?.focus());
+  onMount(() => {
+    windowEl?.focus();
+});
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<section
+<div
   class="container"
   class:active={$activeApp === appID}
   style:width="{+width / remModifier}rem"
@@ -132,15 +133,16 @@
   </div>
 
   <AppNexus {appID} isBeingDragged={$isAppBeingDragged} />
-</section>
+</div>
 
 <style lang="less">
   .container {
     --elevated-shadow: 0px 8.5px 10px rgba(0, 0, 0, 0.115), 0px 68px 80px rgba(0, 0, 0, 0.23);
-
+    overflow: auto;
+    resize: both;
     width: 100%;
     height: 100%;
-
+    max-width: 100vw;
     display: grid;
     grid-template-rows: 1fr;
 
@@ -148,7 +150,7 @@
 
     will-change: width, height;
 
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     box-shadow: var(--elevated-shadow);
     background-color: rgba(255, 255, 255, 0.56);
     cursor: var(--system-cursor-default), auto;
@@ -156,7 +158,7 @@
     &.active {
       // --elevated-shadow: 0px 6.7px 12px rgba(0, 0, 0, 0.218), 0px 22.3px 40.2px rgba(0, 0, 0, 0.322),
       //   0px 100px 180px rgba(0, 0, 0, 0.54);
-      --elevated-shadow: 0px 8.5px 10px rgba(0, 0, 0, 0.28), 0px 68px 80px rgba(0, 0, 0, 0.56);
+      --elevated-shadow: 0px 8.5px 10px rgba(0, 0, 0, 0.28), 0px 0 30px rgba(255, 255, 255, 0.26);
     }
 
     &.dark {

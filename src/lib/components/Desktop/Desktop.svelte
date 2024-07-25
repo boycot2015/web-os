@@ -5,7 +5,7 @@
     //   import Wallpaper from '../apps/WallpaperApp/Wallpaper.svelte';
   import BootupScreen from './BootupScreen.svelte';
   import WindowsArea from './Window/WindowsArea.svelte';
-
+  import { appsInFullscreen, activeApp } from '@/store/apps.store';
 //   const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
 //   if (!isMac) {
@@ -24,7 +24,7 @@
 
 <div bind:this={mainEl} class="container">
   <main>
-    <div class="indicate pb-0 pt-0 flex justify-around items-center {$appConfig.bgColor}" style="background: url({$appConfig.bgUrl}) center/cover no-repeat;">
+    <div class="indicate pb-0 pt-0 flex justify-around items-center {$appConfig.bgColor}" style="background: url({$appConfig.bgUrl}) center/center no-repeat;">
         <!-- <TopBar /> -->
         <WindowsArea />
         <Dock {datas} />
@@ -40,6 +40,7 @@
   .container {
     height: 100vh;
     width: 100vw;
+    max-width: 100vw;
   }
 
   main {

@@ -28,7 +28,7 @@
   $: $appZIndices, normalizeAppZIndices();
 </script>
 
-<section id="windows-area">
+<div id="windows-area">
   {#each Object.keys($openApps) as appID}
     {#if $openApps[appID] && $openApps[appID].shouldOpenWindow}
     {#await import('./Window.svelte')}
@@ -38,19 +38,17 @@
       {/await}
     {/if}
   {/each}
-</section>
+</div>
 
 <style lang="less">
-  section {
+  #windows-area {
     display: block;
 
     // 1.7 rem is the heigh of the header
     // 5.25 rem is the height of dock
     // top: 1.75rem;
-    height: 100%;
-
+    height: 100vw;
     width: 100vw;
-
     justify-self: center;
   }
 </style>

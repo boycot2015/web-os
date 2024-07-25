@@ -9,7 +9,8 @@
     <header class="titlebar app-window-drag-handle" />
     <section class="main-area">
         {#if $openApps[appID]?.url}
-        <iframe src="{$openApps[appID]?.url}" title={$openApps[appID]?.text} frameborder="0" style="width: 100%;height: 100%;"></iframe>
+        <!-- <iframe src="{$openApps[appID]?.url}" title={$openApps[appID]?.text} frameborder="0" style="width: 100%;height: 100%;"></iframe> -->
+        <object data="{$openApps[appID]?.url}" style="width: 100%;height: 100%;" type="text/html"></object>
         {:else}
         <div>app加载失败，请重试~</div>
         {/if}
@@ -20,6 +21,7 @@
     background-color: var(--system-color-light);
     overflow: hidden;
     border-radius: inherit;
+    max-width: 100vw;
 }
 
 .titlebar {
@@ -38,7 +40,6 @@
 
     height: 100%;
     width: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -1,5 +1,6 @@
 const zIndexConfig = {
   wallpaper: -1,
+  topbar: 10,
   'bootup-screen': 110,
   'context-menu': 100,
   'window-traffic-lights': 10,

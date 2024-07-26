@@ -9,17 +9,16 @@ import { sineInOut } from 'svelte/easing';
 import type { AppID } from '@/store/apps.store';
 import {
     activeApp,
-    // activeAppZIndex,
+    activeAppZIndex,
     // appsInFullscreen,
-    // appZIndices,
+    appZIndices,
     // isAppBeingDragged,
     openApps,
 } from '@/store/apps.store';
-
 let appID: AppID;
 export let datas;
 $: isActive = false;
-
+$: $activeApp === appID && ($appZIndices[appID] = $activeAppZIndex);
   // Spring animation for the click animation
   const appOpenIconBounceTransform = tweened(0, {
     duration: 400,
@@ -36,8 +35,18 @@ $: isActive = false;
 
   async function openApp(e, app) {
     appID = app.id || app.text || 'micro'
+    if ($openApps[appID]) {
+        if ($activeApp !== appID) {
+            $openApps[appID].shouldOpenWindow = true
+            $activeApp = appID
+            return
+        }
+        $openApps[appID].shouldOpenWindow = !$openApps[appID].shouldOpenWindow
+        return
+    }
     $openApps[appID] = createAppConfig({
-        ...app
+        ...app,
+        isMaximized: false
     });
     const { shouldOpenWindow, externalAction } = $openApps[appID] || { shouldOpenWindow: true };
     if (!shouldOpenWindow) return externalAction?.(e);
@@ -76,8 +85,20 @@ $: isActive = false;
     }
     .grid-item {
         transition: all .3s;
+        position: relative;
         &.active {
             transform: translateY(-30px) scale(1.5);
+        }
+        &.opened::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            margin-left: -3px;
         }
     }
 </style>
@@ -90,7 +111,7 @@ on:mouseover={(e) => {
     isActive = true;
 }}
 class="fixed bottom-4 nav-bar-wrap flex justify-around items-center {!!isActive?'active':''}" style="z-index:999!important;width: 560px;">
-    <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} px-1 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:4rem;">
+    <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} p-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:4rem;">
         <!-- <GridList apps={$appConfig.docks.slice(0, 8)} cols={8} gap={6} readOnly={true} injClass="!px-1 !py-2"></GridList> -->
         <div class={`grid-wrap ${!!isActive?'active':''}`}>
             <Grids cols={'8'} mx="{'1'}" my="{'2'}" gap="{'6'}">
@@ -98,7 +119,7 @@ class="fixed bottom-4 nav-bar-wrap flex justify-around items-center {!!isActive?
                 <Grid row={app.row || 1} col={app.col || 1}>
                     <div
                     title="{app.text||app.desc}"
-                    class="grid-item relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-2xl text-md text-center shadow dark:shadow-white/10 {!!app.active?'active':''}"
+                    class="grid-item relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-2xl text-md text-center shadow dark:shadow-white/10 {!!app.active?'active':''} {!!$openApps[app.text] ? 'opened':''}"
                     on:mouseleave={(e) => {
                         app.active = false;
                     }}

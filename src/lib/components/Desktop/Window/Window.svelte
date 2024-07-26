@@ -2,7 +2,7 @@
   import { draggable } from '@neodrag/svelte';
   import { onMount } from 'svelte';
   import { sineInOut } from 'svelte/easing';
-
+  import { fly, scale } from 'svelte/transition';
   import { elevation } from '$lib/actions';
   import { randint } from '$lib/helpers/random';
   import { waitFor } from '$lib/helpers/wait-for';
@@ -27,7 +27,7 @@
 
   let windowEl: HTMLElement;
 
-  const { height, width } = $openApps[appID];
+  const { height, width, left, top } = $openApps[appID];
 
   const remModifier = +height * 1.2 >= window.innerHeight ? 24 : 16;
 
@@ -35,8 +35,8 @@
   const randY = randint(-100, 100);
 
   let defaultPosition = {
-    x: (document.body.clientWidth / 2 + randX) / 2,
-    y: (100 + randY) / 2 + 32,
+    x: left || (document.body.clientWidth / 2 + randX) / 2,
+    y: top || (100 + randY) / 2 + 32,
   };
 
   $: $activeApp === appID && ($appZIndices[appID] = $activeAppZIndex);
@@ -67,8 +67,8 @@
       windowEl.style.transform = `translate(0px, 0px)`;
 
       windowEl.style.width = `100vw`;
-      windowEl.style.height = 'calc(100vh - 1.7rem - 5.25rem)';
-    //   windowEl.style.height = '100vh';
+      windowEl.style.height = 'calc(100vh - 9rem)';
+      windowEl.style.top = '34px';
     } else {
       draggingEnabled = true;
       windowEl.style.transform = minimizedTransform;      
@@ -77,7 +77,7 @@
     }
 
     isMaximized = !isMaximized;
-
+    $openApps[appID].isMaximized = isMaximized
     $appsInFullscreen[appID] = isMaximized;
 
     await waitFor(300);
@@ -88,17 +88,41 @@
     $openApps[appID] = false;
     $appsInFullscreen[appID] = false;
   }
-
+  function minimizeApp() {
+    $openApps[appID].shouldOpenWindow = !$openApps[appID].shouldOpenWindow;
+  }
   function onAppDragStart() {
     focusApp();
     $isAppBeingDragged = true;
   }
 
-  function onAppDragEnd() {
-    $isAppBeingDragged = false;
+  function onAppDragEnd(e) {
+    $isAppBeingDragged = false;    
+    $openApps[appID].left = parseInt(e.offsetX)
+    $openApps[appID].top = parseInt(e.offsetY)
   }
   onMount(() => {
     windowEl?.focus();
+    isMaximized = !!$openApps[appID].isMaximized
+    if (!$openApps[appID].isMaximized) {
+        $openApps[appID].left = parseInt(defaultPosition.x)
+        $openApps[appID].top = parseInt(defaultPosition.y)
+    } else {
+        draggingEnabled = false;
+        minimizedTransform = windowEl.style.transform;
+        windowEl.style.transform = `translate(0px, 0px)`;
+        windowEl.style.width = `100vw`;
+        windowEl.style.height = 'calc(100vh - 9rem)';
+        windowEl.style.top = '34px';
+    }
+    const resizeObserver = new ResizeObserver((entries) => {
+        // console.log(entries[0].target.clientWidth, 'entries');
+        entries.map(el => {
+            $openApps[appID].width = el.target.clientWidth || $openApps[appID].width
+            $openApps[appID].height = el.target.clientHeight ||  $openApps[appID].height
+        })
+    });
+    resizeObserver.observe(windowEl);
 });
 </script>
 
@@ -115,7 +139,7 @@
     defaultPosition,
     handle: '.app-window-drag-handle',
     // bounds: { bottom: 0, top: 27.2, left: 0, right: 0 },
-    bounds: { bottom: 0, top: 32, left: 0, right: 0 },
+    bounds: { bottom: 0, top: 34, left: 0, right: 0 },
     disabled: !draggingEnabled,
     gpuAcceleration: false,
 
@@ -124,12 +148,12 @@
   }}
   on:click={focusApp}
   on:keydown={() => {}}
-  out:windowCloseTransition
->
+  transition:scale="{{ start: 0.5, duration: 100, opacity: 0.6 }}"
+  >
+  <!-- out:fly="{{ y: defaultPosition.y, duration: 100, opacity: 0.6 }}" -->
   <div class="tl-container {appID}" use:elevation={'window-traffic-lights'}>
-    <TrafficLights {appID} on:maximize-click={maximizeApp} on:close-app={closeApp} />
+    <TrafficLights {appID} on:maximize-click={maximizeApp} on:close-app={closeApp} on:minimize-app={minimizeApp} />
   </div>
-
   <AppNexus {appID} isBeingDragged={$isAppBeingDragged} />
 </div>
 
@@ -151,7 +175,7 @@
     box-shadow: var(--elevated-shadow);
     background-color: rgba(255, 255, 255, 0.56);
     cursor: var(--system-cursor-default), auto;
-
+    // // transition: all .3s ease-in-out;
     &.active {
       // --elevated-shadow: 0px 6.7px 12px rgba(0, 0, 0, 0.218), 0px 22.3px 40.2px rgba(0, 0, 0, 0.322),
       //   0px 100px 180px rgba(0, 0, 0, 0.54);

@@ -39,6 +39,6 @@
     //     window.removeEventListener('resize', setPageZoom)
     // })
 </script>
-<div class="layout {$appConfig.bgColor} h-full w-full"  style="background: url({$appConfig.bgUrl}) center/cover no-repeat fixed;">
+<div class="layout {$appConfig.bgColor} h-full w-full">
     <slot></slot>
 </div>

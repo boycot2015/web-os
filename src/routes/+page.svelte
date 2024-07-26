@@ -13,8 +13,6 @@
     import { fly, scale } from 'svelte/transition';
     import { Icon, BottomSheet, GridList, Swiper } from '$lib/components';
     import { Cell, CellGroup, Dock, Desktop } from '$lib/components';
-    import ContentMenu from '$lib/components/contentMenu/index.svelte';
-    import Theme from '$lib/components/apps/theme.svelte'
     import * as coms from '$lib/components/apps';
     import { goto } from '$app/navigation';
     import { debounce } from 'stdf/components/utils';
@@ -128,7 +126,7 @@
         })
         $appConfig.docks = $appConfig.docks.map(el => ({...el, componentName: typeof el.component === 'string' ? el.component : el.componentName, component: (el.component||el.componentName)?coms.default[app.component||el.componentName] ||stdfComs[app.component||el.componentName]|| GridList:null, closable: false }));
         componentsData = {...appConf.default.components, component: GridList, props: {...appConf.default.components.props, apps: sortAppData(appConf.default.components.props.apps, { cols, gap }), cols, totalCount: 100}}
-        $appConfig.bgUrl && setBgColor($appConfig.bgUrl)
+        // $appConfig.bgUrl && setBgColor($appConfig.bgUrl)
         $appConfig.mask = '';
         $appConfig.modal = '';
         $appConfig.dialog = '';
@@ -163,7 +161,6 @@
         $appConfig.editable = true;
         onEditApps({ closable: true })
     }
-    $: themeVisible = false;
     $: modal = $appConfig.modal;
     $: dialog = $appConfig.dialog;
     $: mask = $appConfig.mask;
@@ -198,16 +195,6 @@
             item.action instanceof Function &&  item.action(e)
         }
     }
-    const onMenuClick = (e) => {
-        if (e.detail === 'edit') {
-            pressTime = 5
-            $appConfig.editable = true;
-            onEditApps({ closable: true })
-        }
-        if (e.detail === 'changeTheme') {
-            themeVisible = true
-        }
-    }
 </script>
 <style scoped lang="less">
     .indicate, .container {
@@ -224,7 +211,7 @@
 </style>
 <!-- style="background: url({$appConfig.bgUrl}) center/cover no-repeat;" -->
 {#if !isPc}
-<div class="indicate pb-0 pt-0 {$appConfig.bgColor}" style="background: url({$appConfig.bgUrl}) center/cover no-repeat;">
+<div class="indicate pb-0 pt-0" style="background: url({$appConfig.bgUrl}) center/cover no-repeat fixed;">
     {#if $appConfig.editable}
         {#if $appConfig.index !==$appConfig.apps.length - 1}
             <div class="fixed text-lg bg-white/30 text-black rounded-2xl px-3 left-3 top-1.5"
@@ -357,10 +344,5 @@
     <Mask visible={true} backdropBlur="{(!$appConfig.index || $appConfig.index == $appConfig.apps.length - 1)&&$appConfig.backdropBlur==='none'?'base':($appConfig.backdropBlur || 'base')}" opacity={0.1} zIndex={mask ? 3 : 2} />
 </div>
 {:else}
-    {#if !ssr}
-        <Theme contentSlot component="" bind:visible={themeVisible} />
-    {/if}
-    <!-- <Dock datas={$appConfig.docks.slice(0, 8)} /> -->
     <Desktop datas={$appConfig.docks.slice(0, 8)} />
-    <ContentMenu on:menuClick={onMenuClick} />
 {/if}

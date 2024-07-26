@@ -17,7 +17,9 @@
   function closeApp() {
     dispatch('close-app');
   }
-
+  function miniApp() {
+    dispatch('minimize-app');
+  }
   function greenLightAction() {
     maximize = true
     dispatch('maximize-click');
@@ -28,7 +30,7 @@
   <button class="close-light" on:click={closeApp}>
     <Icon injClass="operate-icon" size="{12}" name="{'ri-close-fill'}"></Icon>
 </button>
-  <button class="minimize-light" on:click={closeApp}>
+  <button class="minimize-light" on:click={miniApp}>
     <Icon injClass="operate-icon" size="{12}" name="{'ri-subtract-line'}"></Icon>
 </button>
   <button class="stretch-light" on:click={greenLightAction}>

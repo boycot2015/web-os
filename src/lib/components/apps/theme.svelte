@@ -16,7 +16,10 @@
     let settingVisible = false;
     export let contentSlot = false;
     let toastVisible = false;
-    $: wallpaperData = {};
+    $: wallpaperData = {
+        id: 83,
+        cates: []
+    };
     let steps = {
         'none': [0, 10],
         'base': [10, 30],
@@ -109,6 +112,10 @@
             </Grid>
         </Grids>
     </Modal>
-    <Modal bind:visible={visible} title="选择壁纸" injTitleClass="text-gray-800 text-xl" showBtn={false} contentSlot popup={{size: 60, radiusPosition: 'all',radius: 'xl', transparent: false, position: 'center', hideScrollbar: true, easeType: 'none', px: 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}><Wallpaper injClass="!pt-0" data={wallpaperData} isComponent on:select={(e) => {$appConfig.bgUrl = e.detail;toastVisible = true}} on:cateChange={(e) => load(e.detail)}></Wallpaper></Modal>
+    <Modal bind:visible={visible} title="选择壁纸" injTitleClass="text-gray-800 text-xl" showBtn={false} contentSlot popup={{size: 60, radiusPosition: 'all',radius: 'xl', transparent: false, position: 'center', hideScrollbar: true, easeType: 'none', px: 6, py: 0, mask: {opacity: 0.2, backdropBlur: 'sm'}}}>
+        {#if wallpaperData}
+        <Wallpaper injClass="!pt-0" data={wallpaperData} isComponent on:select={(e) => {$appConfig.bgUrl = e.detail;toastVisible = true}} on:cateChange={(e) => load(e.detail)}></Wallpaper>
+        {/if}
+    </Modal>
     <Toast message="设置成功！" bind:visible={toastVisible}></Toast>
 </div>

@@ -85,7 +85,7 @@ function appData () {
                     ...res
                 })
             })
-            res.bgUrl && setBgColor(res.bgUrl)
+            // res.bgUrl && setBgColor(res.bgUrl)
         }
 	};
 }

@@ -1,7 +1,7 @@
 <script>
     import { onMount,createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
-    const contextmenu = [
+    export const contextmenu = [
     {
         name: '刷新',
         event: 'refresh'
@@ -14,21 +14,18 @@
         name: '另存为',
         event: 'saveHtml'
     },
+    // {
+    //     name: '编辑主屏幕',
+    //     event: 'edit'
+    // },
     {
-        name: '编辑主屏幕',
-        event: 'edit'
-    },
-    {
-        name: '移除App',
-        event: 'remove'
+        name: '随机壁纸',
+        event: 'randomWallpaper'
     },
     {
         name: '换主题',
         event: 'changeTheme'
     }]
-    const getColor = (val) => {
-        console.log(val, 'color')
-    }
     const onMenuClick =  (event, menu) =>  {
         switch (menu.event) {
         case 'refresh':

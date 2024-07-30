@@ -1,25 +1,78 @@
 import { writable } from 'svelte/store';
 import type { appsConfig } from '@/store/apps-config';
-
+import { editableApps } from '$lib/appConfig';
 export type AppID = keyof typeof appsConfig;
 
+// export const openApps = writable({
+//   wallpapers: null,
+//   finder: null,
+//   vscode: null,
+//   calculator: null,
+//   // safari: false,
+//   appstore: null,
+//   calendar: null,
+//   // 'system-preferences': false,
+
+//   'purus-twitter': null,
+//   'view-source': null,
+
+//   vercel: null,
+//   micro: null,
+// });
+
+export const appsStore = () => {
+    let local:any
+    try {
+        local = localStorage.getItem('_boycot_os_') || '{}'
+        local = JSON.parse(local as any)
+        if (location.pathname === '/' && local.app) {
+            local.app.name = ''
+        }
+    } catch (error) {
+        // console.log(error);
+    }
+	const { subscribe, update } = writable({
+        wallpapers: null,
+        finder: null,
+        vscode: null,
+        calculator: null,
+        // safari: false,
+        appstore: null,
+        calendar: null,
+        // 'system-preferences': false,
+      
+        'purus-twitter': null,
+        'view-source': null,
+      
+        vercel: null,
+        micro: null,
+        ...editableApps || {}, ...local.apps || {} });
+	return {
+		subscribe,
+		set: async (res) => {
+            update((data) => {
+                try {
+                    localStorage.setItem('_boycot_os_', JSON.stringify({
+                        ...local,
+                        apps: {
+                            ...data,
+                            ...res
+                        }
+                    }))
+                } catch (error) {
+                    // console.log(error);
+                }
+                return ({
+                    ...data,
+                    ...res
+                })
+            })
+            // res.bgUrl && setBgColor(res.bgUrl)
+        }
+	};
+}
 /** Which apps are currently open */
-export const openApps = writable({
-  wallpapers: null,
-  finder: null,
-  vscode: null,
-  calculator: null,
-  // safari: false,
-  appstore: null,
-  calendar: null,
-  // 'system-preferences': false,
-
-  'purus-twitter': null,
-  'view-source': null,
-
-  vercel: null,
-  micro: null,
-});
+export const openApps = appsStore()
 
 /** Which app is currently focused */
 export const activeApp = writable<AppID>('finder');

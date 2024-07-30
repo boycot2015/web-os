@@ -65,7 +65,7 @@
         <Icon name="ri-{$appConfig.isWin?'windows':'apple'}-fill" size={22} on:click={(e) => openApp(e, settings)} />
     </div>
     <div class="info flex align-c">
-        <button class="time mx-1" on:click={(e) => {dateVisible = true}}>{timeStr}</button>
+        <button class="time mx-1" on:click={(e) => {dateVisible = false}}>{timeStr}</button>
         <!-- <Icon name="ri-information-fill" size={22} on:click={(e) => openApp(e, settings)} /> -->
     </div>
     <Calendar bind:visible={dateVisible} />

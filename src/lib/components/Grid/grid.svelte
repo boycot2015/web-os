@@ -5,8 +5,17 @@
     import { appConfig } from '@/store';
     import { cubicInOut, quintOut } from 'svelte/easing';
     import { slide, scale } from 'svelte/transition';
-    import { openUrl } from '$lib'
-    import { Icon, GridList, Grids, Grid } from '$lib/components'
+    import { openUrl } from '$lib';
+    import { Icon, GridList, Grids, Grid } from '$lib/components';
+    import {
+        activeApp,
+        activeAppZIndex,
+        // appsInFullscreen,
+        appZIndices,
+        // isAppBeingDragged,
+        openApps,
+    } from '@/store/apps.store';
+    import { createAppConfig } from '$lib/helpers/create-app-config';
     // import Sortable from 'sortablejs';
     export let apps = [];
     export let injClass = '';
@@ -21,6 +30,7 @@
     export let visible = '';
     export let modal = '';
     export let readOnly = false;
+    export let isWindow = false;
     export let totalCount = 18;
     $: isLarge = false;
     let GridsDom = null;
@@ -220,6 +230,39 @@
         //     });
         // }
     })
+
+    async function bounceEffect() {
+        // Animate the icon
+        await appOpenIconBounceTransform.set(-40);
+
+        // Now animate it back to its place
+        appOpenIconBounceTransform.set(0);
+    }
+
+    async function openApp(e, app) {
+        let appID = app.id || app.text || 'micro'
+        if ($openApps[appID]) {
+            if ($activeApp !== appID) {
+                $openApps[appID].shouldOpenWindow = true
+                $activeApp = appID
+                return
+            }
+            $openApps[appID].shouldOpenWindow = !$openApps[appID].shouldOpenWindow
+            return
+        }
+        $openApps[appID] = createAppConfig({
+            ...app,
+            isMaximized: false
+        });
+        const { shouldOpenWindow, externalAction } = $openApps[appID] || { shouldOpenWindow: true };
+        if (!shouldOpenWindow) return externalAction?.(e);
+        // For the bounce animation
+        const isAppAlreadyOpen = !!$openApps[appID];
+        
+        $activeApp = appID;
+        if (isAppAlreadyOpen) return;
+        bounceEffect();
+    }
     afterUpdate(() => {
         maxCount = $appConfig.index ? ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 56 : 24 : ($appConfig.md || $appConfig.lg || $appConfig.xl) ? 80 : 100
         maxCount = $appConfig.index === $appConfig.apps.length - 1 ? 100 : maxCount
@@ -262,6 +305,10 @@
                         app.isLarge = true;
                     }}
                     on:click={(e) => {
+                        if (isWindow) {
+                            openApp(e, app)
+                            return
+                        }
                         if (app.isComponent) return onAddComponent(app);
                         if (app.reload) return window.location.reload();
                         pressTime = 0;

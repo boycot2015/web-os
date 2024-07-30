@@ -70,7 +70,7 @@
         {#if $appConfig.app.desc}
             <p class="desc text-xl my-3 p-4 py-6 border-b">{$appConfig.app.desc}</p>
         {/if}
-        <GridList apps={links} injClass={'!px-0'} cols={$appConfig.cols || 4} mx={2} />
+        <GridList apps={links} injClass={'!px-0'} cols={10} mx={2} />
     </div>
     <div class="flex fixed w-full bottom-2 border-t flex-col justify-center">
         <Button fill="text" injClass="text-xl" on:click={() => visible = false}>取消</Button>

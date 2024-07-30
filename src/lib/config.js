@@ -9,6 +9,7 @@ export default {
     dialog: '',
     mask: '',
     swipers: [],
+    apps: {},
     ssr: true,
     editable: false,
     refresh: false,

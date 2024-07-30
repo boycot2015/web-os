@@ -33,14 +33,14 @@
   {#each Object.keys($openApps) as appID}
     {#if $openApps[appID] && $openApps[appID].shouldOpenWindow}
     {#await import('./Window.svelte')}
-    <Loading text={'加载中...'} />
+    <Loading height={'full'} text={'加载中...'} />
     {:then { default: Window }}
         <Window {appID} />
       {/await}
     {/if}
   {/each}
   <div class="custom-grid">
-      <!-- <GridList apps={editableApps||[]} cols={$appConfig.cols||12} gap={6} injClass="!px-2 !py-4"></GridList> -->
+      <GridList isWindow apps={editableApps||[]} cols={6} gap={8} injClass="!px-2 !py-4"></GridList>
   </div>
 </div>
 
@@ -58,8 +58,10 @@
   }
   .custom-grid {
     position: absolute;
-    top: 50%;
+    top: 30%;
     left: 50%;
-    margin-left: -20%;
+    overflow-y: auto;
+    max-height: 300px;
+    margin-left: -320px;
   }
 </style>

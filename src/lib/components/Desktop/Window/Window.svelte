@@ -5,7 +5,6 @@
   import { fly, scale } from 'svelte/transition';
   import { elevation } from '$lib/actions';
   import { randint } from '$lib/helpers/random';
-  import { waitFor } from '$lib/helpers/wait-for';
   import {
     activeApp,
     activeAppZIndex,
@@ -31,7 +30,7 @@
 
   const remModifier = +height * 1.2 >= window.innerHeight ? 24 : 16;
 
-  const randX = randint(-600, 600);
+  const randX = randint(-600, 100);
   const randY = randint(-100, 100);
 
   let defaultPosition = {
@@ -61,27 +60,23 @@
   async function maximizeApp() {
 
     if (!isMaximized) {
-      draggingEnabled = false;
-
-      minimizedTransform = windowEl.style.transform;
-      windowEl.style.transform = `translate(0px, 0px)`;
-
-      windowEl.style.width = `100vw`;
-      windowEl.style.height = 'calc(100vh - 9rem)';
-      windowEl.style.top = '34px';
+        draggingEnabled = false;
+        minimizedTransform = windowEl.style.transform;
+        windowEl.style.transform = `translate(0px, 0px)`;
+        windowEl.style.width = `100vw`;
+        windowEl.style.height = 'calc(100vh - 9rem)';
+        windowEl.style.top = '34px';
     } else {
-      draggingEnabled = true;
-      windowEl.style.transform = minimizedTransform;      
-      windowEl.style.width = `${+width / remModifier}rem`;
-      windowEl.style.height = `${+height / remModifier}rem`;
+        draggingEnabled = true;
+        windowEl.style.transform = minimizedTransform;
+        windowEl.style.width = `${+width / remModifier}rem`;
+        windowEl.style.height = `${+height / remModifier}rem`;
     }
 
     isMaximized = !isMaximized;
-    $openApps[appID].isMaximized = isMaximized
+    $openApps[appID].isMaximized = isMaximized;
     $appsInFullscreen[appID] = isMaximized;
-
-    await waitFor(300);
-
+    console.log($openApps[appID].miniPosition, '$openApps[appID].miniPosition');
   }
 
   function closeApp() {
@@ -97,7 +92,7 @@
   }
 
   function onAppDragEnd(e) {
-    $isAppBeingDragged = false;    
+    $isAppBeingDragged = false;
     $openApps[appID].left = parseInt(e.offsetX)
     $openApps[appID].top = parseInt(e.offsetY)
   }
@@ -116,10 +111,12 @@
         windowEl.style.top = '34px';
     }
     const resizeObserver = new ResizeObserver((entries) => {
-        // console.log(entries[0].target.clientWidth, 'entries');
+        // console.log(entries[0].target, 'entries');
         entries.map(el => {
-            $openApps[appID].width = el.target.clientWidth || $openApps[appID].width
-            $openApps[appID].height = el.target.clientHeight ||  $openApps[appID].height
+            if (!$appsInFullscreen[appID]) {
+                $openApps[appID].width = el.target.clientWidth || $openApps[appID].width
+                $openApps[appID].height = el.target.clientHeight ||  $openApps[appID].height
+            }
         })
     });
     resizeObserver.observe(windowEl);
@@ -129,6 +126,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   class="container"
+  style:resize="{$appsInFullscreen[appID]?'none':'both'}"
   class:active={$activeApp === appID}
   style:width="{+width / remModifier}rem"
   style:height="{+height / remModifier}rem"
@@ -139,7 +137,7 @@
     defaultPosition,
     handle: '.app-window-drag-handle',
     // bounds: { bottom: 0, top: 27.2, left: 0, right: 0 },
-    bounds: { bottom: 0, top: 34, left: 0, right: 0 },
+    bounds: { bottom: -height + 34, top: 34, left: 0, right: 0 },
     disabled: !draggingEnabled,
     gpuAcceleration: false,
 

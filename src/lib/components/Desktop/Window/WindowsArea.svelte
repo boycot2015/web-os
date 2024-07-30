@@ -61,7 +61,7 @@
     top: 30%;
     left: 50%;
     overflow-y: auto;
-    max-height: 300px;
+    max-height: 400px;
     margin-left: -320px;
   }
 </style>

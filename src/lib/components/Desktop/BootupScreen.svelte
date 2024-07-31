@@ -45,20 +45,15 @@
     position: fixed;
     top: 0;
     bottom: 0;
-
     height: 100vh;
     width: 100vw;
-
     cursor: none;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2rem;
-
     animation-fill-mode: forwards;
-
     background-color: #000;
     z-index: 9999999 !important;
     :global(svg) {

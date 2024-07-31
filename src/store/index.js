@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import { http } from '$lib/request';
 import config from '@/lib/config';
-import appsConf from '$lib/appConfig';
+import appsConf, { editableApps } from '$lib/appConfig';
 import { baseApiUrl } from '$lib';
 const { apps = [], docks = [] } = appsConf
 export const setBgColor = (bgUrl) => {
@@ -64,7 +64,7 @@ function appData () {
             el.props.apps = sortAppData(el.props.apps, { index })
         }
         return el
-    }), docks, ...local  });
+    }), docks, winApps: [...editableApps.filter(el => el.text && !el.component)], ...local  });
 	return {
 		subscribe,
 		set: async (res) => {

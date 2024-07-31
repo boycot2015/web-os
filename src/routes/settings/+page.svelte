@@ -1,12 +1,15 @@
 <script>
 	import { appConfig } from '@/store';
+	import { openApps } from '@/store/apps.store';
 	import config from '$lib/config';
     import * as apps from '$lib/appConfig';
+    import { createAppConfig } from '$lib/helpers/create-app-config';
 	import { Cell, CellGroup, Button, Dialog, Avatar, NavBar, Badge } from 'stdf';
 	import { Icon } from '$lib/components';
     import { goto } from '$app/navigation';
     import { scale } from 'svelte/transition';
     import settings from './config' 
+    import { editableApps } from '@/lib/appConfig';
     let visible = false
     let component = ''
     const onCellClick = (cell, i) => {
@@ -74,7 +77,9 @@
     {/each}
     <Button injClass="mt-8 text-lg rounded-xl !px-0" on:click={() => visible = true}>恢复出厂设置</Button>
     <Dialog bind:visible title="温馨提示" popup={{ px: '10', radius: '2xl' }} btnGap={8} primaryText="重置" on:primary={() => {
-        appConfig.set({ ...config, ...apps.default });
+        appConfig.set({ ...config, ...apps.default, winApps: editableApps.filter(el => el.text && !el.component) });
+        $openApps = {};
+        window.localStorage.removeItem('_boycot_os_windows')
         goto('/');
         parent?.location?.reload();
     }} content="确认清除所有数据包括本地用户信息？"></Dialog>

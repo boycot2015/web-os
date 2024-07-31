@@ -1,7 +1,7 @@
 <script>
     import { onMount,createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
-    export const contextmenu = [
+    $: contextmenu = [
     {
         name: '刷新',
         event: 'refresh'
@@ -14,10 +14,20 @@
         name: '另存为',
         event: 'saveHtml'
     },
-    // {
-    //     name: '编辑主屏幕',
-    //     event: 'edit'
-    // },
+    {
+        name: '编辑',
+        event: 'editApp',
+        hide: true
+    },
+    {
+        name: '移除',
+        event: 'removeApp',
+        hide: true
+    },
+    {
+        name: '+添加',
+        event: 'addApp'
+    },
     {
         name: '随机壁纸',
         event: 'randomWallpaper'
@@ -40,7 +50,7 @@
         default:
             break
         }
-        dispatch('menuClick', menu.event)
+        dispatch('menuClick', menu)
         document.querySelector('#contextmenu').style.display = 'none'
     }
     const getBase64Image  =  (imgurl) =>   {
@@ -77,7 +87,30 @@
         window.addEventListener('contextmenu', (e) => {
             // 取消默认的浏览器自带右键 很重要！！
             e.preventDefault()
-
+            const getAppCont = (node) => {
+                if (node.parentNode && !node.querySelectorAll('.app-title').length) return getAppCont(node.parentNode);
+                return node.querySelectorAll('.app-title').length === 1 ? node.querySelector('.app-title') : null;
+            }
+            let currentIsApp = getAppCont(e.target);
+            contextmenu = contextmenu.map(el => {
+                if (el.event === 'editApp' || el.event === 'removeApp') {
+                    el.hide = true
+                }
+                return el
+            })
+            if (currentIsApp) {
+                contextmenu = contextmenu.map(el => {
+                    if (el.event === 'editApp' || el.event === 'removeApp') {
+                        el.hide = Boolean(currentIsApp.getAttribute('data-affix'))
+                        el.app = {
+                            text: currentIsApp.getAttribute('data-text'),
+                            url: currentIsApp.getAttribute('data-url'),
+                            icon: currentIsApp.getAttribute('data-icon')
+                        }
+                    }
+                    return el
+                })
+            }
             // 获取我们自定义的右键菜单
             var menu = document.querySelector('#contextmenu')
             if (!menu) return
@@ -100,7 +133,7 @@
 
 </script>
 <div id="contextmenu" role="none" on:click|preventDefault>
-    {#each contextmenu as menu}
+    {#each contextmenu.filter(el => !el.hide) as menu}
         <div class="menu" role="none" key="{menu.name}" on:click|stopPropagation={(event) => onMenuClick(event, menu)}>{menu.name}</div>
     {/each}
 </div>

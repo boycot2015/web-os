@@ -14,6 +14,7 @@
     openApps,
   } from '@/store/apps.store';
   import type { AppID } from '@/store/apps.store';
+  import { appConfig } from '@/store';
   import AppNexus from '@/lib/components/apps/AppNexus.svelte';
   import TrafficLights from './TrafficLights.svelte';
 
@@ -80,6 +81,10 @@
   }
 
   function closeApp() {
+      let exist = $appConfig.docks.find(el => el.text === appID)
+      if (exist) {
+        if (exist && !exist.affix) $appConfig.docks = $appConfig.docks.filter(el => el.affix ||(!el.affix && el.text !== appID))
+      }
     $openApps[appID] = false;
     $appsInFullscreen[appID] = false;
   }
@@ -113,7 +118,7 @@
     const resizeObserver = new ResizeObserver((entries) => {
         // console.log(entries[0].target, 'entries');
         entries.map(el => {
-            if (!$appsInFullscreen[appID]) {
+            if (!$appsInFullscreen[appID] && $openApps[appID]) {
                 $openApps[appID].width = el.target.clientWidth || $openApps[appID].width
                 $openApps[appID].height = el.target.clientHeight ||  $openApps[appID].height
             }

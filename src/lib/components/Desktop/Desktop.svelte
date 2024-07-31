@@ -1,21 +1,36 @@
 <script lang="ts">
     import { appConfig } from '@/store';
+    import { openApps } from '@/store/apps.store';
     import Dock from '$lib/components/Dock/index.svelte';
     import TopBar from './TopBar.svelte';
     import BootupScreen from './BootupScreen.svelte';
     import ContentMenu from '$lib/components/contentMenu/index.svelte';
     import WindowsArea from './Window/WindowsArea.svelte';
     import Theme from '$lib/components/apps/theme.svelte';
+    import AppDialog from '$lib/components/apps/AppDialog.svelte';
+    
     // import { onMount } from 'svelte';
     $: isImageLoaded = false;
     $: themeVisible = false;
-    export let datas;
+    $: appVisible = false;
+    $: app = {};
+    $: showLayout = true;
     let mainEl: HTMLElement;
+    openApps.set({})
     const onMenuClick = (e) => {
-        if (e.detail === 'changeTheme') {
+        if (e.detail.event === 'changeTheme') {
             themeVisible = true
         }
-        if (e.detail === 'randomWallpaper') {
+        if (e.detail.event === 'addApp' || e.detail.event === 'editApp') {
+            app = e.detail.app || {}
+            appVisible = true
+        }
+        if (e.detail.event === 'removeApp') {
+            $appConfig.winApps = $appConfig.winApps.filter(el => el.text !== e.detail.app?.text)
+            $appConfig.docks = $appConfig.docks.filter(el => el.text !== e.detail.app?.text)
+            $openApps[e.detail.app?.text] && ($openApps[e.detail.app?.text] = false)
+        }
+        if (e.detail.event === 'randomWallpaper') {
             let image = new Image();
             isImageLoaded = false;
             image.src = 'https://bing.img.run/rand_uhd.php'+ '?timestamp=' + new Date().getTime()
@@ -29,13 +44,17 @@
     }
 </script>
 
-<div bind:this={mainEl} class="container">
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div bind:this={mainEl} class="container" on:dblclick|preventDefault={() => showLayout = !showLayout}>
   <main class="pb-0 pt-0 flex justify-around items-center">
-        <TopBar />
-        <WindowsArea />
-        <Dock {datas} />
-        <ContentMenu on:menuClick={onMenuClick} />
-        <Theme contentSlot component="" bind:visible={themeVisible} />
+        <div class="content flex justify-around items-center" style="display: {showLayout?'flex':'none'};">
+            <TopBar />
+            <WindowsArea />
+            <Dock />
+            <ContentMenu on:menuClick={onMenuClick} />
+            <Theme contentSlot component="" bind:visible={themeVisible} />
+            <AppDialog bind:visible={appVisible} app={app} />
+        </div>
         <div class="bg pb-0 pt-0 flex justify-around items-center {isImageLoaded?'active':''} {$appConfig.bgColor}" style="background: url({$appConfig.bgUrl}) center/cover no-repeat fixed;">
     </div>
   </main>

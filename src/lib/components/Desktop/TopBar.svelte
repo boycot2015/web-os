@@ -1,13 +1,16 @@
 <script lang="ts">
       import { appConfig } from '@/store';
     import Icon from '$lib/components/Icon.svelte';
+    import Weather from '$lib/components/apps/weather.svelte';
     import { onMount, onDestroy } from 'svelte';
     import { sineInOut } from 'svelte/easing';
     import { tweened } from 'svelte/motion';
     import { fadeIn } from '$lib/helpers/fade';
     import { settings } from '$lib/appConfig';
     import type { AppID } from '@/store/apps.store';
-    import { Calendar } from 'stdf';
+    import { Datepicker, themes } from 'svelte-calendar';
+    const { dark: theme } = themes;
+    console.log(theme, 'theme');
     
     import { createAppConfig } from '$lib/helpers/create-app-config';
     import {
@@ -18,7 +21,7 @@
     let appID: AppID;
     let timer = null;
     let timeStr = '';
-    let dateVisible = false;
+    let store;
     // Spring animation for the click animation
     const appOpenIconBounceTransform = tweened(0, {
         duration: 400,
@@ -60,15 +63,42 @@
     })
   </script>
   
-  <div in:fadeIn={{ duration: 500 }} class="top-bar">
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <div in:fadeIn={{ duration: 500 }} class="top-bar" on:dblclick|stopPropagation>
     <div class="menu">
         <Icon name="ri-{$appConfig.isWin?'windows':'apple'}-fill" size={22} on:click={(e) => openApp(e, settings)} />
     </div>
     <div class="info flex align-c">
-        <button class="time mx-1" on:click={(e) => {dateVisible = false}}>{timeStr}</button>
+        <Weather size={22} injClass="w-[8rem] mx-4 h-[2rem] flex flex-row justify-between items-center" />
+        <Datepicker
+        bind:store
+        selected={new Date()}
+        let:key let:send let:receive
+        format="MM/DD/YYYY HH:mm:ss" theme={{
+            calendar: {
+                ...theme.calendar,
+                width: '400px',
+                legend: {
+                    height: '20px' 
+                },
+                background: {
+                    ...theme.calendar['background'],
+                    primary: "transparent",
+                    highlight: "#5829d6",
+                    hover: "#222"
+                },
+            }
+        }}>
+            <button in:receive|local={{ key }} out:send|local={{ key }} class="time mx-1">
+                {#if $store?.hasChosen}
+                    {timeFormat($store.selected)}
+                {:else}
+                    {timeStr}
+                {/if}
+            </button>
+        </Datepicker>
         <!-- <Icon name="ri-information-fill" size={22} on:click={(e) => openApp(e, settings)} /> -->
     </div>
-    <Calendar bind:visible={dateVisible} />
   </div>
   
   <style lang="less">

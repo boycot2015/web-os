@@ -3,7 +3,7 @@ import { appConfig } from '@/store';
 import { Icon, BottomSheet, GridList, Swiper } from '$lib/components';
 import { createAppConfig } from '$lib/helpers/create-app-config';
 import { fly, scale } from 'svelte/transition';
-import { Grids, Grid } from '$lib/components';
+import { afterUpdate } from 'svelte';
 import { spring, tweened } from 'svelte/motion';
 import { sineInOut } from 'svelte/easing';
 import type { AppID } from '@/store/apps.store';
@@ -16,7 +16,7 @@ import {
     openApps,
 } from '@/store/apps.store';
 let appID: AppID;
-export let datas;
+let datas = $appConfig.docks;
 $: isActive = false;
 $: $activeApp === appID && ($appZIndices[appID] = $activeAppZIndex);
   // Spring animation for the click animation
@@ -57,6 +57,9 @@ $: $activeApp === appID && ($appZIndices[appID] = $activeAppZIndex);
     if (isAppAlreadyOpen) return;
     bounceEffect();
   }
+  afterUpdate(() => {
+    datas = $appConfig.docks;
+  })
 </script>
 <style lang="less" scoped>
     .indicate, .container {
@@ -68,11 +71,12 @@ $: $activeApp === appID && ($appZIndices[appID] = $activeAppZIndex);
     }
     .nav-bar-wrap {
         transition: all .3s;
-        &.active {
-            width: 700px !important;
-        }
+        // &.active {
+        //     width: 700px !important;
+        // }
     }
     .grid-wrap {
+        transition: all .3s;
         &.active .grid-item {
             margin: 0 10px !important;
             // &:first-child {
@@ -86,6 +90,8 @@ $: $activeApp === appID && ($appZIndices[appID] = $activeAppZIndex);
     .grid-item {
         transition: all .3s;
         position: relative;
+        width: 58px;
+        margin: 0 6px;
         &.active {
             transform: translateY(-30px) scale(1.5);
         }
@@ -110,43 +116,26 @@ on:mouseleave={(e) => {
 on:mouseover={(e) => {
     isActive = true;
 }}
-class="fixed bottom-4 nav-bar-wrap flex justify-around items-center {!!isActive?'active':''}" style="z-index:999!important;width: 560px;">
+class="fixed bottom-4 nav-bar-wrap flex justify-around items-center {!!isActive?'active':''}" style="z-index:999!important;min-width: 60px;" on:dblclick|stopPropagation>
     <div class="nav-bar !bg-white/30 backdrop-blur-{$appConfig.backdropBlur === 'none'?'md':$appConfig.backdropBlur} p-2 tab-bar bottom-0 rounded-3xl shadow dark:shadow-white/10" style="max-width: 1200px;min-height:4rem;">
-        <!-- <GridList apps={$appConfig.docks.slice(0, 8)} cols={8} gap={6} readOnly={true} injClass="!px-1 !py-2"></GridList> -->
-        <div class={`grid-wrap ${!!isActive?'active':''}`}>
-            <Grids cols={'8'} mx="{'1'}" my="{'2'}" gap="{'6'}">
-                {#each datas as app, i}
-                <Grid row={app.row || 1} col={app.col || 1}>
-                    <div
-                    title="{app.text||app.desc}"
-                    class="grid-item relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-2xl text-md text-center shadow dark:shadow-white/10 {!!app.active?'active':''} {!!$openApps[app.text] ? 'opened':''}"
-                    on:mouseleave={(e) => {
-                        app.active = false;
-                    }}
-                    on:mouseenter={(e) => {
-                        app.active = true;
-                    }}
-                    on:click={(e) => openApp(e, app)}
-                >
-                    {#if app.subText}
-                        <div class="text-xs">{app.subText}</div>
-                    {/if}
-                    {#if app.render}
-                        <div class="text-3xl">{app.render()}</div>
-                    {:else if app.icon}
-                        <Icon injClass="{app.injClass?'text-xs':'text-xl'}" size="{app.size || 38}" name="{app.icon}"></Icon>
-                    {:else}
-                        <svelte:component {...app.props || {}} this={app.component}></svelte:component>
-                    {/if}
-                    {#if app.closable && !app.readOnly}
-                        <div role="none" class="!absolute bg-white/80 rounded-2xl p-0 shadow z-99999 text-gray-500 !top-[-5px] !left-[-5px] text-sm" >
-                            <Icon size="{22}" name="ri-close-line"></Icon>
-                        </div>
-                    {/if}
-                </div>
-                </Grid>
-                {/each}
-            </Grids>
+        <div class={`grid-wrap py-1.5 flex justify-around items-center ${!!isActive?'active':''}`}>
+            {#each datas as app}
+            <div
+            title="{app.text}"
+            class="grid-item relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black h-full rounded-2xl text-md text-center shadow dark:shadow-white/10 {!!app.active?'active':''} {$openApps[app.text] && $openApps[app.text].shouldOpenWindow ? 'opened':''}"
+            on:mouseleave={(e) => {
+                app.active = false;
+            }}
+            on:mouseenter={(e) => {
+                app.active = true;
+            }}
+            on:click={(e) => openApp(e, app)}
+        >
+            {#if app.icon}
+                <Icon injClass="{app.injClass?'text-xs':'text-xl'}" size="{app.size || 38}" name="{app.icon}"></Icon>
+            {/if}
+            </div>
+            {/each}
         </div>
     </div>
 </div>

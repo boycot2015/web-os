@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 import type { appsConfig } from '@/store/apps-config';
 import { editableApps } from '$lib/appConfig';
+import { createAppConfig } from '$lib/helpers/create-app-config';
 export type AppID = keyof typeof appsConfig;
 
 // export const openApps = writable({
@@ -23,13 +24,10 @@ export type AppID = keyof typeof appsConfig;
 export const appsStore = () => {
     let local:any
     try {
-        local = localStorage.getItem('_boycot_os_') || '{}'
+        local = localStorage.getItem('_boycot_os_windows') || '{}'
         local = JSON.parse(local as any)
-        if (location.pathname === '/' && local.app) {
-            local.app.name = ''
-        }
     } catch (error) {
-        // console.log(error);
+        console.log(error);
     }
 	const { subscribe, update } = writable({
         wallpapers: null,
@@ -45,14 +43,13 @@ export const appsStore = () => {
         'view-source': null,
       
         vercel: null,
-        micro: null,
-        ...editableApps || {}, ...local.apps || {} });
+        micro: null, ...local.apps || {} });
 	return {
 		subscribe,
 		set: async (res) => {
             update((data) => {
                 try {
-                    localStorage.setItem('_boycot_os_', JSON.stringify({
+                    localStorage.setItem('_boycot_os_windows', JSON.stringify({
                         ...local,
                         apps: {
                             ...data,

@@ -344,5 +344,5 @@
     <Mask visible={true} backdropBlur="{(!$appConfig.index || $appConfig.index == $appConfig.apps.length - 1)&&$appConfig.backdropBlur==='none'?'base':($appConfig.backdropBlur || 'base')}" opacity={0.1} zIndex={mask ? 3 : 2} />
 </div>
 {:else}
-    <Desktop datas={$appConfig.docks.slice(0, 8)} />
+    <Desktop />
 {/if}

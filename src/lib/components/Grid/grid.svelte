@@ -240,7 +240,8 @@
     }
 
     async function openApp(e, app) {
-        let appID = app.id || app.text || 'micro'
+        let appID = app.id || app.text || 'micro';
+        console.log($openApps[appID], $appConfig.docks.length, ' $appConfig.docks');
         if ($openApps[appID]) {
             if ($activeApp !== appID) {
                 $openApps[appID].shouldOpenWindow = true
@@ -254,11 +255,16 @@
             ...app,
             isMaximized: false
         });
+        if (!$appConfig.docks.find(el => el.text === appID)) {
+            $appConfig.docks = [...$appConfig.docks, createAppConfig({
+                ...app, size: 48, injClass: '!py-1.5 !px-0',
+                isMaximized: false
+            })]
+        }
         const { shouldOpenWindow, externalAction } = $openApps[appID] || { shouldOpenWindow: true };
         if (!shouldOpenWindow) return externalAction?.(e);
         // For the bounce animation
         const isAppAlreadyOpen = !!$openApps[appID];
-        
         $activeApp = appID;
         if (isAppAlreadyOpen) return;
         bounceEffect();
@@ -304,9 +310,11 @@
                     on:mouseover={(e) => {
                         app.isLarge = true;
                     }}
+                    on:dblclick|stopPropagation={(e) => {
+                        isWindow && openApp(e, app)
+                    }}
                     on:click={(e) => {
                         if (isWindow) {
-                            openApp(e, app)
                             return
                         }
                         if (app.isComponent) return onAddComponent(app);
@@ -326,13 +334,13 @@
                             class="relative flex flex-col relative justify-between {app.bgColor} {app.color} {app.injClass?app.injClass:'mx-1.5'} dark:bg-black {app.subText?'py-1.5':'p-3'} h-full rounded-xl text-md text-center shadow dark:shadow-white/10"
                         >
                             {#if app.subText}
-                                <div class="text-xs">{app.subText}</div>
+                                <div class="text-xs app-sub-title">{app.subText}</div>
                             {/if}
                             {#if app.render}
                                 <div class="text-3xl">{app.render()}</div>
                             {:else if app.icon}
                                 <Icon injClass="{app.injClass?'text-xs':'text-xl'}" size="{app.size || 38}" name="{app.icon}"></Icon>
-                            {:else}
+                            {:else if app.component && !isWindow}
                                 <svelte:component {...app.props || {}} this={app.component}></svelte:component>
                             {/if}
                             {#if app.closable && !app.readOnly}
@@ -342,7 +350,7 @@
                             {/if}
                         </div>
                         {#if app.text && !app.hideTitle}
-                            <div class="font-bold text-xs text-white {app.injTitleClass} mt-2">{app.text}</div>
+                            <div data-icon="{app.icon}" data-affix="{app.affix}" data-text="{app.text}" data-url="{app.url}" class="font-bold text-xs app-title text-white {app.injTitleClass} mt-2">{app.text}</div>
                         {/if}
                     </div>
                 </Grid>

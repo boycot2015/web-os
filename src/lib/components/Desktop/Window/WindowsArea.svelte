@@ -3,7 +3,6 @@
   import Loading from '$lib/components/Loading.svelte'
   import { activeApp, activeAppZIndex, appZIndices, openApps } from '@/store/apps.store';
   import { Icon, GridList } from '$lib/components';
-  import { editableApps } from '$lib/appConfig';
   $: $activeApp, ($activeAppZIndex += 2);
 
   // Keeps all the app z indices under 50 so they don't go above the UI elements
@@ -32,15 +31,13 @@
 <div id="windows-area">
   {#each Object.keys($openApps) as appID}
     {#if $openApps[appID] && $openApps[appID].shouldOpenWindow}
-    {#await import('./Window.svelte')}
-    <Loading height={'full'} text={'加载中...'} />
-    {:then { default: Window }}
-        <Window {appID} />
-      {/await}
+        {#await import('./Window.svelte') then { default: Window }}
+            <Window {appID} />
+        {/await}
     {/if}
   {/each}
   <div class="custom-grid">
-      <GridList isWindow apps={editableApps||[]} cols={6} gap={8} injClass="!px-2 !py-4"></GridList>
+      <GridList isWindow apps={$appConfig.winApps||[]} cols={8} gap={8} injClass="!px-2 !py-4"></GridList>
   </div>
 </div>
 
@@ -58,10 +55,13 @@
   }
   .custom-grid {
     position: absolute;
-    top: 30%;
+    top: 20%;
     left: 50%;
     overflow-y: auto;
-    max-height: 400px;
-    margin-left: -320px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    max-height: calc(100vh - 260px);
+    margin-left: -400px;
   }
 </style>

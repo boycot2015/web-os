@@ -15,12 +15,12 @@ const grid = {
     sm2: {row: 1, col: 2, size: 24, hideTitle: true, injTitleClass: 'text-white text-sm', injClass: '!p-1 text-sm'},
     xs: {row: 1, col: 1, size: 14, hideTitle: true, injTitleClass: 'text-white text-xs', injClass: '!p-[0.1rem] text-xs !rounded-md'}
 }
-export const webOs = {icon: 'ri-apple-fill', text: 'webOs', desc: 'os', url: 'https://os.boycot.top/', bgColor: 'bg-white', color: 'text-black', closable: false }
+export const webOs = {icon: 'ri-apple-fill', text: 'webOs', desc: 'os', url: 'https://os.boycot.top/', affix: true, bgColor: 'bg-white', color: 'text-black', closable: false }
 export const clock = {icon: '', component: 'Clock', text: '时钟', desc: '秒钟', url: '', bgColor: '', color: 'text-black',injClass: '!pt-0 !pb-0 !px-1.5 transition-scale !bg-transparent !shadow-none', closable: false, readOnly: true }
 export const taobao = {icon: 'ri-taobao-line', text: '淘宝', desc: '太好逛了吧', url: 'https://m.taobao.com/', appLink: 'taobao://', bgColor: 'bg-white', color: 'text-orange-500', closable: false}
 export const qzone = {icon: 'ri-star-smile-fill', text: 'QQ空间', desc: '分享喜悦，留住感动', url: 'https://qzone.qq.com/', bgColor: 'bg-white', color: 'text-yellow-500', closable: false}
-export const news = {icon: 'ri-newspaper-line', text: '新闻头条', desc: '看见更大的世界', url: 'https://api.boycot.top/news', bgColor: 'bg-red-500', color: 'text-white', closable: false}
-export const weather = {icon: 'ri-sun-cloudy-fill', text: '天气', url: 'https://tianqi.moji.com/', bgColor: 'bg-blue-800', desc: '你若安好，便是晴天~', color: 'text-white', closable: false}
+export const news = {icon: 'ri-newspaper-line', text: '新闻头条', desc: '看见更大的世界', url: 'https://api.boycot.top/news', bgColor: 'bg-red-500', color: 'text-white', affix: true, closable: false}
+export const weather = {icon: 'ri-sun-cloudy-fill', text: '天气', url: 'https://tianqi.moji.com/', bgColor: 'bg-blue-800', desc: '你若安好，便是晴天~', color: 'text-white', affix: true, closable: false}
 export const shop = {icon: 'ri-shopping-bag-3-fill', text: '品牌推荐', url: '/mall', bgColor: 'bg-white', color: 'text-red-500', closable: false}
 export const appleStore = {icon: 'ri-shopping-bag-fill', text: 'Apple Store', url: 'https://www.apple.com.cn/', bgColor: 'bg-white', color: 'text-blue-500', closable: false}
 export const phone = { icon: 'ri-phone-line', text: '', bgColor: 'bg-white', color: 'text-red-500', closable: false, readOnly: true }
@@ -35,15 +35,15 @@ export const officeWechat = {icon: 'ri-wechat-line', text: '企业微信', desc:
 export const qqMap = { icon: 'ri-compass-fill', text: '腾讯地图', url: 'https://map.qq.com/m/index/map', bgColor: 'bg-blue-200', color: 'text-blue-500', closable: false }
 export const wechat = { icon: 'ri-wechat-fill', text: '微信', desc: '发生什么事了，让我先发个朋友圈', url: 'https://weixin.qq.com/', width: 1200, height: 600, appLink: 'weixin://send', bgColor: 'bg-green-600', color: 'text-white', closable: false }
 export const alipay = { icon: 'ri-alipay-line', text: '支付宝', desc: '马爸爸的钱袋子', url: 'https://www.alipay.com/', bgColor: 'bg-blue-800', color: 'text-white', closable: false }
-export const picture = { icon: 'ri-landscape-line', text: '照片', desc: '把记忆留在这里', url: '/cates/wallpaper/83', bgColor: 'bg-gray-300', color: 'text-purple-500', closable: false, readOnly: true }
+export const picture = { icon: 'ri-landscape-line', text: '照片', desc: '把记忆留在这里', url: '/cates/wallpaper/83', bgColor: 'bg-gray-300', color: 'text-purple-500', affix: true, closable: false, readOnly: true }
 export const netease = { icon: 'ri-netease-cloud-music-line', url: 'https://y.music.163.com/m', text: '网易云音乐',desc: '耳朵怀孕了', bgColor: 'bg-red-600', color: 'text-white', closable: false }
 export const navigation = { icon: 'ri-navigation-fill', url: 'https://www.amap.com/', text: '高德地图', desc: '缺德导航，出行必备',bgColor: 'bg-blue-300', color: 'text-blue-700', closable: false }
-export const music = { icon: 'ri-headphone-fill', text: '我的音乐', desc: '抖音,记录美好生活', url: 'https://m.music.boycot.top', bgColor: 'bg-black', color: 'text-white', closable: false }
-export const settings = { icon: 'ri-settings-5-fill', text: '设置', url: '/settings', bgColor: 'bg-gray-400', color: 'text-white', closable: false, readOnly: true, actions: [{text: '电池', icon: 'ri-battery-fill', url: '/settings'},{text: '蜂窝数据', icon: 'ri-base-station-line', url: '/settings'},{text: '蓝牙', icon: 'ri-bluetooth-line', url: '/settings'}] }
+export const music = { icon: 'ri-headphone-fill', text: '我的音乐', desc: '抖音,记录美好生活', url: 'https://m.music.boycot.top', bgColor: 'bg-black', color: 'text-white', affix: true, closable: false }
+export const settings = { icon: 'ri-settings-5-fill', text: '设置', url: '/settings', affix: true, bgColor: 'bg-gray-400', color: 'text-white', closable: false, readOnly: true, actions: [{text: '电池', icon: 'ri-battery-fill', url: '/settings'},{text: '蜂窝数据', icon: 'ri-base-station-line', url: '/settings'},{text: '蓝牙', icon: 'ri-bluetooth-line', url: '/settings'}] }
 export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地铁，钱包最铁', bgColor: 'bg-black', color: 'text-gray-300', closable: false, readOnly: true }
-export const appStore = { icon: 'ri-app-store-line', url: 'https://www.wandoujia.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', color: 'text-white', closable: false }
+export const appStore = { icon: 'ri-app-store-line', url: 'https://www.wandoujia.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', affix: true, color: 'text-white', closable: false }
 export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', desc: '照亮你的美', bgColor: 'bg-gray-400', color: 'text-black', closable: false, readOnly: true  }
-export const day = { icon: 'ri-calendar-line', text: '日历', url: 'https://m.rili.com.cn/', desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white', closable: false, readOnly: true }
+export const day = { icon: 'ri-calendar-line', text: '日历', url: 'https://m.rili.com.cn/', affix: true, desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white', closable: false, readOnly: true }
 export const userCenter = { icon: 'ri-user-line', text: '用户中心', url: 'https://user.test.limofang.cn/', desc: '用户中心', color: 'text-gray-500', bgColor: 'bg-white', closable: false }
 export const movie = {icon: 'ri-movie-line', text: '神马影视', color: 'text-red-500', bgColor: 'bg-gray-500', url: 'https://www.9shenma.com/', closable: false, readOnly: true }
 export const editableApps = [
@@ -75,7 +75,7 @@ export const editableApps = [
     camera,
     day,
     // userCenter,
-].filter(el => !el.readOnly)
+]
 export default {
     apps: [
         {
@@ -531,20 +531,20 @@ export default {
         }
     ],
     docks: [
-        { ...grid['1'], ...appStore, size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
-        { ...grid['1'], ...guid, size: 48, injClass: '!py-1.5 !px-0 bg-white !text-blue-500' },
-        { ...grid['1'], ...wechat, size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
-        { ...grid['1'], ...qq, size: 48, injClass: '!py-1.5 !px-0'},
-        {...grid['1'], ...music, size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...appStore, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
+        { ...grid['1'], ...guid, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0 bg-white !text-blue-500' },
+        { ...grid['1'], ...wechat, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0 text-white bg-gradient-to-t from-[#10c910] to-[#99e599]' },
+        { ...grid['1'], ...qq, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0'},
+        {...grid['1'], ...music, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0'},
         // { ...grid['1'], ...navigation, size: 48, injClass: '!py-1.5 !px-0 !text-gray-400 !bg-gray-300'},
-        {...grid['1'], ...weather, size: 48, injClass: '!py-1.5 !px-0'},
-        {...grid['1'], ...day, subText: '', size: 48, injClass: '!py-1.5 !px-0'},
-        { ...grid['1'], ...webOs, size: 48, injClass: '!py-1.5 !px-0'},
-        { ...grid['1'], ...settings, size: 48, injClass: '!py-1.5 !px-0'},
-        {...grid['1'], ...camera, size: 48, injClass: '!py-1.5 !px-0'},
-        {...grid['1'], ...navigation, size: 48, injClass: '!py-1.5 !px-0'},
-        { ...grid['1'], ...picture, size: 48, injClass: '!py-1.5 !px-0'},
-        {...grid['1'], ...wallet, size: 48, injClass: '!py-1.5 !px-0'},
+        {...grid['1'], ...weather, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0'},
+        {...grid['1'], ...day, affix: true, active: false, subText: '', size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...settings, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0'},
+        // {...grid['1'], ...camera, size: 48, injClass: '!py-1.5 !px-0'},
+        {...grid['1'], ...navigation, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...picture, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0'},
+        { ...grid['1'], ...webOs, affix: true, active: false, size: 48, injClass: '!py-1.5 !px-0'},
+        // {...grid['1'], ...wallet, size: 48, injClass: '!py-1.5 !px-0'},
     ],
     components: {
         index: 3,

@@ -71,7 +71,7 @@
         <div class="px-2">
             <div class="form">
                 <Input lineTransition="center" state="{!app.text?'error':'success'}" bind:value={app.text} tip="{!app.text?'app名称不能为空':''}" inputStyle="line" label2="app名称：" placeholder="请输入App名称" radius={'xl'} on:change={(e) => { app.text = e.detail }}></Input>
-                <Input lineTransition="center" state="{!app.url?'error':'success'}" bind:value={app.url} tip="{!app.url?'app地址不能为空':''}" inputStyle="line" label2="app地址：" placeholder="请输入App地址：https://xxx" radius={'xl'} on:change={(e) => { app.url = e.detail }}></Input>
+                <Input lineTransition="center" state="{!app.url?'error':'success'}" bind:value={app.url} tip="{!app.url?'app地址不能为空':''}" inputStyle="line" maxlength={30} label2="app地址：" placeholder="请输入App地址：https://xxx" radius={'xl'} on:change={(e) => { app.url = e.detail }}></Input>
                 <Input lineTransition="center" state="{!app.icon?'error':'success'}" inputStyle="line" bind:value={app.icon} label2="app图标：" tip="{!app.url?'app图标不能为空':''}" placeholder="请输入app图标， Remix Icon 如:ri-movie-line" radius={'xl'} on:change={(e) => { app.icon = e.detail }}></Input>
             </div>
             <div class="submit flex justify-center">

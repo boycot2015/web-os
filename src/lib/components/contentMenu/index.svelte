@@ -1,39 +1,47 @@
 <script>
     import { onMount,createEventDispatcher } from "svelte";
+    import { Icon } from '$lib/components';
     const dispatch = createEventDispatcher();
     $: contextmenu = [
     {
         name: '刷新',
+        icon: 'ri-refresh-fill',
         event: 'refresh'
     },
     {
         name: '打印',
+        icon: 'ri-printer-fill',
         event: 'print'
     },
+    // {
+    //     name: '另存为',
+    //     event: 'saveHtml'
+    // },
     {
-        name: '另存为',
-        event: 'saveHtml'
-    },
-    {
-        name: '编辑',
+        name: '编辑应用',
+        icon: 'ri-edit-box-fill',
         event: 'editApp',
         hide: true
     },
     {
-        name: '移除',
+        name: '移除应用',
         event: 'removeApp',
+        icon: 'ri-delete-bin-2-fill',
         hide: true
     },
     {
-        name: '+添加',
+        name: '添加应用',
+        icon: 'ri-add-box-fill',
         event: 'addApp'
     },
     {
         name: '随机壁纸',
+        icon: 'ri-infinity-fill',
         event: 'randomWallpaper'
     },
     {
-        name: '换主题',
+        name: '自选壁纸',
+        icon: 'ri-image-2-fill',
         event: 'changeTheme'
     }]
     const onMenuClick =  (event, menu) =>  {
@@ -134,7 +142,12 @@
 </script>
 <div id="contextmenu" role="none" on:click|preventDefault>
     {#each contextmenu.filter(el => !el.hide) as menu}
-        <div class="menu" role="none" key="{menu.name}" on:click|stopPropagation={(event) => onMenuClick(event, menu)}>{menu.name}</div>
+        <div class="menu" role="none" key="{menu.name}" on:click|stopPropagation={(event) => onMenuClick(event, menu)}>
+            {#if menu.icon}
+                <Icon name={menu.icon} size={18} />
+            {/if}
+            {menu.name}
+        </div>
     {/each}
 </div>
 <style lang="less" scoped>
@@ -144,7 +157,7 @@
     z-index: 999999999;
     background: var(--color-fff);
     color: var(--color-333);
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     width: 120px;
     display: none;
     overflow: hidden;
@@ -155,6 +168,7 @@
         line-height: 32px;
         font-size: 14px;
         color: var(--color-333);
+        cursor: pointer;
         &:hover {
             background: var(--primary-color);
             color: var(--color-fff);

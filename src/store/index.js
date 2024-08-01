@@ -64,7 +64,7 @@ function appData () {
             el.props.apps = sortAppData(el.props.apps, { index })
         }
         return el
-    }), docks, winApps: [...editableApps.filter(el => el.text && !el.component)], ...local  });
+    }), docks, winApps: [...editableApps.filter(el => el.affix && el.text && !el.component)], ...local  });
 	return {
 		subscribe,
 		set: async (res) => {

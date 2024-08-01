@@ -1,5 +1,7 @@
 <script lang="ts">
-      import { appConfig } from '@/store';
+    import { appConfig } from '@/store';
+    import 'dayjs/locale/zh-cn.js';
+    import dayjs from 'dayjs';
     import Icon from '$lib/components/Icon.svelte';
     import Weather from '$lib/components/apps/weather.svelte';
     import { onMount, onDestroy } from 'svelte';
@@ -8,20 +10,18 @@
     import { fadeIn } from '$lib/helpers/fade';
     import { settings } from '$lib/appConfig';
     import type { AppID } from '@/store/apps.store';
-    import { Datepicker, themes } from 'svelte-calendar';
-    const { dark: theme } = themes;
-    console.log(theme, 'theme');
-    
+    import Calendar from '$lib/components/apps/Calendar.svelte';
     import { createAppConfig } from '$lib/helpers/create-app-config';
     import {
         activeApp,
         openApps,
     } from '@/store/apps.store';
-
+    
     let appID: AppID;
     let timer = null;
     let timeStr = '';
-    let store;
+    let locale = 'zh-cn';
+    $: dayjs.locale(locale);
     // Spring animation for the click animation
     const appOpenIconBounceTransform = tweened(0, {
         duration: 400,
@@ -70,33 +70,7 @@
     </div>
     <div class="info flex align-c">
         <Weather size={22} injClass="w-[8rem] mx-4 h-[2rem] flex flex-row justify-between items-center" />
-        <Datepicker
-        bind:store
-        selected={new Date()}
-        let:key let:send let:receive
-        format="MM/DD/YYYY HH:mm:ss" theme={{
-            calendar: {
-                ...theme.calendar,
-                width: '400px',
-                legend: {
-                    height: '20px' 
-                },
-                background: {
-                    ...theme.calendar['background'],
-                    primary: "transparent",
-                    highlight: "#5829d6",
-                    hover: "#222"
-                },
-            }
-        }}>
-            <button in:receive|local={{ key }} out:send|local={{ key }} class="time mx-1">
-                {#if $store?.hasChosen}
-                    {timeFormat($store.selected)}
-                {:else}
-                    {timeStr}
-                {/if}
-            </button>
-        </Datepicker>
+        <Calendar />
         <!-- <Icon name="ri-information-fill" size={22} on:click={(e) => openApp(e, settings)} /> -->
     </div>
   </div>
@@ -115,9 +89,6 @@
         align-items: center;
         color: var(--color-fff);
         background-color: rgba(0, 0, 0, 0.6);
-        .time {
-            cursor: pointer;
-        }
     }
   </style>
   

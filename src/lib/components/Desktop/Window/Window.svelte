@@ -157,6 +157,7 @@
   <div class="tl-container {appID}" use:elevation={'window-traffic-lights'}>
     <TrafficLights {appID} on:maximize-click={maximizeApp} on:close-app={closeApp} on:minimize-app={minimizeApp} />
   </div>
+  <!-- <h3 class="title">{$openApps[appID].text}</h3> -->
   <AppNexus {appID} isBeingDragged={$isAppBeingDragged} />
 </div>
 
@@ -173,7 +174,7 @@
 
     position: absolute;
     will-change: width, height;
-
+    z-index: 1;
     border-radius: 0.75rem;
     box-shadow: var(--elevated-shadow);
     background-color: rgba(255, 255, 255, 0.56);
@@ -202,5 +203,10 @@
 
     // Necessary, as `.container` tries to apply shadow on it
     box-shadow: none !important;
+  }
+  .title {
+    position: absolute;
+    left: 46%;
+    top: 12px;
   }
 </style>

@@ -32,6 +32,7 @@
 		"@brewer/beerui": "^1.1.17",
 		"@neodrag/svelte": "^2.0.6",
 		"axios": "^1.6.0",
+		"dayjs": "^1.11.12",
 		"less": "^4.2.0",
 		"sortablejs": "^1.15.1",
 		"svelte": "^4.0.5",

@@ -77,7 +77,7 @@
     {/each}
     <Button injClass="mt-8 text-lg rounded-xl !px-0" on:click={() => visible = true}>恢复出厂设置</Button>
     <Dialog bind:visible title="温馨提示" popup={{ px: '10', radius: '2xl' }} btnGap={8} primaryText="重置" on:primary={() => {
-        appConfig.set({ ...config, ...apps.default, winApps: editableApps.filter(el => el.affix && el.text && !el.component) });
+        appConfig.set({ ...config, ...apps.default, winApps: editableApps.filter(el => el.affix && el.text) });
         $openApps = {};
         window.localStorage.removeItem('_boycot_os_windows')
         goto('/');

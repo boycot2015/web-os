@@ -43,6 +43,7 @@ export const settings = { icon: 'ri-settings-5-fill', text: '设置', url: '/set
 export const wallet = { icon: 'ri-wallet-line', text: '钱包', desc: '公交地铁，钱包最铁', bgColor: 'bg-black', color: 'text-gray-300', closable: false, readOnly: true }
 export const appStore = { icon: 'ri-app-store-line', url: 'https://www.wandoujia.com/', text: 'App Store', desc: '想玩的，好逛的，应有尽有', bgColor: 'bg-blue-500', affix: true, color: 'text-white', closable: false }
 export const camera = { icon: 'ri-camera-fill', url: '/camera', text: '相机', desc: '照亮你的美', bgColor: 'bg-gray-400', color: 'text-black', closable: false, readOnly: true  }
+export const dayOnline = { icon: 'ri-calendar-line', text: '日历', component: 'Calendar', props: { inline: true, theme: { calendar: { width: '600px' } } }, height: 600, width: 600, affix: true, desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white', closable: false, readOnly: true }
 export const day = { icon: 'ri-calendar-line', text: '日历', url: 'https://m.rili.com.cn/', affix: true, desc: '时光如白驹过缝，悄悄溜走', subText: getDate().weekDay, color: 'text-gray-500', render: () => getDate().day, bgColor: 'bg-white', closable: false, readOnly: true }
 export const userCenter = { icon: 'ri-user-line', text: '用户中心', url: 'https://user.test.limofang.cn/', desc: '用户中心', color: 'text-gray-500', bgColor: 'bg-white', closable: false }
 export const movie = {icon: 'ri-movie-line', text: '神马影视', color: 'text-red-500', bgColor: 'bg-gray-500', url: 'https://www.9shenma.com/', closable: false, readOnly: true }

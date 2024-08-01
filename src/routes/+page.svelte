@@ -20,6 +20,7 @@
     let ssr = false;
     let lg = false;
     let xl = false;
+    let app = $appConfig.app;
     const getTime = () => {
         const date = new Date();
         const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();

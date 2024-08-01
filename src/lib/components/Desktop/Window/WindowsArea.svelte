@@ -41,7 +41,7 @@
   <div class="custom-grid">
       <GridList isWindow apps={$appConfig.winApps||[]} cols={8} gap={8} injClass="!px-2 !py-4"></GridList>
   </div>
-  <div class="calendar-fixed" on:dblclick|stopPropagation>
+  <!-- <div class="calendar-fixed" on:dblclick|stopPropagation>
     <Calendar
     theme={{
         calendar: {
@@ -60,7 +60,7 @@
             },
         }
     }} inline />
-  </div>
+  </div> -->
 </div>
 
 <style lang="less">
@@ -90,6 +90,7 @@
     position: absolute;
     right: 10px;
     top: 44px;
+    z-index: 1;
     border-radius: var(--border-radius);
     overflow: hidden;
   }

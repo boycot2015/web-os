@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { AppID } from '@/store/apps.store';
     import { openApps } from '@/store/apps.store';
+  import { svelte } from '@sveltejs/vite-plugin-svelte';
     // import { onMount } from 'svelte';
     // import { startApp } from 'wujie';
 
@@ -25,10 +26,14 @@
         <header class="titlebar app-window-drag-handle" />
         <section class="main-area {isBeingDragged}">
             {#if $openApps[appID]?.url}
-            <!-- <iframe src="{$openApps[appID]?.url}" title={$openApps[appID]?.text} frameborder="0" style="width: 100%;height: 100%;"></iframe> -->
-            <object data="{$openApps[appID]?.url}" style="width: 100%;height: 100%;" type="text/html"></object>
+                <!-- <iframe src="{$openApps[appID]?.url}" title={$openApps[appID]?.text} frameborder="0" style="width: 100%;height: 100%;"></iframe> -->
+                <object data="{$openApps[appID]?.url}" style="width: 100%;height: 100%;" type="text/html"></object>
+            {:else if $openApps[appID].component}
+            {#await import(`./${$openApps[appID].component}.svelte`) then {default: Component}}
+                <svelte:component style="width: 100%;height: 100%;" {...$openApps[appID].props||{}} this={Component}></svelte:component>
+            {/await}
             {:else}
-            <div>app加载失败，请重试~</div>
+                <div>app加载失败，请重试~</div>
             {/if}
         </section>
     </section>

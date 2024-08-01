@@ -9,6 +9,7 @@ import CellGroup from './cell/CellGroup.svelte';
 import Swiper from './Swiper.svelte';
 import Dock from './Dock/index.svelte';
 import Desktop from './Desktop/Desktop.svelte';
+import Calendar from './apps/Calendar.svelte';
 
 export {
     IndexBar,
@@ -21,5 +22,6 @@ export {
     CellGroup,
     Swiper,
     Dock,
-    Desktop
+    Desktop,
+    Calendar
 }

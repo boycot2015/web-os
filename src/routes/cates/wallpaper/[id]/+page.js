@@ -9,7 +9,7 @@ export async function load({ fetch, params }) {
         ...item,
         loading,
         id: params.id,
-        cates: [...item.catetoryData.imgList, ...item.catetoryData.list]
+        cates: [...item.cates || []]
     };
 }
 export const ssr = false

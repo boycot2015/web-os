@@ -122,8 +122,6 @@
 		},
 	];
 </script>
-<style scoped lang="less">
-</style>
 <div class="demo pb-20">
     <div class="pb-0 pt-2">
         <div class={`mx-2 rounded-xl p-2 transition duration-300${colorCss}`}>

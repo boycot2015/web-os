@@ -83,7 +83,14 @@
 		}
 	}
 </script>
-
+<style lang="less" scoped>
+	:global(.pointer-events-none) {
+		:global(.pointer-events-auto) {
+			max-width: 1200px !important;
+    		margin: 0 auto;
+		}
+	}
+</style>
 <Popup
 	bind:visible
 	size={0}
@@ -94,6 +101,7 @@
 	radiusPosition="all"
 	radius="lg"
 	px="8"
+	style="margin: 0 120px;"
 	{...popup}
 >
 	<div class={`px-4 pt-4 ${showBtn ? 'pb-2' : 'pb-4'} ${injClass} text-center space-y-4`}>

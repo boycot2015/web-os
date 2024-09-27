@@ -17,7 +17,7 @@
     export let contentSlot = false;
     let toastVisible = false;
     $: wallpaperData = {
-        id: 83,
+        id: '',
         cates: []
     };
     let steps = {
@@ -50,12 +50,13 @@
         visible = true
 	};
     async function load (params = {}) {
-        const res = await fetch(`${baseApiUrl}/wallpaper?id=${params.id || 83}`);
+        let url = `${baseApiUrl}/wallpaper?source=${params.source||'default'}&size=40`
+        if (params.id) url = `${url}&id=${ params.id}`
+        const res = await fetch(url);
         const { data: item } = await res.json();
         wallpaperData = {
             ...item,
-            id: 83,
-            cates: [...item.catetoryData.imgList, ...item.catetoryData.list]
+            cates: [...item.cates]
         };
     }
     onMount(() => {

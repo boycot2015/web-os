@@ -67,7 +67,7 @@
                     { type: 'component', component: Day },
                     { icon: 'ri-wechat-fill', type: 'app', text: '微信', bgColor: 'bg-green-600', color: 'text-white' },
                     { icon: 'ri-alipay-line', text: '支付宝', bgColor: 'bg-blue-800', color: 'text-white' },
-                    { icon: 'ri-netease-cloud-music-line', url: 'https://m.music.boycot.top', text: '网易云音乐', bgColor: 'bg-red-600', color: 'text-white' },
+                    { icon: 'ri-netease-cloud-music-line', url: 'https://m-music.boycot.top', text: '网易云音乐', bgColor: 'bg-red-600', color: 'text-white' },
                     { icon: 'ri-landscape-line', text: '照片', bgColor: 'bg-gray-300', color: 'text-purple-500' },
                     { icon: '', text: '日历', subText: week[date.getDay()], render: () => date.getDate(), bgColor: 'bg-white' },
                     { icon: 'ri-navigation-fill', text: '高德地图', bgColor: 'bg-blue-300', color: 'text-blue-700' },
@@ -89,7 +89,7 @@
                 apps: [
                     { icon: 'ri-wechat-fill', text: '微信', bgColor: 'bg-green-600', color: 'text-white' },
                     { icon: 'ri-alipay-line', text: '支付宝', bgColor: 'bg-blue-800', color: 'text-white' },
-                    { icon: 'ri-netease-cloud-music-line', url: 'https://m.music.boycot.top', text: '网易云音乐', bgColor: 'bg-red-600', color: 'text-white' },
+                    { icon: 'ri-netease-cloud-music-line', url: 'https://m-music.boycot.top', text: '网易云音乐', bgColor: 'bg-red-600', color: 'text-white' },
                     { icon: 'ri-landscape-line', text: '照片', bgColor: 'bg-gray-300', color: 'text-purple-500' },
                     { icon: '', text: '日历', subText: week[date.getDay()], render: () => date.getDate(), bgColor: 'bg-white' },
                     { icon: 'ri-navigation-fill', text: '高德地图', bgColor: 'bg-blue-300', color: 'text-blue-700' },

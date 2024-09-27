@@ -2,6 +2,9 @@ import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { viteMockServe } from 'vite-plugin-mock';
 export default defineConfig(() => ({
+    build: {
+        emptyOutDir: true,
+    },
     resolve: {
         alias: {
             '@': new URL('./src/', import.meta.url).pathname,

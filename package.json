@@ -4,7 +4,9 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --host 0.0.0.0",
-		"build": "vite build",
+		"build": "vite build --mode vercel",
+		"build:surge": "vite build --mode surge & surge ./dist",
+		"build:static": "vite build",
 		"preview": "vite preview --host 0.0.0.0",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch"
@@ -33,6 +35,7 @@
 		"@neodrag/svelte": "^2.0.6",
 		"axios": "^1.6.0",
 		"dayjs": "^1.11.12",
+		"dotenv": "^16.4.5",
 		"less": "^4.2.0",
 		"sortablejs": "^1.15.1",
 		"svelte": "^4.0.5",

@@ -1,28 +1,22 @@
-// import adapterAuto from '@sveltejs/adapter-auto';
+import adapterAuto from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
-// import adapterStatic from '@sveltejs/adapter-static';
-import adapter from '@sveltejs/adapter-vercel';
+import adapterStatic from '@sveltejs/adapter-static';
+import adapterVercel from '@sveltejs/adapter-vercel';
+// console.log(process.argv, 'process.env.adapter');
+
+const adapter = process.argv.includes('vercel') ? adapterVercel() : adapterStatic({
+    pages: 'dist',
+    runtime: 'nodejs18.x',
+    fallback: process.argv.includes('surge') ? '200.html' : 'index.html' // may differ from host to host
+});
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	kit: {
+    kit: {
         alias: {
             '@': './src/*'
         },
-		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
-		// If your environment is not supported or you settled on a specific environment, switch out the adapter.
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
-		// adapter: adapter({
-            // images: {
-            //     sizes: [640, 828, 1200, 1920, 3840],
-            //     formats: ['image/avif', 'image/webp'],
-            //     minimumCacheTTL: 300,
-            //     domains: ['example-app.vercel.app'],
-            // },
-        //     runtime: 'nodejs18.x',
-		// 	fallback: '200.html' // may differ from host to host
-		// })
-        // adapter: process.env.MODE === 'development' ? adapterAuto() : adapter()
-        adapter: adapter()
+		adapter: process.env.MODE === 'development' ? adapterAuto() : adapter
 	},
     preprocess: preprocess({
         less: {
